@@ -37,12 +37,8 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <button id="msgButton" class="active">Welcome!</button>
-                <button id="loginButton">Login</button>
+                <button id="loginButton" class="active">Login</button>
                 <button id="registerButton">Register</button>
-            </div>
-            <div class="card-body" id="msgModal">
-                <center><p>Welcome to the Login & Registration Interface.</p></center>
             </div>
             <div class="card-body" id="loginModal">
                 <h2>Login</h2>
@@ -79,30 +75,86 @@
     </div>
     <script src="../scripts/indexscript.js"></script>
     <script>
-        // Function to show toaster message
-        function showToast(message) {
-            var toaster = document.getElementById('toaster-message');
-            toaster.innerHTML = message;
-            toaster.parentElement.style.display = 'block';
+document.addEventListener("DOMContentLoaded", function () {
+    const loginButton = document.getElementById("loginButton");
+    const registerButton = document.getElementById("registerButton");
+    const loginModal = document.getElementById("loginModal");
+    const registerModal = document.getElementById("registerModal");
+    const loginForm = document.getElementById("loginForm");
 
-            // Hide the toaster after 5 seconds
-            setTimeout(function() {
-                toaster.parentElement.style.display = 'none';
-                toaster.innerHTML = '';
-            }, 5000);
-        }
+    const setActiveTab = (tabName, activeButton, inactiveButton) => {
+        activeButton.classList.add("active");
+        inactiveButton.classList.remove("active");
 
-        // Check if there is a toaster message in the URL
-        var urlParams = new URLSearchParams(window.location.search);
-        var toasterMessage = urlParams.get('toasterMessage');
+        loginModal.style.display = tabName === "login" ? "block" : "none";
+        registerModal.style.display = tabName === "register" ? "block" : "none";
+    };
 
-        if (toasterMessage) {
-            // Display the toaster message
-            showToast(toasterMessage);
+    const setDefaultTab = () => {
+        const activeTab = localStorage.getItem("activeTab") || "login";
+        setActiveTab(activeTab, activeTab === "login" ? loginButton : registerButton, activeTab === "login" ? registerButton : loginButton);
+    };
 
-            // Update the URL without the toaster message
-            history.replaceState({}, document.title, window.location.pathname);
-        }
+    setDefaultTab(); // This sets the default tab based on local storage
+
+    // Set the default tab to login if there's no stored preference
+    if (!localStorage.getItem("activeTab")) {
+        localStorage.setItem("activeTab", "login");
+        setActiveTab("login", loginButton, registerButton);
+    }
+
+    loginButton.addEventListener("click", function () {
+        localStorage.setItem("activeTab", "login");
+        setActiveTab("login", loginButton, registerButton);
+    });
+
+    registerButton.addEventListener("click", function () {
+        localStorage.setItem("activeTab", "register");
+        setActiveTab("register", registerButton, loginButton);
+    });
+
+    loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("password", password);
+
+        fetch("../process/login.php", {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    const dashboardURL = data.role === "admin" ? "../view/admin.php" : "../view/user.php";
+                    const message = `You have Logged in Successfully! Welcome to ${data.role} Dashboard!`;
+
+                    window.location.href = `${dashboardURL}?toasterMessage=${encodeURIComponent(message)}`;
+                } else {
+                    showToast("Invalid username or password. Please try again.");
+                }
+            })
+            .catch((error) => {
+                console.error("Login error:", error);
+                showToast("An error occurred. Please try again.");
+            });
+    });
+
+    function showToast(message) {
+        const toaster = document.getElementById('toaster-message');
+        toaster.innerHTML = message;
+        toaster.parentElement.style.display = 'block';
+
+        setTimeout(function () {
+            toaster.parentElement.style.display = 'none';
+            toaster.innerHTML = '';
+        }, 5000);
+    }
+});
     </script>
 </body>
 </html>
