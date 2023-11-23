@@ -599,6 +599,8 @@ $uname = $_SESSION['user_name'];
 
 <body>
     <header>
+        <!-- Button to toggle the sidebar -->
+        <button id="toggleSidebarButton" class="toggle-button"><i class="fas fa-bars"></i></button>
         <center><table>
             <tr>
                 <td>
@@ -613,19 +615,21 @@ $uname = $_SESSION['user_name'];
             </tr>
         </table></center>
     </header>
-    <nav class="nav-container">
-        <ul>
-            <li class="nav-button"><a href="#" class="active" id="home-button"><i class="fas fa-home"></i> Home</a></li>
-            <li class="nav-button"><a href="#" id="equipment-button"><i class="fas fa-dumbbell"></i> Equipment Management</a></li>
-            <li class="nav-button"><a href="#" id="user-button"><i class="fas fa-users"></i> User Management</a></li>
-            <li class="nav-button"><a href="#" id="borrowing-button"><i class="fas fa-chart-bar"></i> Borrowing Records</a></li>
-            <li class="nav-button"><a href="#" id="settings-button"><i class="fas fa-running"></i> Activity Log</a></li>
-            <li class="nav-button"><a href="#" id="logout-button"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <!-- Content for each dashboard section goes here -->
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div style="width: 125px; height: 125px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <img class="img-circle" src="../pictures/profile<?php echo $uid;?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <center><p style="position: relative; margin: 0 auto; padding: 5px;">Hi! <?php echo $uname;?></p></center>
+        <a id="home-button" class="active" style=" border-top: 4px solid #80522F;"><i class="fas fa-home"></i> Home</a>
+        <a id="equipment-button"><i class="fas fa-dumbbell"></i> Equipment Management</a>
+        <a id="user-button"><i class="fas fa-users"></i> User Management</a>
+        <a id="borrowing-button"><i class="fas fa-chart-bar"></i> Borrowing Records</a>
+        <a id="settings-button"><i class="fas fa-running"></i> Activity Log</a>
+        <a id="logout-button"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        <button id="closeSidebarButton" class="close-button"><i class="fas fa-times"></i></button>
+    </div>
+    <main class="main-content">
         <!-- Start of Home Content -->
         <div class="modal-container" id="home-modal">
             <div class="modal-content">
@@ -1216,6 +1220,7 @@ $uname = $_SESSION['user_name'];
     <script src="../scripts/bootstrap.min.js"></script>
     <script src="../scripts/admin-modal-scripts.js"></script>
     <script src="../scripts/admin-scripts.js"></script>
+    <script src="../scripts/admin-sidebar-scripts.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         // Function to show toaster message
