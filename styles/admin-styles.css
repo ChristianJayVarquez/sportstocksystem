@@ -89,7 +89,6 @@ nav ul li {
   }
 }
 
-
 /* Change button appearance on hover */
 .nav-button:hover {
   background-color: #32cd32; /* Lime Green */
@@ -115,6 +114,7 @@ nav ul li {
   color: #795548; /* Brown */
   padding-top: 50px;
   transition: left 0.3s; /* Smooth slide-in/out animation */
+  z-index: 1; /* Ensure the sidebar is above other elements */
 }
 
 .sidebar a {
@@ -136,21 +136,22 @@ nav ul li {
   background: linear-gradient(135deg, #8b4513, #f5d0a9); 
   color: #fff; /* Text color on hover */
 }
-/* Add this CSS to make the main content and modals move responsively */
+
+/* Add these styles to make the main content and modals move responsively */
 
 /* Main Content */
-.main-content {
+.main-content, .modal-content, .card, .card-container {
   transition: margin-left 0.3s; /* Smooth slide-in/out animation */
   margin-left: 0;
 }
 
 /* Sidebar Open State */
-.sidebar-open .main-content {
+.sidebar-open .main-content, .sidebar-open .modal-content {
   margin-left: 225px; /* Adjust the width of the sidebar */
 }
 
 /* Modals */
-.modal-container, #home-modal, #equipment-modal {
+.modal-container, #home-modal, #equipment-modal, #user-modal, #borrowing-modal, #settings-modal, #logout-modal {
   transition: left 0.3s; /* Smooth slide-in/out animation */
   left: 0;
 }
@@ -158,7 +159,11 @@ nav ul li {
 /* Modals Open State */
 .sidebar-open .modal-container,
 .sidebar-open #home-modal,
-.sidebar-open #equipment-modal {
+.sidebar-open #equipment-modal,
+.sidebar-open #user-modal,
+.sidebar-open #borrowing-modal,
+.sidebar-open #settings-modal,
+.sidebar-open #logout-modal {
   left: 225px; /* Adjust the width of the sidebar */
 }
 
@@ -365,7 +370,6 @@ nav ul li {
   font-size: 16px;
   font-weight: bold;
 }
-
 
 /* Add these styles to your existing CSS */
 .action-button {
