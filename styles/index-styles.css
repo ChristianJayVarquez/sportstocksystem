@@ -1,0 +1,74 @@
+body {
+    font-family: 'Times New Roman', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f4ff;
+}
+
+.container {
+    width: 320px;
+}
+
+.card {
+    border: 1px solid #14662C;
+    border-radius: 5px;
+    background-color: #fff; /* White background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #14662C;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+}
+
+.card-header button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.card-header button.active {
+    background-color: #f0f4ff; /* Soft blue active button background color */
+    color: #22B14C;
+}
+
+.card-body {
+    display: none;
+    padding: 20px;
+}
+
+.card-body h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 1px;
+    margin-top: 1px;
+    border: 1px solid #14662C; /* Light purple border color */
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: #14662C; /* Light purple submit button background color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}

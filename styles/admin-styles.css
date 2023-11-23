@@ -1,0 +1,352 @@
+/* Reset some default styles for better consistency */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure the body takes up the full height of the viewport */
+body {
+  font-family: 'Times New Roman', sans-serif;
+  background: linear-gradient(to bottom, #F2F2F2, #D3D3D3); /* Gradient background */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add a gradient background to the header */ 
+header {
+  background: linear-gradient(135deg, #14662C, #22B14C); /* Gradient header background */
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  background-color: #22B14C; /* Green */
+}
+
+p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+h2, h3 {
+  margin-top: 15px;
+}
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Add a container for centering the buttons */
+.nav-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Style for the button list */
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Style for each button */
+nav ul li {
+  display: inline;
+  margin-left: 20px;
+}
+
+/* Add basic button styles */
+.nav-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  text-decoration: none;
+  background-color: #14662C; /* Dark Green */
+  color: #fff;
+  border: 1px solid #14662C; /* Dark Green */
+  border-radius: 5px;
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+/* Media query for responsiveness */
+@media screen and (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav ul li {
+    display: block;
+    margin: 10px 0;
+  }
+}
+
+
+/* Change button appearance on hover */
+.nav-button:hover {
+  background-color: #32cd32; /* Lime Green */
+  border-color: #22B14C; /* Green */
+  color: #F2F2F2; /* Dirty White */
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Change button appearance on click (active state) */
+.nav-button a.active {
+  color: #6ec36e;
+}
+
+/* Add this style for the modal container */
+.modal {
+  display: none;
+  width: 100%;
+  background: #F2F2F2; /* Dirty White */
+  padding: 5px;
+  text-align: center;
+}
+
+/* Add this style for the modal containers */
+.modal-container {
+  display: none;
+  width: 100%;
+  background: #f2f2f2;
+  padding: 5px;
+  text-align: center;
+}
+
+/* Style for modal content */
+.modal-content {
+  background: #F2F2F2; /* Dirty White */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 5px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  min-height: 60vh;
+}
+
+/* Style for modal buttons */
+.modal-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  text-decoration: none;
+  background-color: #22B14C; /* Green */
+  color: F2F2F2; /* Dirty White */
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-button:hover {
+  background-color: #32cd32; /* Lime Green */
+}
+
+.equipment-table th,
+.equipment-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.equipment-table th {
+  background-color: #f2f2f2;
+}
+
+/* Style sorting icons */
+.equipment-table th i {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.user-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: auto;
+}
+
+.user-table th,
+.user-table td {
+  font-family: 'Times New Roman', sans-serif;
+  font-size: larger;
+  border: 1px solid #ddd;
+  padding: 2px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+}
+
+.user-image {
+  width: auto;
+  height: auto;
+  max-width: 150x;
+  max-height: 150px;
+  border-radius: 20%;
+}
+
+.edit-button, .addE-button, .addN-button, .request-button, .edit-user-button, .borrowing-button, .updateButton, .view-userA-button {
+  background-color: #008000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.edit-button:hover {
+  background-color: #006400;
+}
+
+.delete-button, .delete-user-button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-button:hover, .delete-user-button {
+  background-color: #c0392b;
+}
+
+.search-container {
+  margin: 10px 0;
+}
+
+#user-search {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 60%;
+  margin-right: 5px;
+}
+
+#search-button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#search-button:hover {
+  background-color: #2980b9;
+}
+
+.paging-container {
+  margin: 20px 0;
+}
+
+.paging-container button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.2s;
+}
+
+.paging-container button:hover {
+  background-color: #2980b9;
+}
+
+#page-info {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+/* Add these styles to your existing CSS */
+.action-button {
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.borrowing-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.borrowing-table th,
+.borrowing-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.borrowing-table th {
+  background-color: #f2f2f2;
+}
+
+.borrowing-table th i {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+/* Style for the action buttons */
+.action-button {
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.action-button:hover {
+  background-color: #27ae60;
+}
+
+/* Main content should expand to fill available space */
+main {
+  flex-grow: 1;
+}
+
+/* Footer styling to stay at the bottom */
+footer {
+  background: linear-gradient(to right, #80522F, #59381e); /* Gradient footer background */
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Adjust the content of the footer as needed */
+footer p {
+  margin: 0;
+  color: #fff; /* Text color */
+}
+
+/* Center-align the text in the footer */
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

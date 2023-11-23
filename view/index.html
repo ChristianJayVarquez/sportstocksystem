@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login & Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../styles/index-styles.css">
+    <style>
+        body {
+            background-image: url('../pictures/Sport.jpg'); /* Replace 'path/to/your/image.jpg' with the actual path to your image file */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed; /* This keeps the background fixed while scrolling */
+        }
+
+        /*Styles for the toaster notification here */
+        #toaster {
+            display: none;
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            padding: 16px;
+            max-width: 300px;
+            background: linear-gradient(to bottom, #F2F2F2, #D3D3D3);
+            color: black;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #toaster p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <button id="msgButton" class="active">Welcome!</button>
+                <button id="loginButton">Login</button>
+                <button id="registerButton">Register</button>
+            </div>
+            <div class="card-body" id="msgModal">
+                <center><p>Welcome to the Login & Registration Interface.</p></center>
+            </div>
+            <div class="card-body" id="loginModal">
+                <h2>Login</h2>
+                <p>This is the Login Interface. To get started, please enter your username and password below:</p>
+                <form id="loginForm" action="../process/login.php">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit" name="login">Login</button>
+                </form>
+            </div>
+            <div class="card-body" id="registerModal">
+                <p>Please enter the required information:</p>
+                <form id="registrationForm" method="POST" action="../process/pending_registrations.php">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="course">Course & Year Level:</label>
+                    <input type="text" id="course" name="course" required>
+                    <label for='id_number'>UserID:</label>
+                    <input type='text' id='id_number' name='id_number'>
+                    <label for="newUsername">Username:</label>
+                    <input type="text" id="newUsername" name="newUsername" required>
+                    <label for="newPassword">Password:</label>
+                    <input type="password" id="newPassword" name="newPassword" required>
+                    <button type="submit" name="register">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Toaster Notification -->
+    <div id="toaster">
+        <div id="toaster-message"></div>
+    </div>
+    <script src="../scripts/indexscript.js"></script>
+    <script>
+        // Function to show toaster message
+        function showToast(message) {
+            var toaster = document.getElementById('toaster-message');
+            toaster.innerHTML = message;
+            toaster.parentElement.style.display = 'block';
+
+            // Hide the toaster after 5 seconds
+            setTimeout(function() {
+                toaster.parentElement.style.display = 'none';
+                toaster.innerHTML = '';
+            }, 5000);
+        }
+
+        // Check if there is a toaster message in the URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var toasterMessage = urlParams.get('toasterMessage');
+
+        if (toasterMessage) {
+            // Display the toaster message
+            showToast(toasterMessage);
+
+            // Update the URL without the toaster message
+            history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+</body>
+</html>
