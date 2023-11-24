@@ -43,15 +43,16 @@ $uname = $_SESSION['user_name'];
         }
         
         .pagination {
-            display: flex;
-            justify-content: center;
             list-style: none;
-            padding: 0;
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            margin: 5px; /* Adjust margin as needed */
         }
 
         .pagination li {
-            margin: 5px;
-            padding: 5px 10px;
+            margin: 0 5px;
             background-color: #22B14C;
             color: lime;
             border-radius: 5px;
@@ -657,12 +658,15 @@ $uname = $_SESSION['user_name'];
         <!-- Start of Equipment Content -->
         <div class="modal-container" id="equipment-modal">
             <div class="modal-content">
-                <div class="float-right">
+                <h2 style="position: relative;">Manage Equipment</h2>
+                <div style="position: absolute; top: 0; right: 0; padding: 10px;">
                     <button id="addE-button" class="addE-button btn-success" style="padding: 5px;">Add Equipment</button>
                 </div>
-                <div class="search-container">
-                    <input type="text" id="equipment-search" style="max-width: 300px" placeholder="Search for equipment...">
-                    <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                <div style="position: absolute; top: 0; left: 0; padding: 10px;">
+                    <div class="search-container">
+                        <input type="text" id="equipment-search" style="max-width: 300px;" placeholder="Search for equipment...">
+                        <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                    </div>
                 </div>
                 <div class="card-container">
                 <!-- Equipment Table -->
@@ -684,7 +688,7 @@ $uname = $_SESSION['user_name'];
                     for ($i = $startIndex; $i < $endIndex; $i++) {
                         $equipment = $data[$i];
                 ?>
-                <div class="card equipment-card">
+                <div class="card equipment-card" style="padding-right: 1%; padding-left: 1%;">
                     <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                         <img class="img-circle" src="../pictures/equipment<?php echo $equipment['eid'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
                     </div><br />
@@ -707,29 +711,44 @@ $uname = $_SESSION['user_name'];
                         <div class="label-data-pair">
                             <label>Last Maintenance:</label> <?php echo $equipment['last_maintenance_date']; ?>
                         </div>
-                    </div>
+                    </div><br /><br />
                     <center>
+                    <div style="position: absolute; bottom: 0; right: 0; padding: 10px;">
                         <button type="button" class="edit-button btn-success" data-eid="<?php echo $equipment['eid']; ?>" data-ename="<?php echo $equipment['ename']; ?>" data-category="<?php echo $equipment['category']; ?>" data-quantity="<?php echo $equipment['quantity']; ?>" data-condition="<?php echo $equipment['quality']; ?>" data-maintenance="<?php echo $equipment['last_maintenance_date']; ?>" onclick="showEditModal(this)">
                             <i class="fas fa-edit"></i> Edit
                         </button>
                         <button type="button" class="delete-button btn-danger" onclick="showDeleteModal('<?php echo $equipment['eid']; ?>', '<?php echo $equipment['ename']; ?>')">
                             <i class="fas fa-trash-alt"></i> Delete
                         </button>
+                    </div>
                     </center>
                 </div>
                 <?php
                     }
                 ?>
-                </div>
+                </div><br/>
                 <div class="pagination">
                     <?php
-                    // Pagination links
-                    for ($page = 1; $page <= $totalPages; $page++) {
+                    // Display previous button
+                    if ($currentPage > 1) {
+                        echo "<li><a href='?equipment_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                    }
+
+                    // Display pagination buttons
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $startPage + 2);
+
+                    for ($page = $startPage; $page <= $endPage; $page++) {
                         if ($page == $currentPage) {
-                            echo "<li><span>$page</span></li>";
+                            echo "<li class='active'><span>$page</span></li>";
                         } else {
                             echo "<li><a href='?equipment_page=$page'>$page</a></li>";
                         }
+                    }
+
+                    // Display next button
+                    if ($currentPage < $totalPages) {
+                        echo "<li><a href='?equipment_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
                     }
                     ?>
                 </div>
@@ -771,7 +790,7 @@ $uname = $_SESSION['user_name'];
                     <label for='file'>Upload Photo:</label>
                     <input type="file" name="file">
                 </div>
-                <button class="btn btn-success" name="add" style="margin-left: 80%;">Add</button>
+                <button class="btn btn-success" name="add" style="position: absolute; bottom: 10px; right: 10px;">Add</button>
             </form>
         </div>
         <!-- End of Add Equipment Modal -->
@@ -798,7 +817,7 @@ $uname = $_SESSION['user_name'];
                 <label for="editMaintenance">Last Maintenance:</label>
                 <input type="date" id="editMaintenance" name="editMaintenance">
                 <br />
-                <button type="button" class="btn btn-success update-yes" onclick="updateEquipment()" style="margin-left: 250px; max-width: 100px;">Update</button>
+                <button type="button" class="btn btn-success update-yes" onclick="updateEquipment()" style="position: absolute; bottom: 10px; right: 10px;">Update</button>
             </form>
         </div>
         <!-- End of Edit Equipment Modal -->
@@ -810,9 +829,9 @@ $uname = $_SESSION['user_name'];
                 <input type="hidden" id="delEAction" name="action" value="delete"> <!-- Updated action value -->
 
                 <h2 id="delEquipmentName"></h2><br />
-                <div style="display: flex; justify-content: space-between;">
-                    <button type="button" class="btn btn-danger delete-yes" onclick="deleteEquipment()" style="margin-left: 30px; max-width: 100px;">Yes</button>
-                    <button type="button" class="btn btn-success delete-no" onclick="closeDelEModal()" style="margin-right: 30px; max-width: 100px;">No</button>
+                <div style="display: flex; justify-content: space-between; position: absolute; bottom: 10px; right: 10px;">
+                    <button type="button" class="btn btn-danger delete-yes" onclick="deleteEquipment()" style="margin-right: 5px;">Yes</button>
+                    <button type="button" class="btn btn-success delete-no" onclick="closeDelEModal()">No</button>
                 </div>
             </form>
         </div>
@@ -821,12 +840,14 @@ $uname = $_SESSION['user_name'];
         <div class="modal-container" id="user-modal">
             <div class="modal-content">
                 <h2>User Accounts</h2>
-                <div class="float-right">
+
+                <div class="float-right" style="position: absolute; top: 10px; right: 10px;">
                     <button id="addN-button" class="addN-button btn-success" style="padding: 5px;">Add New User</button>
                     <button id="request-button" class="request-button btn-success" style="padding: 5px;">Registration Requests</button>
                 </div>
-                <div class="search-container">
-                    <input type="text" id="user-search" style="max-width: 300px" placeholder="Search for users...">
+
+                <div class="search-container" style="position: absolute; top: 10px; left: 10px;">
+                    <input type="text" id="user-search" style="max-width: 300px;" placeholder="Search for users...">
                     <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
                 </div>
                 <div class="card-container">
@@ -849,10 +870,15 @@ $uname = $_SESSION['user_name'];
                             for ($i = $startIndex; $i < $endIndex; $i++) {
                                 $user = $data[$i];
                     ?>
-                    <div class="card profile-card">
-                        <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                    <div class="card profile-card" style="padding-right: 1%; padding-left: 1%;">
+                    <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                        <div style="position: relative; width: 100%; height: 100%;">
                             <img class="img-circle" src="../pictures/profile<?php echo $user['id'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div><br />
+                            <button type="button" class="view-userA-button btn-success" data-userid="<?php echo $user['id']; ?>" style="position: absolute; bottom: 0; right: 0; border-radius: 50%; background-color: transparent;">
+                                <i class="fas fa-eye" style="color: green;"></i>
+                            </button>
+                        </div>
+                    </div><br />
                         <div class="card-content">
                             <input type="hidden" id="viewUid" value="<?php echo $user['user_id']; ?>">
                             <div class="label-data-pair">
@@ -867,15 +893,12 @@ $uname = $_SESSION['user_name'];
                             <div class="label-data-pair">
                                 <label>Course & Year Level:</label> <?php echo $user['course']; ?>
                             </div>
-                        </div>
+                        </div>  
                         <center>
-                            <button type="button" class="view-userA-button btn-success" data-userid="<?php echo $user['id']; ?>">
-                                <i class="fas fa-eye"></i> View Activity
-                            </button>
-                            <button class="edit-user-button btn-success editInfoButton" data-user='<?php echo json_encode($user); ?>'>
+                            <button class="edit-user-button btn-success editInfoButton" data-user='<?php echo json_encode($user); ?>' style="float: right;">
                                 <i class="fas fa-info-circle"></i> Edit info
                             </button>
-                            <button type="button" class="delete-user-button btn-danger" onclick="showDeleteUserModal('<?php echo $user['id']; ?>', '<?php echo $user['username']; ?>')">
+                            <button type="button" class="delete-user-button btn-danger" onclick="showDeleteUserModal('<?php echo $user['id']; ?>', '<?php echo $user['username']; ?>')" style="float: right;">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </button>
                         </center>
@@ -883,19 +906,30 @@ $uname = $_SESSION['user_name'];
                     <?php
                         }
                     ?>
-                </div>
+                </div><br/>
                 <div class="pagination">
                     <?php
+                        // Display three buttons at a time
+                        $startPage = max(1, $currentPage - 1);
+                        $endPage = min($totalPages, $currentPage + 1);
+
+                        // Display previous button
+                        if ($currentPage > 1) {
+                            echo "<li><a href='?user_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                        }
+
                         // Pagination links
-                        for ($page = 1; $page <= $totalPages; $page++) {
-                            if ($page == $currentPage) {
-                                echo "<li><span>$page</span></li>";
-                            } else {
-                                echo "<li><a href='?user_page=$page'>$page</a></li>";
-                            }
+                        for ($page = $startPage; $page <= $endPage; $page++) {
+                            echo "<li" . ($page == $currentPage ? ' class="active"' : '') . "><a href='?user_page=$page'>$page</a></li>";
+                        }
+
+                        // Display next button
+                        if ($currentPage < $totalPages) {
+                            echo "<li><a href='?user_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
                         }
                     ?>
                 </div>
+
                 <?php
                     } else {
                         echo "No users found";
@@ -905,12 +939,11 @@ $uname = $_SESSION['user_name'];
         </div>
         <!-- End of User Content -->
         <!-- Start of View User Activity Modal -->
-        <div id="viewUAModal" class="modal-container" style="display: none;">
+        <div id="viewUAModal" class="modal-container" style="display: none; max-width: 300px; height: 400px; overflow: auto;">
             <span class="close" id="closeViewUAModal">&times;</span>
             <h2>User Activity Log</h2>
             <!-- Log content goes here -->
-            <div id="logContent"></div>
-            <div class="pagination" id="logPagination"></div>
+            <div id="logContent" style="max-height: 80%; overflow-y: auto;"></div>
         </div>
         <!-- End of View User Activity Modal -->
         <!-- Start of Edit User Info Modal -->
@@ -927,7 +960,7 @@ $uname = $_SESSION['user_name'];
                 <input type="text" id="course" name="course" value="">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" value="">
-                <button type="button" id="updateButton" class="updateButton">Update</button>
+                <button type="button" id="updateButton" class="updateButton" style="position: absolute; bottom: 10px; right: 10px;">Update</button>
             </form>
         </div>
         <!-- End of Edit User Info Modal -->
@@ -939,9 +972,9 @@ $uname = $_SESSION['user_name'];
                 <input type="hidden" id="delUAction" name="action" value="delete"> <!-- Updated action value -->
 
                 <h2 id="DeleteUsername"></h2><br />
-                <div style="display: flex; justify-content: space-between;">
-                    <button type="button" class="btn btn-danger deleteU-yes" onclick="deleteUser()" style="margin-left: 30px; max-width: 100px;">Yes</button>
-                    <button type="button" class="btn btn-success deleteU-no" onclick="closeDeleteUserModal()" style="margin-right: 30px; max-width: 100px;">No</button>
+                <div style="display: flex; justify-content: space-between; position: absolute; bottom: 10px; right: 10px;">
+                    <button type="button" class="btn btn-danger deleteU-yes" onclick="deleteUser()" style="margin-right: 5px;">Yes</button>
+                    <button type="button" class="btn btn-success deleteU-no" onclick="closeDeleteUserModal()">No</button>
                 </div>
             </form>
         </div>
@@ -976,7 +1009,7 @@ $uname = $_SESSION['user_name'];
                     <label for='file'>Upload Photo:</label>
                     <input type="file" name="file">
                 </div>
-                <button class="btn btn-success" name="add">Add</button>
+                <button class="btn btn-success" name="add" style="position: absolute; bottom: 10px; right: 10px;">Add</button>
             </form>
         </div>
         <!-- End of Add User Modal -->
@@ -1012,7 +1045,7 @@ $uname = $_SESSION['user_name'];
                             echo "<input type='hidden' name='password' value='{$row['password']}'>";
 
                             // Add Accept and Deny buttons
-                            echo '<div class="float-right"><button class="btn btn-success" type="submit" name="accept">Accept</button>';
+                            echo '<div class="float-right" style="position: absolute; bottom: 10px; right: 10px;"><button class="btn btn-success" type="submit" name="accept" style="margin-right: 5px;">Accept</button>';
                             echo '<button class="btn btn-danger" type="submit" name="deny">Deny</button></div>';
                             echo '<br/><br/></center>';
                             echo '<hr>';
@@ -1028,8 +1061,14 @@ $uname = $_SESSION['user_name'];
         <!-- Start of Borrowing Content -->
         <div class="modal-container" id="borrowing-modal">
             <div class="modal-content">
-                <h2>Borrowing History</h2>
-                <div class="float-right">
+                <h2 style="position: relative;">Borrowing History</h2>
+                <div style="position: absolute; top: 0; left: 0; padding: 10px;">
+                    <div class="search-container">
+                        <input type="text" id="borrowing-search" style="max-width: 300px;" placeholder="Search for borrowing...">
+                        <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="float-right" style="position: absolute; top: 0; right: 0; padding: 10px;">
                     <button id="borrowing-button" class="borrowing-button btn-success" style="padding: 5px;">Borrow Equipment</button>
                 </div><br />
                 <div class="card-container" id="borrowing-card-container">
@@ -1045,7 +1084,7 @@ $uname = $_SESSION['user_name'];
                     $startIndex = ($currentPage - 1) * $recordsPerPage;
 
                     // Query to retrieve a limited set of records
-                    $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id LIMIT $startIndex, $recordsPerPage";
+                    $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id ORDER BY borrowing.user_id DESC LIMIT $startIndex, $recordsPerPage";
 
                     $result = mysqli_query($conn, $sql);
 
@@ -1057,7 +1096,7 @@ $uname = $_SESSION['user_name'];
 
                     while ($row = $result->fetch_assoc()): 
                     ?>
-                    <div class="card borrowing-card">
+                    <div class="card borrowing-card" style="padding-left: 1%; padding-right: 1%;">
                         <div class="card-content">
                             <div class="label-data-pair">
                                 <label>Record ID:</label> <?php echo $row['id']; ?>
@@ -1086,20 +1125,29 @@ $uname = $_SESSION['user_name'];
                         </div>
                     </div>
                     <?php endwhile; ?>
-                </div>
-                <!-- Pagination -->
+                </div><br />
                 <div class="pagination" id="borrowing-pagination">
                     <?php
-                    // Calculate the total number of pages
-                    $totalPages = ceil($totalRecords / $recordsPerPage);
+                    // Display previous button
+                    if ($currentPage > 1) {
+                        echo "<li><a href='?borrowing_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                    }
 
-                    // Pagination links
-                    for ($page = 1; $page <= $totalPages; $page++) {
+                    // Display pagination buttons
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $startPage + 2);
+
+                    for ($page = $startPage; $page <= $endPage; $page++) {
                         if ($page == $currentPage) {
-                            echo "<li><span>$page</span></li>";
+                            echo "<li class='active'><span>$page</span></li>";
                         } else {
                             echo "<li><a href='?borrowing_page=$page'>$page</a></li>";
                         }
+                    }
+
+                    // Display next button
+                    if ($currentPage < $totalPages) {
+                        echo "<li><a href='?borrowing_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
                     }
                     ?>
                 </div>
@@ -1141,69 +1189,136 @@ $uname = $_SESSION['user_name'];
         <div class="modal-container" id="settings-modal">
             <div class="modal-content">
                 <!-- Log content goes here -->
-                <div class="card-container">
-                    <div class="card log-card">
-                    <h2>Activity Log</h2>
-                    <?php
-                    $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
-                    $result = mysqli_query($conn, $sql);
+                <div class="card-container" style="display: flex; justify-content: space-between;">
+                    <!-- First Card - Administrator Log -->
+                    <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box;">
+                        <h2>Administrator Log</h2>
+                        <?php
+                        $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
+                        $result = mysqli_query($conn, $sql);
 
-                    if (mysqli_num_rows($result) > 0) {
-                        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                        $itemsPerPage = 5; // Display 5 data items per page
-                        $totalItems = count($data);
-                        $totalPages = ceil($totalItems / $itemsPerPage);
-                        $currentPage = isset($_GET['log_page']) ? $_GET['log_page'] : 1;
+                        if (mysqli_num_rows($result) > 0) {
+                            $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                            $itemsPerPage = 5; // Display 5 data items per page
+                            $totalItems = count($data);
+                            $totalPages = ceil($totalItems / $itemsPerPage);
+                            $currentPage = isset($_GET['log_page']) ? $_GET['log_page'] : 1;
 
-                        // Display data for the current page
-                        $startIndex = ($currentPage - 1) * $itemsPerPage;
-                        $endIndex = min($startIndex + $itemsPerPage, $totalItems);
+                            // Display data for the current page
+                            $startIndex = ($currentPage - 1) * $itemsPerPage;
+                            $endIndex = min($startIndex + $itemsPerPage, $totalItems);
 
-                        for ($i = $startIndex; $i < $endIndex; $i++) {
-                            $row = $data[$i];
-                            echo '<div style="display: flex; justify-content: space-between;"><p>Administrator</p><center>';
-                            echo $row['activity'];
-                            echo '<br />';
-                            echo $row['timestamp'];
-                            echo '</center></div><hr />';
+                            for ($i = $startIndex; $i < $endIndex; $i++) {
+                                $row = $data[$i];
+                                echo '<div style="display: flex; justify-content: space-between;"><p>Administrator</p><center>';
+                                echo $row['activity'];
+                                echo '<br />';
+                                echo $row['timestamp'];
+                                echo '</center></div><hr />';
+                            }
                         }
-                    ?>
+                        ?>
+                        <!-- Pagination for the first card -->
+                        <div class="pagination" style="text-align: right; margin-top: 10px;">
+                            <?php
+                            // Display previous button
+                            if ($currentPage > 1) {
+                                echo "<li><a href='?log_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                            }
+
+                            // Display pagination buttons
+                            $startPage = max(1, $currentPage - 1);
+                            $endPage = min($totalPages, $startPage + 2);
+
+                            for ($page = $startPage; $page <= $endPage; $page++) {
+                                if ($page == $currentPage) {
+                                    echo "<li class='active'><span>$page</span></li>";
+                                } else {
+                                    echo "<li><a href='?log_page=$page'>$page</a></li>";
+                                }
+                            }
+
+                            // Display next button
+                            if ($currentPage < $totalPages) {
+                                echo "<li><a href='?log_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
+                            }
+                            ?>
+                        </div>
                     </div>
-                </div>
-                <div class="pagination">
-                    <?php
-                    // Pagination links
-                    for ($page = 1; $page <= $totalPages; $page++) {
-                        if ($page == $currentPage) {
-                            echo "<li><span>$page</span></li>";
-                        } else {
-                            echo "<li><a href='?log_page=$page'>$page</a></li>";
+                    <!-- Second Card - All Log Data -->
+                    <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box;">
+                        <h2>All Activity Log Data</h2>
+                        <?php
+                        $sqls = "SELECT log.*, users.name AS user_name FROM log LEFT JOIN users ON log.user_id = users.id ORDER BY log.timestamp DESC";
+                        $results = mysqli_query($conn, $sqls);
+
+                        if (mysqli_num_rows($results) > 0) {
+                            $dataAll = mysqli_fetch_all($results, MYSQLI_ASSOC);
+                            $totalItemsAll = count($dataAll);
+                            $totalPagesAll = ceil($totalItemsAll / $itemsPerPage);
+                            $currentPageAll = isset($_GET['all_log_page']) ? $_GET['all_log_page'] : 1;
+
+                            // Display data for the current page for the second card
+                            $startIndexAll = ($currentPageAll - 1) * $itemsPerPage;
+                            $endIndexAll = min($startIndexAll + $itemsPerPage, $totalItemsAll);
+
+                            for ($i = $startIndexAll; $i < $endIndexAll; $i++) {
+                                $rowAll = $dataAll[$i];
+                                echo '<div style="display: flex; justify-content: space-between;"><p>' . $rowAll['user_name'] . '</p><center>';
+                                echo $rowAll['activity'];
+                                echo '<br />';
+                                echo $rowAll['timestamp'];
+                                echo '</center></div><hr />';
+                            }
                         }
-                    }
-                    ?>
-                </div>
-                <?php
-                    } else {
-                        echo "No logs found";
-                    }
-                ?>
+                        ?>
+                        <!-- Pagination for the second card -->
+                        <div class="pagination" style="text-align: right; margin-top: 10px;">
+                            <?php
+                            // Display previous button for the second card
+                            if ($currentPageAll > 1) {
+                                echo "<li><a href='?all_log_page=" . ($currentPageAll - 1) . "'>&laquo;</a></li>";
+                            }
+
+                            // Display pagination buttons for the second card
+                            $startPageAll = max(1, $currentPageAll - 1);
+                            $endPageAll = min($totalPagesAll, $startPageAll + 2);
+
+                            for ($page = $startPageAll; $page <= $endPageAll; $page++) {
+                                if ($page == $currentPageAll) {
+                                    echo "<li class='active'><span>$page</span></li>";
+                                } else {
+                                    echo "<li><a href='?all_log_page=$page'>$page</a></li>";
+                                }
+                            }
+
+                            // Display next button for the second card
+                            if ($currentPageAll < $totalPagesAll) {
+                                echo "<li><a href='?all_log_page=" . ($currentPageAll + 1) . "'>&raquo;</a></li>";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div><br />
             </div>
         </div>
+        <!-- End of Activity Log Content -->
         <!-- Start of Logout Content -->
         <div class="modal-container" id="logout-modal">
             <div class="modal-content">
                 <!-- Logout Modal Content -->
                 <div class="card-container">
                     <div class="card profile-card">
-                        <center><h2>Log Out</h2>
-                        <p>Are you sure you want to log out?</p>
-                        <div class="button-container">
-                            <button id="logout-confirm-button" class="modal-button action-button" onclick="confirmLogout()">Yes</button>
-                            <button id="logout-cancel-button" class="modal-button action-button" onclick="confirmLogout()">No</button>
-                        </div></center>
+                        <center><br />
+                            <h4 style="position: relative;">Are you sure you want to log out?</h4><br /><br /><br />
+                                <div class="button-container" style="position: absolute; bottom: 10px; right: 10px;">
+                                    <button id="logout-confirm-button" class="modal-button action-button" onclick="confirmLogout()">Yes</button>
+                                    <button id="logout-cancel-button" class="modal-button action-button" onclick="confirmLogout()">No</button>
+                                </div>
+                        </center>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
         <!-- End of Logout Content -->
         <!-- Toaster Notification -->
@@ -1213,7 +1328,7 @@ $uname = $_SESSION['user_name'];
     </main> 
 
     <footer>
-        <p>&copy; 2023 SportStock</p>
+        <p>&copy; 2023 SportStock System: ADS | Made by: Group2 @ AY: 2023-2024</p>
     </footer>
     <script src="../scripts/jquery.min.js"></script>
     <script src="../scripts/popper.min.js"></script>
@@ -1546,7 +1661,7 @@ $uname = $_SESSION['user_name'];
 
             function showViewUAModal(userId) {
                 document.getElementById("viewUid").value = userId;
-                fetchUserLogs(userId, 1);
+                fetchUserLogs(userId);
                 viewUAModal.style.display = "block";
             }
 
@@ -1570,12 +1685,12 @@ $uname = $_SESSION['user_name'];
                 });
             });
 
-            function fetchUserLogs(userId, page) {
-                fetch(`../process/fetch-user-logs.php?userId=${userId}&page=${page}`)
+            function fetchUserLogs(userId) {
+                fetch(`../process/fetch-user-logs.php?userId=${userId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            displayLogs(data.logs, userId, page, data.totalPages);
+                            displayLogs(data.logs, userId);
                         } else {
                             console.error("Failed to fetch user logs");
                         }
@@ -1585,34 +1700,18 @@ $uname = $_SESSION['user_name'];
                     });
             }
 
-            function displayLogs(logs, userId, page, totalPages) {
+            function displayLogs(logs, userId) {
                 const logContent = document.getElementById("logContent");
                 logContent.innerHTML = "";
-                const itemsPerPage = 4; // Set the number of items per page
 
-                const startIndex = (page - 1) * itemsPerPage;
-                const endIndex = Math.min(startIndex + itemsPerPage, logs.length);
-
-                if (startIndex < logs.length) {
-                    for (let i = startIndex; i < endIndex; i++) {
-                        const log = logs[i];
+                if (logs.length > 0) {
+                    logs.forEach(log => {
                         const logEntry = document.createElement("div");
                         logEntry.innerHTML = `<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile${userId}.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>${log.activity}<br />${log.timestamp}</center></div><hr />`;
                         logContent.appendChild(logEntry);
-                    }
+                    });
                 } else {
                     logContent.innerHTML = "No logs found";
-                }
-
-                const logPagination = document.getElementById("logPagination");
-                logPagination.innerHTML = "";
-                
-                for (let i = 1; i <= totalPages; i++) {
-                    if (i === page) {
-                        logPagination.innerHTML += `<li><span>${i}</span></li>`;
-                    } else {
-                        logPagination.innerHTML += `<li><a href='#' onclick='fetchUserLogs(${userId}, ${i})'>${i}</a></li>`;
-                    }
                 }
             }
         });

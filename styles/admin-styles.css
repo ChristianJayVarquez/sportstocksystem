@@ -51,29 +51,9 @@ nav ul {
   padding: 0;
 }
 
-nav a {
-  text-decoration: none;
-  color: #fff;
-}
-
-/* Style for each button */
 nav ul li {
   display: inline;
   margin-left: 20px;
-}
-
-/* Add basic button styles */
-.nav-button {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  text-decoration: none;
-  background-color: #14662C; /* Dark Green */
-  color: #fff;
-  border: 1px solid #14662C; /* Dark Green */
-  border-radius: 5px;
-  transition: background-color 0.2s, color 0.2s;
-  cursor: pointer;
 }
 
 /* Media query for responsiveness */
@@ -87,19 +67,6 @@ nav ul li {
     display: block;
     margin: 10px 0;
   }
-}
-
-/* Change button appearance on hover */
-.nav-button:hover {
-  background-color: #32cd32; /* Lime Green */
-  border-color: #22B14C; /* Green */
-  color: #F2F2F2; /* Dirty White */
-  transition: background-color 0.2s, color 0.2s;
-}
-
-/* Change button appearance on click (active state) */
-.nav-button a.active {
-  color: #6ec36e;
 }
 
 /* Sidebar Styles */
@@ -303,7 +270,7 @@ nav ul li {
   transition: background-color 0.2s;
 }
 
-.edit-button:hover {
+.edit-button:hover, .addE-button:hover, .addN-button:hover, .request-button:hover, .edit-user-button:hover, .borrowing-button:hover, .updateButton:hover, .view-userA-button:hover {
   background-color: #006400;
 }
 
