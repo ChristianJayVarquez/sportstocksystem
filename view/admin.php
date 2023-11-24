@@ -893,14 +893,16 @@ $uname = $_SESSION['user_name'];
                             <div class="label-data-pair">
                                 <label>Course & Year Level:</label> <?php echo $user['course']; ?>
                             </div>
-                        </div>  
+                        </div><br /><br />
                         <center>
-                            <button class="edit-user-button btn-success editInfoButton" data-user='<?php echo json_encode($user); ?>' style="float: right;">
-                                <i class="fas fa-info-circle"></i> Edit info
-                            </button>
-                            <button type="button" class="delete-user-button btn-danger" onclick="showDeleteUserModal('<?php echo $user['id']; ?>', '<?php echo $user['username']; ?>')" style="float: right;">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
+                            <div style="position: absolute; bottom: 0; right: 0; padding: 10px;">
+                                <button class="edit-user-button btn-success editInfoButton" data-user='<?php echo json_encode($user); ?>' style="margin-right: 5px;">
+                                    <i class="fas fa-info-circle"></i> Edit info
+                                </button>
+                                <button type="button" class="delete-user-button btn-danger" onclick="showDeleteUserModal('<?php echo $user['id']; ?>', '<?php echo $user['username']; ?>')" style="float: right;">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </div>
                         </center>
                     </div>
                     <?php
@@ -949,7 +951,7 @@ $uname = $_SESSION['user_name'];
         <!-- Start of Edit User Info Modal -->
         <div id="editInfoModal" class="modal-containers" style="display: none;">
             <span class="close" id="closeEditInfoModal">&times;</span>
-            <h2>Edit Your Information</h2>
+            <h2>Edit User Information</h2>
             <form id="editInfoForm" method="post">
                 <!-- Add a hidden input field for user ID -->
                 <input type="hidden" id="editUserId" name="userId" value="">
