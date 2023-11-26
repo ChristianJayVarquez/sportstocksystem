@@ -104,7 +104,7 @@ nav h1 {
 
 /* Modals Open State */
 .sidebar-open .modal-container,
-.sidebar-open #homeModal
+.sidebar-open #homeModal,
 .sidebar-open #equipmentsModal {
   left: 225px; /* Adjust the width of the sidebar */
 }

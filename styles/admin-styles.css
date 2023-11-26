@@ -39,40 +39,11 @@ hr {
   margin-bottom: 5px;
 }
 
-/* Add a container for centering the buttons */
-.nav-container {
-  display: flex;
-  justify-content: center;
-}
-
-/* Style for the button list */
-nav ul {
-  list-style: none;
-  padding: 0;
-}
-
-nav ul li {
-  display: inline;
-  margin-left: 20px;
-}
-
-/* Media query for responsiveness */
-@media screen and (max-width: 768px) {
-  .nav-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  nav ul li {
-    display: block;
-    margin: 10px 0;
-  }
-}
-
 /* Sidebar Styles */
 .sidebar {
   border: 4px solid #80522F; /* Add a border */
   height: auto;
+  min-height: 100vh;
   width: 225px;
   position: fixed;
   top: 0;
@@ -81,7 +52,6 @@ nav ul li {
   color: #795548; /* Brown */
   padding-top: 50px;
   transition: left 0.3s; /* Smooth slide-in/out animation */
-  z-index: 1; /* Ensure the sidebar is above other elements */
 }
 
 .sidebar a {
@@ -89,7 +59,7 @@ nav ul li {
   padding: 15px;
   text-align: center;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 18px;
   color: #795548; /* Brown */
   display: block;
 }
@@ -103,22 +73,21 @@ nav ul li {
   background: linear-gradient(135deg, #8b4513, #f5d0a9); 
   color: #fff; /* Text color on hover */
 }
-
-/* Add these styles to make the main content and modals move responsively */
+/* Add this CSS to make the main content and modals move responsively */
 
 /* Main Content */
-.main-content, .modal-content, .card, .card-container {
+.main-content {
   transition: margin-left 0.3s; /* Smooth slide-in/out animation */
   margin-left: 0;
 }
 
 /* Sidebar Open State */
-.sidebar-open .main-content, .sidebar-open .modal-content {
+.sidebar-open .main-content {
   margin-left: 225px; /* Adjust the width of the sidebar */
 }
 
 /* Modals */
-.modal-container, #home-modal, #equipment-modal, #user-modal, #borrowing-modal, #settings-modal, #logout-modal {
+.modal-container, #equipment-modal, #user-modal, #borrowing-modal, #settings-modal, #logout-modal {
   transition: left 0.3s; /* Smooth slide-in/out animation */
   left: 0;
 }

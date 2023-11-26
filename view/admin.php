@@ -231,7 +231,7 @@ $uname = $_SESSION['user_name'];
         </div>
         <center><p style="position: relative; margin: 0 auto; padding: 5px;">Hi! <?php echo $uname;?></p></center>
         <a id="home-button" class="active" style=" border-top: 4px solid #80522F;"><i class="fas fa-home"></i> Home</a>
-        <a id="equipment-button"><i class="fas fa-dumbbell"></i> Equipment Management</a>
+        <a id="equipment-button"><i class="fas fa-dumbbell"></i> Manage Equipment</a>
         <a id="user-button"><i class="fas fa-users"></i> User Management</a>
         <a id="borrowing-button"><i class="fas fa-chart-bar"></i> Borrowing Records</a>
         <a id="settings-button"><i class="fas fa-running"></i> Activity Log</a>
@@ -266,7 +266,7 @@ $uname = $_SESSION['user_name'];
         <!-- Start of Equipment Content -->
         <div class="modal-container" id="equipment-modal">
             <div class="modal-content">
-                <h2 style="position: relative;">Manage Equipment</h2>
+                <h2 style="position: relative;">Equipment</h2>
                 <div style="position: absolute; top: 0; right: 0; padding: 10px;">
                     <button id="addE-button" class="addE-button btn-success" style="padding: 5px;">Add Equipment</button>
                 </div>
@@ -936,7 +936,6 @@ $uname = $_SESSION['user_name'];
             <div id="toaster-message"></div>
         </div>
     </main> 
-
     <footer>
         <p>&copy; 2023 SportStock System: ADS | Made by: Group2 @ AY: 2023-2024</p>
     </footer>
@@ -1523,6 +1522,19 @@ $uname = $_SESSION['user_name'];
                 });
             });
         });
+    </script>
+    <script>
+        // Calculate and set the minimum height of the sidebar
+        function setSidebarMinHeight() {
+        const headerHeight = document.querySelector('header').offsetHeight;
+        const footerHeight = document.querySelector('footer').offsetHeight;
+        const minHeight = headerHeight + footerHeight;
+        document.getElementById('sidebar').style.minHeight = `${minHeight}px`;
+        }
+
+        // Call the function on page load and resize
+        window.addEventListener('load', setSidebarMinHeight);
+        window.addEventListener('resize', setSidebarMinHeight);
     </script>
 </body>
 </html>
