@@ -549,7 +549,7 @@ $uname = $_SESSION['user_name'];
         </div>
         <!-- End of User Content -->
         <!-- Start of View User Activity Modal -->
-        <div id="viewUAModal" class="modal-container" style="display: none; max-width: 300px; height: 400px; overflow: auto;">
+        <div id="viewUAModal" class="modal-containers" style="display: none; max-width: 300px; height: 400px; overflow: auto;">
             <span class="close" id="closeViewUAModal">&times;</span>
             <h2>User Activity Log</h2>
             <!-- Log content goes here -->
