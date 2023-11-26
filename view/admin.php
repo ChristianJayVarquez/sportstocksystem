@@ -19,43 +19,51 @@ $uname = $_SESSION['user_name'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../styles/admin-styles.css">
     <style>
+        /* Common styles */
+        .card-container,
+        .card,
+        .pagination,
+        .form-group,
+        input,
+        select,
+        #toaster {
+            border-radius: 5px;
+        }
+
         .card-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: auto; /* Adjust as needed to center vertically */
+            height: auto;
         }
 
         .card {
             max-width: 500px;
             width: 100%;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
             text-align: justify;
-            padding: 10px 8% 10px 5%; /* Adjust padding as needed */
+            padding: 10px 8% 10px 5%;
             display: flex;
             flex-direction: column;
         }
 
         .card button {
-            margin-top: 10px; /* Adjust as needed for spacing between buttons */
-            /* Your button styles go here */
+            margin-top: 10px;
         }
-        
+
         .pagination {
             list-style: none;
             display: flex;
             position: absolute;
             bottom: 0;
             right: 0;
-            margin: 5px; /* Adjust margin as needed */
+            margin: 5px;
         }
 
         .pagination li {
             margin: 0 5px;
             background-color: #22B14C;
             color: lime;
-            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -68,454 +76,33 @@ $uname = $_SESSION['user_name'];
             color: #fff;
         }
 
-        /* Common style for modals */
+        /* Styles for specific modals */
         .modal-containers {
+            background: rgba(255, 255, 255, 0.5); /* Glass color with 50% opacity */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 95%;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-        }
-
-        /* Style for AddEModal */
-        #AddEModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            max-height: 60vh;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
             z-index: 2;
         }
 
-        #AddEModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #AddEForm {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .form-group {
-            flex: 0 0 48%; /* Adjust the width as needed */
-            margin: 1%;
-        }
-
-        .form-group label {
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #AddEForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        #AddEForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
-        }
-
-        #closeAddEModal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #closeAddEModal:hover {
-            color: #000;
-        }
-        
-        /* Style for EditEModal */
-        #EditEModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #EditEModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #EditEForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #EditEForm label {
-            margin-top: 10px;
-        }
-
-        #EditEForm input {
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #EditEForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        #EditEForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
-        }
-
-        #closeEditEModal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #closeEditEModal:hover {
-            color: #000;
-        }
-
-        /* Style for delEModal */
-        #delEModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 250px;
-            height: 30vh;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #delEModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #DeleteForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #delEModal .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #delEModal .close:hover {
-            color: #000;
-        }
-
-        /* Style for viewUAModal */
-        #viewUAModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            max-height: 60vh;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #viewUAModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #viewUAForm {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        #closeViewUAModal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #closeViewUAModal:hover {
-            color: #000;
-        }
-
-        /* Style for AddNModal */
-        #AddNModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            max-height: 60vh;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #AddNModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #AddNForm {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .form-group {
-            flex: 0 0 48%; /* Adjust the width as needed */
-            margin: 1%;
-        }
-
-        .form-group label {
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #AddNForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        #AddNForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
-        }
-
-        #closeAddNModal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #closeAddNModal:hover {
-            color: #000;
-        }
-
-        /* Style for RequestModal */
-        #RequestModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #RequestModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #RequestForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #RequestForm label {
-            margin-top: 10px;
-        }
-
-        #RequestForm input {
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #RequestForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        #RequestForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
-        }
-
-        #closeRequestModal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #closeRequestModal:hover {
-            color: #000;
-        }
-
-        /* Style for Edit Info Modal*/
-        #editInfoModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            height: 375px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #editInfoModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #editInfoForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #editInfoForm label {
-            margin-top: 10px;
-        }
-
-        #editInfoForm input {
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #editInfoForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        #editInfoForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
-        }
-
-        #editInfoModal .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #editInfoModal .close:hover {
-            color: #000;
-        }
-
-        /* Style for DeleteUserModal */
-        #DeleteUserModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 250px;
-            height: 30vh;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #DeleteUserModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #DeleteUserForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #DeleteUserModal .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #DeleteUserModal .close:hover {
-            color: #000;
-        }
-
-        /* Styles for BorrowingModal */
+        #AddEModal,
+        #EditEModal,
+        #delEModal,
+        #viewUAModal,
+        #AddNModal,
+        #RequestModal,
+        #editInfoModal,
+        #DeleteUserModal,
         #BorrowingModal {
-            background-color: #fff;
+            background-color: transparent;
             border-radius: 10px;
             max-width: 400px;
-            max-height: 50vh;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             position: fixed;
             top: 50%;
@@ -523,20 +110,36 @@ $uname = $_SESSION['user_name'];
             transform: translate(-50%, -50%);
             padding: 20px;
             z-index: 2;
+            height: auto; /* Updated to auto height */
+            flex-direction: column;
+            justify-content: space-between; /* Updated for justified content */
         }
 
+        #AddEModal h2,
+        #EditEModal h2,
+        #delEModal h2,
+        #viewUAModal h2,
+        #AddNModal h2,
+        #RequestModal h2,
+        #editInfoModal h2,
+        #DeleteUserModal h2,
         #BorrowingModal h2 {
             font-size: 20px;
             margin: 0;
         }
 
-        #BorrowingForm {
-            display: flex;
-            flex-wrap: wrap;
+        #EditEForm label,
+        #RequestForm label,
+        #editInfoForm label,
+        #DeleteUserForm label,
+        #BorrowingForm label {
+            margin-top: 10px;
+            display: block;
+            color: black;
         }
 
         .form-group {
-            flex: 0 0 48%; /* Adjust the width as needed */
+            flex: 0 0 48%;
             margin: 1%;
         }
 
@@ -545,28 +148,39 @@ $uname = $_SESSION['user_name'];
         }
 
         .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 5px;
+        .form-group select,
+        #toaster p {
+            width: calc(100% - 10px); /* Adjusted width to make room for labels */
+            padding: 10px;
             margin: 5px 0;
-            border: 1px solid #ccc;
+            border: none;
             border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white input background */
         }
 
-        #BorrowingForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
+        /* Adjusted some styles for consistency */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Updated submit button styles */
+        input[type="submit"] {
+            width: 100%;
+            background-color: #14662C; /* Green submit button background color */
             color: #fff;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
             padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
         }
 
-        #BorrowingForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
+        input[type="submit"]:hover {
+            background-color: #45a049;
         }
 
-        #closeBorrowingModal {
+        .close {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -574,10 +188,11 @@ $uname = $_SESSION['user_name'];
             cursor: pointer;
         }
 
-        #closeBorrowingModal:hover {
+        .close:hover {
             color: #000;
         }
-        /*Styles for the toaster notification here */
+
+        /* Styles for the toaster notification here */
         #toaster {
             display: none;
             position: fixed;
@@ -587,17 +202,10 @@ $uname = $_SESSION['user_name'];
             max-width: 300px;
             background: linear-gradient(to bottom, #F2F2F2, #D3D3D3);
             color: black;
-            border-radius: 4px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        #toaster p {
-            margin: 0;
-        }
     </style>
-
 </head>
-
 <body>
     <header>
         <!-- Button to toggle the sidebar -->

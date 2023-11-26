@@ -13,18 +13,20 @@ body {
 }
 
 .card {
-    border: 1px solid #14662C;
-    border-radius: 5px;
-    background-color: #fff; /* White background color */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 10px;
+    background: rgba(88, 182, 88, 0.5); /* Glass color with 50% opacity */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
     display: flex;
     justify-content: space-between;
-    background-color: #14662C;
+    background-color: transparent; /* Transparent header background */
     color: #fff;
-    border-radius: 5px 5px 0 0;
+    border-radius: 10px 10px 0 0;
 }
 
 .card-header button {
@@ -36,8 +38,8 @@ body {
 }
 
 .card-header button.active {
-    background-color: #f0f4ff; /* White active button background color */
-    color: #22B14C;
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white active button background */
+    color: #1c5f309e;
 }
 
 .card-body {
@@ -47,19 +49,22 @@ body {
 
 .card-body h2 {
     margin-top: 0;
+    color: #fff;
 }
 
 label {
     display: block;
     margin-top: 10px;
+    color: #1c5f309e;
 }
 
 input {
     width: 100%;
-    padding: 1px;
-    margin-top: 1px;
-    border: 1px solid #14662C; /* Green border color */
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
     border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white input background */
 }
 
 button[type="submit"] {
