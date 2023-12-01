@@ -303,10 +303,9 @@ $uname = $_SESSION['user_name'] ;
                 </p>
             </div>
             <!-- End of Home Content -->
-            <!-- Start of Equipment List -->
+           <!-- Start of Equipment List -->
             <div id="equipmentsModal" class="modal-container">
                 <h2>Check-out Equipment</h2>
-                <!-- List of sports equipment items with images -->
                 <div class="equipment-list">
                     <?php
                     // Check for the "equipment_page" parameter in the URL or set it to 1 by default
@@ -349,16 +348,47 @@ $uname = $_SESSION['user_name'] ;
                     }
                     ?>
                 </div>
-                <?php echo '<div class="pagination">';
-                for ($page = 1; $page <= $totalPages; $page++) {
-                    echo '<a href="?equipment_page=' . $page . '"';
-                    if ($page === $currentPage) {
-                        echo ' class="active"';
+                <div class="pagination">
+                    <ul>
+                    <?php
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $currentPage + 1);
+
+                    // Calculate the starting page for displaying
+                    $startDisplayPage = $currentPage - 1;
+                    if ($startDisplayPage < 1) {
+                        $startDisplayPage = 1;
+                    } else if ($endPage - $startPage < 2) {
+                        $startDisplayPage = max(1, $endPage - 2);
                     }
-                    echo '>' . $page . '</a>';
-                }
-                echo '</div>';
-                ?>
+
+                    // Calculate the ending page for displaying
+                    $endDisplayPage = $startDisplayPage + 2;
+                    if ($endDisplayPage > $totalPages) {
+                        $endDisplayPage = $totalPages;
+                    }
+
+                    // Show the previous button if not on the first page
+                    if ($currentPage > 1) {
+                        echo '<li><a href="?equipment_page=' . ($currentPage - 1) . '">&laquo;</a></li>';
+                    }
+
+                    // Display the pages within the specified range
+                    for ($page = $startDisplayPage; $page <= $endDisplayPage; $page++) {
+                        echo '<li><a';
+                        if ($page == $currentPage) {
+                            echo ' class="active"';
+                        }
+                        echo ' href="?equipment_page=' . $page . '">' . $page . '</a></li>';
+                    }
+
+                    // Show the next button if not on the last page
+                    if ($currentPage < $totalPages) {
+                        echo '<li><a href="?equipment_page=' . ($currentPage + 1) . '">&raquo;</a></li>';
+                    }
+                    ?>
+                    </ul>
+                </div>
             </div>
             <!-- End of Equipment List -->
             <!-- Start of Borrow Modal -->
@@ -390,30 +420,29 @@ $uname = $_SESSION['user_name'] ;
                 </form>
             </div>
             <!-- End of Borrow Modal -->
-            <!-- Start of Borrow Records -->
+           <!-- Start of Borrow Records -->
             <div id="itemsModal" class="modal-container" style="margin-top: -17px;">
-                <!-- Equipment content goes here -->
                 <h2>Record of Borrowed Equipment</h2>
                 <div class="container">
-                    <?php
-                    $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id WHERE users.id='$uid'";
-                    $result = mysqli_query($conn, $sql);
+                <?php
+                $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id WHERE users.id='$uid'";
+                $result = mysqli_query($conn, $sql);
 
-                    if (mysqli_num_rows($result) > 0) {
-                        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                        $itemsPerPage = 1;
-                        $totalItems = count($data);
-                        $totalPages = ceil($totalItems / $itemsPerPage);
-                        $currentPage = isset($_GET['record_page']) ? $_GET['record_page'] : 1;
+                if (mysqli_num_rows($result) > 0) {
+                    $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                    $itemsPerPage = 3;
+                    $totalItems = count($data);
+                    $totalPages = ceil($totalItems / $itemsPerPage);
+                    $currentPage = isset($_GET['record_page']) ? $_GET['record_page'] : 1;
 
-                        // Display data for the current page
-                        $startIndex = ($currentPage - 1) * $itemsPerPage;
-                        $endIndex = min($startIndex + $itemsPerPage, $totalItems);
+                    // Display data for the current page
+                    $startIndex = ($currentPage - 1) * $itemsPerPage;
+                    $endIndex = min($startIndex + $itemsPerPage, $totalItems);
 
-                        for ($i = $startIndex; $i < $endIndex; $i++) {
-                            $row = $data[$i];
-                            ?>
-                            <div class="card profile-card">
+                    for ($i = $startIndex; $i < $endIndex; $i++) {
+                        $row = $data[$i];
+                        ?>
+                        <div class="card profile-card">
                                 <label>Record ID:</label><?php echo $row['id']; ?><br />
                                 <label>Borrower's Name:</label><?php echo $row['user_name']; ?><br />
                                 <label>Equipment Borrowed:</label><?php echo $row['equipment_name']; ?><br />
@@ -433,29 +462,39 @@ $uname = $_SESSION['user_name'] ;
                                 ?>
                             </div>
                             <?php
-                        }
-                        ?>
-                </div>
-                <div class="pagination">
-                    <ul>
-                        <?php
-                        // Pagination links
-                        for ($page = 1; $page <= $totalPages; $page++) {
-                            if ($page == $currentPage) {
-                                echo "<li><span>$page</span></li>";
-                            } else {
-                                echo "<li><a href='?record_page=$page'>$page</a></li>";
                             }
-                        }
-                        ?>
-                    </ul>
+                            ?>
+                    </div>
+                    <div class="pagination">
+                        <ul>
+                            <?php
+                            $startPage = max(1, $currentPage - 1);
+                            $endPage = min($totalPages, $currentPage + 1);
+
+                            if ($currentPage > 1) {
+                                echo "<li><a href='?equipment_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                            }
+
+                            for ($page = $startPage; $page <= $endPage; $page++) {
+                                if ($page == $currentPage) {
+                                    echo "<li><span>$page</span></li>";
+                                } else {
+                                    echo "<li><a href='?equipment_page=$page'>$page</a></li>";
+                                }
+                            }
+
+                            if ($currentPage < $totalPages) {
+                                echo "<li><a href='?equipment_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                    <?php
+                    } else {
+                        echo "No records found";
+                    }
+                    ?>
                 </div>
-                <?php
-                } else {
-                    echo "No records found";
-                }
-                ?>
-            </div>
             </div>
             <!-- End of Borrow Records -->
             <!-- Start of Return Modal -->
@@ -523,55 +562,83 @@ $uname = $_SESSION['user_name'] ;
                 </form>
             </div>
             <!-- End of Edit Info Modal -->
-            <!-- Start of Activity Log Content -->
+           <!-- Start of Activity Log Content -->
             <div id="logModal" class="modal-container" style="margin-top: -17px; min-height: 73vh;">
-                <!-- Log content goes here -->
                 <div class="container">
                     <div class="card profile-card">
-                    <h2>Activity Log</h2>
-                    <?php
-                    $user_id = $row['user_id'];
-                    $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
-                    $result = mysqli_query($conn, $sql);
+                        <h2>Activity Log</h2>
+                        <?php
+                        $user_id = $row['user_id'];
+                        $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
+                        $result = mysqli_query($conn, $sql);
 
-                    if (mysqli_num_rows($result) > 0) {
-                        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                        $itemsPerPage = 3; // Display 5 data items per page
-                        $totalItems = count($data);
-                        $totalPages = ceil($totalItems / $itemsPerPage);
-                        $currentPage = isset($_GET['log_page']) ? $_GET['log_page'] : 1;
+                        if (mysqli_num_rows($result) > 0) {
+                            $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                            $itemsPerPage = 3; // Display 3 data items per page
+                            $totalItems = count($data);
+                            $totalPages = ceil($totalItems / $itemsPerPage);
+                            $currentPage = isset($_GET['log_page']) ? $_GET['log_page'] : 1;
 
-                        // Display data for the current page
-                        $startIndex = ($currentPage - 1) * $itemsPerPage;
-                        $endIndex = min($startIndex + $itemsPerPage, $totalItems);
+                            // Display data for the current page
+                            $startIndex = ($currentPage - 1) * $itemsPerPage;
+                            $endIndex = min($startIndex + $itemsPerPage, $totalItems);
 
-                        for ($i = $startIndex; $i < $endIndex; $i++) {
-                            $row = $data[$i];
-                            echo '<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile'.$uid.'.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>';
-                            echo $row['activity'];
-                            echo '<br />';
-                            echo $row['timestamp'];
-                            echo '</center></div><hr />';
-                        }
-                    ?>
+                            for ($i = $startIndex; $i < $endIndex; $i++) {
+                                $row = $data[$i];
+                                echo '<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile'.$uid.'.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>';
+                                echo $row['activity'];
+                                echo '<br />';
+                                echo $row['timestamp'];
+                                echo '</center></div><hr />';
+                            }
+                            ?>
                     </div>
                 </div>
                 <div class="pagination">
+                    <ul>
                     <?php
-                    // Pagination links
-                    for ($page = 1; $page <= $totalPages; $page++) {
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $currentPage + 1);
+
+                    // Calculate the starting page for displaying
+                    $startDisplayPage = $currentPage - 1;
+                    if ($startDisplayPage < 1) {
+                        $startDisplayPage = 1;
+                    } else if ($endPage - $startPage < 2) {
+                        $startDisplayPage = max(1, $endPage - 2);
+                    }
+
+                    // Calculate the ending page for displaying
+                    $endDisplayPage = $startDisplayPage + 2;
+                    if ($endDisplayPage > $totalPages) {
+                        $endDisplayPage = $totalPages;
+                    }
+
+                    // Show the previous button if not on the first page
+                    if ($currentPage > 1) {
+                        echo '<li><a href="?log_page=' . ($currentPage - 1) . '">&laquo;</a></li>';
+                    }
+
+                    // Display the pages within the specified range
+                    for ($page = $startDisplayPage; $page <= $endDisplayPage; $page++) {
+                        echo '<li><a';
                         if ($page == $currentPage) {
-                            echo "<li><span>$page</span></li>";
-                        } else {
-                            echo "<li><a href='?log_page=$page'>$page</a></li>";
+                            echo ' class="active"';
                         }
+                        echo ' href="?log_page=' . $page . '">' . $page . '</a></li>';
+                    }
+
+                    // Show the next button if not on the last page
+                    if ($currentPage < $totalPages) {
+                        echo '<li><a href="?log_page=' . ($currentPage + 1) . '">&raquo;</a></li>';
                     }
                     ?>
+                    </ul>
                 </div>
                 <?php
-                    } else {
-                        echo "No logs found";
-                    }
+                } else {
+                    echo "No logs found";
+                }
                 ?>
             </div>
             <!-- End of Activity Log Content -->
