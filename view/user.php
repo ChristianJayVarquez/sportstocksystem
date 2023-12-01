@@ -303,10 +303,9 @@ $uname = $_SESSION['user_name'] ;
                 </p>
             </div>
             <!-- End of Home Content -->
-            <!-- Start of Equipment List -->
+           <!-- Start of Equipment List -->
             <div id="equipmentsModal" class="modal-container">
                 <h2>Check-out Equipment</h2>
-                <!-- List of sports equipment items with images -->
                 <div class="equipment-list">
                     <?php
                     // Check for the "equipment_page" parameter in the URL or set it to 1 by default
@@ -349,16 +348,47 @@ $uname = $_SESSION['user_name'] ;
                     }
                     ?>
                 </div>
-                <?php echo '<div class="pagination">';
-                for ($page = 1; $page <= $totalPages; $page++) {
-                    echo '<a href="?equipment_page=' . $page . '"';
-                    if ($page === $currentPage) {
-                        echo ' class="active"';
+                <div class="pagination">
+                    <ul>
+                    <?php
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $currentPage + 1);
+
+                    // Calculate the starting page for displaying
+                    $startDisplayPage = $currentPage - 1;
+                    if ($startDisplayPage < 1) {
+                        $startDisplayPage = 1;
+                    } else if ($endPage - $startPage < 2) {
+                        $startDisplayPage = max(1, $endPage - 2);
                     }
-                    echo '>' . $page . '</a>';
-                }
-                echo '</div>';
-                ?>
+
+                    // Calculate the ending page for displaying
+                    $endDisplayPage = $startDisplayPage + 2;
+                    if ($endDisplayPage > $totalPages) {
+                        $endDisplayPage = $totalPages;
+                    }
+
+                    // Show the previous button if not on the first page
+                    if ($currentPage > 1) {
+                        echo '<li><a href="?equipment_page=' . ($currentPage - 1) . '">&laquo;</a></li>';
+                    }
+
+                    // Display the pages within the specified range
+                    for ($page = $startDisplayPage; $page <= $endDisplayPage; $page++) {
+                        echo '<li><a';
+                        if ($page == $currentPage) {
+                            echo ' class="active"';
+                        }
+                        echo ' href="?equipment_page=' . $page . '">' . $page . '</a></li>';
+                    }
+
+                    // Show the next button if not on the last page
+                    if ($currentPage < $totalPages) {
+                        echo '<li><a href="?equipment_page=' . ($currentPage + 1) . '">&raquo;</a></li>';
+                    }
+                    ?>
+                    </ul>
+                </div>
             </div>
             <!-- End of Equipment List -->
             <!-- Start of Borrow Modal -->
