@@ -420,30 +420,29 @@ $uname = $_SESSION['user_name'] ;
                 </form>
             </div>
             <!-- End of Borrow Modal -->
-            <!-- Start of Borrow Records -->
+           <!-- Start of Borrow Records -->
             <div id="itemsModal" class="modal-container" style="margin-top: -17px;">
-                <!-- Equipment content goes here -->
                 <h2>Record of Borrowed Equipment</h2>
                 <div class="container">
-                    <?php
-                    $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id WHERE users.id='$uid'";
-                    $result = mysqli_query($conn, $sql);
+                <?php
+                $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id WHERE users.id='$uid'";
+                $result = mysqli_query($conn, $sql);
 
-                    if (mysqli_num_rows($result) > 0) {
-                        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                        $itemsPerPage = 1;
-                        $totalItems = count($data);
-                        $totalPages = ceil($totalItems / $itemsPerPage);
-                        $currentPage = isset($_GET['record_page']) ? $_GET['record_page'] : 1;
+                if (mysqli_num_rows($result) > 0) {
+                    $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                    $itemsPerPage = 3;
+                    $totalItems = count($data);
+                    $totalPages = ceil($totalItems / $itemsPerPage);
+                    $currentPage = isset($_GET['record_page']) ? $_GET['record_page'] : 1;
 
-                        // Display data for the current page
-                        $startIndex = ($currentPage - 1) * $itemsPerPage;
-                        $endIndex = min($startIndex + $itemsPerPage, $totalItems);
+                    // Display data for the current page
+                    $startIndex = ($currentPage - 1) * $itemsPerPage;
+                    $endIndex = min($startIndex + $itemsPerPage, $totalItems);
 
-                        for ($i = $startIndex; $i < $endIndex; $i++) {
-                            $row = $data[$i];
-                            ?>
-                            <div class="card profile-card">
+                    for ($i = $startIndex; $i < $endIndex; $i++) {
+                        $row = $data[$i];
+                        ?>
+                        <div class="card profile-card">
                                 <label>Record ID:</label><?php echo $row['id']; ?><br />
                                 <label>Borrower's Name:</label><?php echo $row['user_name']; ?><br />
                                 <label>Equipment Borrowed:</label><?php echo $row['equipment_name']; ?><br />
@@ -463,29 +462,39 @@ $uname = $_SESSION['user_name'] ;
                                 ?>
                             </div>
                             <?php
-                        }
-                        ?>
-                </div>
-                <div class="pagination">
-                    <ul>
-                        <?php
-                        // Pagination links
-                        for ($page = 1; $page <= $totalPages; $page++) {
-                            if ($page == $currentPage) {
-                                echo "<li><span>$page</span></li>";
-                            } else {
-                                echo "<li><a href='?record_page=$page'>$page</a></li>";
                             }
-                        }
-                        ?>
-                    </ul>
+                            ?>
+                    </div>
+                    <div class="pagination">
+                        <ul>
+                            <?php
+                            $startPage = max(1, $currentPage - 1);
+                            $endPage = min($totalPages, $currentPage + 1);
+
+                            if ($currentPage > 1) {
+                                echo "<li><a href='?equipment_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                            }
+
+                            for ($page = $startPage; $page <= $endPage; $page++) {
+                                if ($page == $currentPage) {
+                                    echo "<li><span>$page</span></li>";
+                                } else {
+                                    echo "<li><a href='?equipment_page=$page'>$page</a></li>";
+                                }
+                            }
+
+                            if ($currentPage < $totalPages) {
+                                echo "<li><a href='?equipment_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                    <?php
+                    } else {
+                        echo "No records found";
+                    }
+                    ?>
                 </div>
-                <?php
-                } else {
-                    echo "No records found";
-                }
-                ?>
-            </div>
             </div>
             <!-- End of Borrow Records -->
             <!-- Start of Return Modal -->
