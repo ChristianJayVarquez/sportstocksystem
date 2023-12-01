@@ -197,6 +197,11 @@ $uname = $_SESSION['user_name'] ;
            <!-- Start of Equipment List -->
             <div id="equipmentsModal" class="modal-container">
                 <h2>Check-out Equipment</h2>
+                <!-- Search bar and button -->
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search equipment...">
+                    <button onclick="searchEquipment()">Search</button>
+                </div>
                 <div class="equipment-list">
                     <?php
                     // Check for the "equipment_page" parameter in the URL or set it to 1 by default
@@ -314,6 +319,11 @@ $uname = $_SESSION['user_name'] ;
            <!-- Start of Borrow Records -->
             <div id="itemsModal" class="modal-container" style="margin-top: -17px;">
                 <h2>Record of Borrowed Equipment</h2>
+                <!-- Search bar and button -->
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <button onclick="searchItems()">Search</button>
+                </div>
                 <div class="container">
                 <?php
                 $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id WHERE users.id='$uid'";
@@ -456,8 +466,13 @@ $uname = $_SESSION['user_name'] ;
            <!-- Start of Activity Log Content -->
             <div id="logModal" class="modal-container" style="margin-top: -17px; min-height: 73vh;">
                 <div class="container">
+                    <h2>Activity Log</h2>
+                    <!-- Search bar and button -->
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Search...">
+                        <button id="searchButton">Search</button>
+                    </div>
                     <div class="card profile-card">
-                        <h2>Activity Log</h2>
                         <?php
                         $user_id = $row['user_id'];
                         $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
@@ -869,5 +884,67 @@ $uname = $_SESSION['user_name'] ;
             });
         });
     </script>
+    <script>
+        // JavaScript for search functionality
+        function searchEquipment() {
+          let input, filter, ul, li, i, txtValue;
+          input = document.getElementById('searchInput');
+          filter = input.value.toUpperCase();
+          ul = document.getElementById('equipmentList');
+          li = ul.getElementsByTagName('li');
+    
+          for (i = 0; i < li.length; i++) {
+            txtValue = li[i].textContent || li[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              li[i].style.display = '';
+            } else {
+              li[i].style.display = 'none';
+            }
+          }
+        }
+  </script>
+  <script>
+      // JavaScript logic
+      function searchItems() {
+        var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+        var items = document.querySelectorAll('.item'); // Assuming items have a class 'item'
+        items.forEach(function(item) {
+          var itemName = item.textContent.toLowerCase();
+          if (itemName.includes(searchTerm)) {
+            item.style.display = 'block'; // Show the item if it matches the search term
+          } else {
+            item.style.display = 'none'; // Hide the item if it doesn't match
+          }
+        });
+      }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const searchResults = document.getElementById('searchResults');
+
+        // Function to perform search
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            // Logic for search (Replace this with your own search logic)
+            // For example, displaying the search term:
+            searchResults.textContent = You searched for: "${searchTerm}";
+        }
+
+        // Event listener for button click to trigger search
+        searchButton.addEventListener('click', function () {
+            performSearch();
+        });
+
+        // Event listener for 'Enter' key press to trigger search
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    });
+  </script>
 </body>
 </html>
