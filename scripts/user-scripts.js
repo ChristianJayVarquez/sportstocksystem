@@ -4,16 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeSidebarButton = document.getElementById("closeSidebarButton");
     const sidebar = document.querySelector(".sidebar");
 
-    toggleSidebarButton.addEventListener("click", function() {
+    toggleSidebarButton.addEventListener("click", function () {
         sidebar.style.left = "0";
         closeSidebarButton.style.display = "block";
     });
 
-    closeSidebarButton.addEventListener("click", function() {
+    closeSidebarButton.addEventListener("click", function () {
         sidebar.style.left = "-250px";
         closeSidebarButton.style.display = "none";
     });
-    
+
     const homeButton = document.getElementById("homeButton");
     const equipmentsButton = document.getElementById("equipmentsButton");
     const itemsButton = document.getElementById("itemsButton");
@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const itemsModal = document.getElementById("itemsModal");
     const profileModal = document.getElementById("profileModal");
     const logModal = document.getElementById("logModal");
+    const logoutModal = document.getElementById("logoutModal");
 
     // Function to hide the sidebar
     function hideSidebar() {
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         itemsModal.style.display = "none";
         profileModal.style.display = "none";
         logModal.style.display = "none";
+        logoutModal.style.display = "none";
     }
 
     // Function to show a specific modal
@@ -81,12 +83,26 @@ document.addEventListener("DOMContentLoaded", function () {
         showSpecificModal(logModal);
     });
 
-    logoutButton.addEventListener("click", function () {
-        const confirmLogout = window.confirm("Are you sure you want to logout?");
-        if (confirmLogout) {
-            window.location.href = "../process/logout.php";
-        } else {
-            showSpecificModal(homeModal);
-        }
+    // Function to show the logout modal
+    function showLogoutModal() {
+        showSpecificModal(logoutModal);
+    }
+
+    // Function to handle logout confirmation
+    function confirmLogout() {
+        window.location.href = "../process/logout.php";
+    }
+
+    // Event listener for logout button
+    logoutButton.addEventListener("click", showLogoutModal);
+
+    // Event listener for logout confirm button in the logout modal
+    const logoutConfirmButton = document.getElementById("logout-confirm-button");
+    logoutConfirmButton.addEventListener("click", confirmLogout);
+
+    // Event listener for logout cancel button in the logout modal
+    const logoutCancelButton = document.getElementById("logout-cancel-button");
+    logoutCancelButton.addEventListener("click", function () {
+        showSpecificModal(homeModal); // Show the home modal on cancel
     });
 });
