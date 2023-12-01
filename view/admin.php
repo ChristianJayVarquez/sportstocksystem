@@ -18,9 +18,7 @@ $uname = $_SESSION['user_name'];
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../styles/admin-styles.css">
-
     <style>
-
         /* Common styles */
         .card-container,
         .card,
@@ -225,41 +223,6 @@ $uname = $_SESSION['user_name'];
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll('.form-group input, .form-group select').forEach((input) => {
-                const label = input.previousElementSibling;
-
-                input.addEventListener('input', () => {
-                    handleLabelPosition(input, label);
-                });
-
-                handleLabelPosition(input, label); // Initial check
-
-                input.addEventListener('focus', () => {
-                    label.style.color = '#555'; // Adjusted color when focused
-                });
-
-                input.addEventListener('blur', () => {
-                    if (!input.value) {
-                        label.style.color = '#aaa'; // Adjusted color when blurred and no input value
-                    }
-                });
-            });
-        });
-
-        function handleLabelPosition(input, label) {
-            if (input.value.trim() !== '') {
-                label.style.top = '5px'; // Adjusted top position when input has value
-                label.style.left = '5px'; // Adjusted left position when input has value
-                label.style.fontSize = '10px'; // Adjusted font size when input has value
-            } else {
-                label.style.top = '10px'; // Adjusted top position when input is empty
-                label.style.left = '10px'; // Adjusted left position when input is empty
-                label.style.fontSize = '12px'; // Adjusted font size when input is empty
-            }
-        }
-    </script>
 <body>
     <header>
         <!-- Button to toggle the sidebar -->
@@ -451,7 +414,7 @@ $uname = $_SESSION['user_name'];
                 <div class="form-group">
                     <label for='file'>Upload Photo:</label>
                     <input type="file" name="file">
-                </div>
+                </div><br/>
                 <button type="reset" class="reset-user-button btn-danger " style="position: absolute; bottom: 8px; padding: 5px; right: 70px;">
                     <i class="fas fa-undo"></i> Reset
                 <button class="btn btn-success" name="add" style="position: absolute; bottom: 10px; right: 10px;">Add</button>
@@ -674,7 +637,7 @@ $uname = $_SESSION['user_name'];
                 <div class="form-group">
                     <label for='file'>Upload Photo:</label>
                     <input type="file" name="file">
-                </div>
+                </div><br/>
                 <button type="reset" class="reset-user-button btn-danger " style="position: absolute; bottom: 8px; padding: 5px; right: 70px;">
                     <i class="fas fa-undo"></i> Reset
                 <button class="btn btn-success" name="add" style="position: absolute; bottom: 10px; right: 10px;">Add</button>
@@ -1593,6 +1556,41 @@ $uname = $_SESSION['user_name'];
         // Call the function on page load and resize
         window.addEventListener('load', setSidebarMinHeight);
         window.addEventListener('resize', setSidebarMinHeight);
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.form-group input, .form-group select').forEach((input) => {
+                const label = input.previousElementSibling;
+
+                input.addEventListener('input', () => {
+                    handleLabelPosition(input, label);
+                });
+
+                handleLabelPosition(input, label); // Initial check
+
+                input.addEventListener('focus', () => {
+                    label.style.color = '#555'; // Adjusted color when focused
+                });
+
+                input.addEventListener('blur', () => {
+                    if (!input.value) {
+                        label.style.color = '#aaa'; // Adjusted color when blurred and no input value
+                    }
+                });
+            });
+        });
+
+        function handleLabelPosition(input, label) {
+            if (input.value.trim() !== '') {
+                label.style.top = '5px'; // Adjusted top position when input has value
+                label.style.left = '5px'; // Adjusted left position when input has value
+                label.style.fontSize = '10px'; // Adjusted font size when input has value
+            } else {
+                label.style.top = '10px'; // Adjusted top position when input is empty
+                label.style.left = '10px'; // Adjusted left position when input is empty
+                label.style.fontSize = '12px'; // Adjusted font size when input is empty
+            }
+        }
     </script>
 </body>
 </html>
