@@ -29,28 +29,31 @@ $uname = $_SESSION['user_name'] ;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             border-radius: 5px;
             text-align: justify;
-            padding-top: 10px;
-            padding-left: 8%;
-            padding-right: 5%;
-            padding-bottom: 10px;
+            padding: 10px 5% 10px 8%;
         }
 
-        /*Styles for the toaster notification here */
-        #toaster {
-            display: none;
+        #toaster, #borrowModal, #returnModal, #editInfoModal {
+            background-color: #fff;
+            border-radius: 10px;
+            max-width: 400px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            padding: 20px;
+            z-index: 2;
+        }
+
+        #toaster {
             top: 16px;
             right: 16px;
             padding: 16px;
-            max-width: 300px;
             background: linear-gradient(to bottom, #F2F2F2, #D3D3D3);
             color: black;
             border-radius: 4px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        #toaster p {
-            margin: 0;
         }
 
         .pagination {
@@ -58,21 +61,20 @@ $uname = $_SESSION['user_name'] ;
             justify-content: center;
             list-style: none;
             padding: 0;
+            margin: 20px 0;
         }
 
         .pagination ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
         .pagination li {
-        display: inline-block;
-        margin-right: 5px; /* Adjust as needed for spacing between li elements */
-        }
-
-        .pagination li {
-            margin: 5px;
+            margin: 0 5px;
             padding: 5px 10px;
             background-color: #22B14C;
             color: #fff;
@@ -86,55 +88,35 @@ $uname = $_SESSION['user_name'] ;
         }
 
         .pagination a {
-            margin: 5px;
-            padding: 5px 10px;
-            background-color: #22B14C;
+            text-decoration: none;
             color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        .pagination a:hover {
+        .pagination span {
+            color: #fff;
+        }
+
+        .pagination .current-page {
             background-color: #14662C;
         }
 
-        #borrowModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #borrowModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #borrowForm {
+        #borrowForm, #returnForm, #editInfoForm {
             display: flex;
             flex-direction: column;
         }
 
-        #borrowForm label {
+        #borrowForm label, #editInfoForm label {
             margin-top: 10px;
         }
 
-        #borrowForm input {
+        #borrowForm input, #editInfoForm input {
             padding: 5px;
             margin: 5px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
 
-        #borrowForm input[type="submit"] {
+        #borrowForm input[type="submit"], #editInfoForm input[type="submit"] {
             background-color: #4CAF50; /* Green color */
             color: #fff;
             border: none;
@@ -143,47 +125,16 @@ $uname = $_SESSION['user_name'] ;
             padding: 10px;
         }
 
-        #borrowForm input[type="submit"]:hover {
+        #borrowForm input[type="submit"]:hover, #editInfoForm input[type="submit"]:hover {
             background-color: #45a049; /* Slightly darker green */
         }
 
-        #borrowModal .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #borrowModal .close:hover {
-            color: #000;
-        }
-        
-        #returnModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #returnModal h2 {
+        #borrowModal h2, #returnModal h2, #editInfoModal h2 {
             font-size: 20px;
             margin: 0;
         }
 
-        #returnForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #returnModal .close {
+        #borrowModal .close, #returnModal .close, #editInfoModal .close {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -191,67 +142,7 @@ $uname = $_SESSION['user_name'] ;
             cursor: pointer;
         }
 
-        #returnModal .close:hover {
-            color: #000;
-        }
-
-        #editInfoModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        #editInfoModal h2 {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        #editInfoForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #editInfoForm label {
-            margin-top: 10px;
-        }
-
-        #editInfoForm input {
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #editInfoForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        #editInfoForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
-        }
-
-        #editInfoModal .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #editInfoModal .close:hover {
+        #borrowModal .close:hover, #returnModal .close:hover, #editInfoModal .close:hover {
             color: #000;
         }
     </style>
