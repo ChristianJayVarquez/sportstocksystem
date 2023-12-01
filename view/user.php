@@ -553,55 +553,83 @@ $uname = $_SESSION['user_name'] ;
                 </form>
             </div>
             <!-- End of Edit Info Modal -->
-            <!-- Start of Activity Log Content -->
+           <!-- Start of Activity Log Content -->
             <div id="logModal" class="modal-container" style="margin-top: -17px; min-height: 73vh;">
-                <!-- Log content goes here -->
                 <div class="container">
                     <div class="card profile-card">
-                    <h2>Activity Log</h2>
-                    <?php
-                    $user_id = $row['user_id'];
-                    $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
-                    $result = mysqli_query($conn, $sql);
+                        <h2>Activity Log</h2>
+                        <?php
+                        $user_id = $row['user_id'];
+                        $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
+                        $result = mysqli_query($conn, $sql);
 
-                    if (mysqli_num_rows($result) > 0) {
-                        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                        $itemsPerPage = 3; // Display 5 data items per page
-                        $totalItems = count($data);
-                        $totalPages = ceil($totalItems / $itemsPerPage);
-                        $currentPage = isset($_GET['log_page']) ? $_GET['log_page'] : 1;
+                        if (mysqli_num_rows($result) > 0) {
+                            $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                            $itemsPerPage = 3; // Display 3 data items per page
+                            $totalItems = count($data);
+                            $totalPages = ceil($totalItems / $itemsPerPage);
+                            $currentPage = isset($_GET['log_page']) ? $_GET['log_page'] : 1;
 
-                        // Display data for the current page
-                        $startIndex = ($currentPage - 1) * $itemsPerPage;
-                        $endIndex = min($startIndex + $itemsPerPage, $totalItems);
+                            // Display data for the current page
+                            $startIndex = ($currentPage - 1) * $itemsPerPage;
+                            $endIndex = min($startIndex + $itemsPerPage, $totalItems);
 
-                        for ($i = $startIndex; $i < $endIndex; $i++) {
-                            $row = $data[$i];
-                            echo '<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile'.$uid.'.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>';
-                            echo $row['activity'];
-                            echo '<br />';
-                            echo $row['timestamp'];
-                            echo '</center></div><hr />';
-                        }
-                    ?>
+                            for ($i = $startIndex; $i < $endIndex; $i++) {
+                                $row = $data[$i];
+                                echo '<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile'.$uid.'.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>';
+                                echo $row['activity'];
+                                echo '<br />';
+                                echo $row['timestamp'];
+                                echo '</center></div><hr />';
+                            }
+                            ?>
                     </div>
                 </div>
                 <div class="pagination">
+                    <ul>
                     <?php
-                    // Pagination links
-                    for ($page = 1; $page <= $totalPages; $page++) {
+                    $startPage = max(1, $currentPage - 1);
+                    $endPage = min($totalPages, $currentPage + 1);
+
+                    // Calculate the starting page for displaying
+                    $startDisplayPage = $currentPage - 1;
+                    if ($startDisplayPage < 1) {
+                        $startDisplayPage = 1;
+                    } else if ($endPage - $startPage < 2) {
+                        $startDisplayPage = max(1, $endPage - 2);
+                    }
+
+                    // Calculate the ending page for displaying
+                    $endDisplayPage = $startDisplayPage + 2;
+                    if ($endDisplayPage > $totalPages) {
+                        $endDisplayPage = $totalPages;
+                    }
+
+                    // Show the previous button if not on the first page
+                    if ($currentPage > 1) {
+                        echo '<li><a href="?log_page=' . ($currentPage - 1) . '">&laquo;</a></li>';
+                    }
+
+                    // Display the pages within the specified range
+                    for ($page = $startDisplayPage; $page <= $endDisplayPage; $page++) {
+                        echo '<li><a';
                         if ($page == $currentPage) {
-                            echo "<li><span>$page</span></li>";
-                        } else {
-                            echo "<li><a href='?log_page=$page'>$page</a></li>";
+                            echo ' class="active"';
                         }
+                        echo ' href="?log_page=' . $page . '">' . $page . '</a></li>';
+                    }
+
+                    // Show the next button if not on the last page
+                    if ($currentPage < $totalPages) {
+                        echo '<li><a href="?log_page=' . ($currentPage + 1) . '">&raquo;</a></li>';
                     }
                     ?>
+                    </ul>
                 </div>
                 <?php
-                    } else {
-                        echo "No logs found";
-                    }
+                } else {
+                    echo "No logs found";
+                }
                 ?>
             </div>
             <!-- End of Activity Log Content -->
