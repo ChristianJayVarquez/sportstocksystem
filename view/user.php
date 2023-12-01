@@ -576,6 +576,24 @@ $uname = $_SESSION['user_name'] ;
             </div>
             <!-- End of Activity Log Content -->
         </div>
+        <!-- Start of Logout Content -->
+        <div class="modal-container" id="logoutModal">
+            <div class="modal-content">
+                <!-- Logout Modal Content -->
+                <div class="card-container" style="display: flex; justify-content: center; align-items: center; height: auto; border-radius: 5px;">
+                    <div class="card profile-card" style="max-width: 500px; width: 100%; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); text-align: justify; padding: 10px 8% 10px 5%; display: flex; flex-direction: column; border-radius: 5px;">
+                        <center><br />
+                            <h4 style="position: relative;">Are you sure you want to log out?</h4><br /><br /><br />
+                            <div class="button-container" style="display: flex; justify-content: flex-end;">
+                                <button id="logout-confirm-button" class="modal-button action-button" style="margin-right: 5px; padding: 10px 20px; border-radius: 15px; border: none; background-color: green; color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">Yes</button>
+                                <button id="logout-cancel-button" class="modal-button action-button" style="padding: 10px 20px; border-radius: 15px; border: none; background-color: green; color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">No</button>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Logout Content -->
         <!-- Toaster Notification -->
         <div id="toaster">
             <div id="toaster-message"></div>
