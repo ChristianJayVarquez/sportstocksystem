@@ -398,6 +398,8 @@ $uname = $_SESSION['user_name'];
                     <label for='file'>Upload Photo:</label>
                     <input type="file" name="file">
                 </div>
+                <button type="reset" class="reset-user-button btn-danger " style="position: absolute; bottom: 8px; padding: 5px; right: 70px;">
+                    <i class="fas fa-undo"></i> Reset
                 <button class="btn btn-success" name="add" style="position: absolute; bottom: 10px; right: 10px;">Add</button>
             </form>
         </div>
@@ -619,6 +621,8 @@ $uname = $_SESSION['user_name'];
                     <label for='file'>Upload Photo:</label>
                     <input type="file" name="file">
                 </div>
+                <button type="reset" class="reset-user-button btn-danger " style="position: absolute; bottom: 8px; padding: 5px; right: 70px;">
+                    <i class="fas fa-undo"></i> Reset
                 <button class="btn btn-success" name="add" style="position: absolute; bottom: 10px; right: 10px;">Add</button>
             </form>
         </div>
