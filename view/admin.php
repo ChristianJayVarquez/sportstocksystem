@@ -18,7 +18,8 @@ $uname = $_SESSION['user_name'];
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../styles/admin-styles.css">
-    <style>
+   <style>
+
         /* Common styles */
         .card-container,
         .card,
@@ -139,12 +140,30 @@ $uname = $_SESSION['user_name'];
         }
 
         .form-group {
-            flex: 0 0 48%;
-            margin: 1%;
+            position: relative;
         }
 
         .form-group label {
-            margin-bottom: 5px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: black;
+            pointer-events: none; /* Ensure the label doesn't interfere with input events */
+            transition: top 0.3s, left 0.3s, font-size 0.3s, color 0.3s;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 15px; /* Add padding to the input to make space for the label */
+            border: 1px solid #d2d2d2; /* Adjust border properties */
+        }
+
+        .form-group label.active {
+            top: 5px; /* Adjusted top position when active */
+            left: 5px; /* Adjusted left position when active */
+            font-size: 10px; /* Adjusted font size when active */
+            color: black; /* Adjusted label color when active */
         }
 
         .form-group input,
@@ -153,7 +172,7 @@ $uname = $_SESSION['user_name'];
             width: calc(100% - 10px); /* Adjusted width to make room for labels */
             padding: 10px;
             margin: 5px 0;
-            border: none;
+            border-color: #d2d2d2;
             border-radius: 5px;
             background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white input background */
         }
@@ -205,6 +224,7 @@ $uname = $_SESSION['user_name'];
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
+    
 </head>
 <body>
     <header>
