@@ -7,7 +7,6 @@ if($_SESSION["id"] === null && $_SESSION["user_name"] === null){
   }
 $uid = $_SESSION['id'];
 $uname = $_SESSION['user_name'] ;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
