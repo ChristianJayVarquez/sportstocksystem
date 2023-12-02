@@ -6,7 +6,8 @@ if($_SESSION["id"] === null && $_SESSION["user_name"] === null){
     exit;
   }
 $uid = $_SESSION['id'];
-$uname = $_SESSION['user_name'] ;
+$uname = $_SESSION['user_name'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -575,7 +576,7 @@ $uname = $_SESSION['user_name'] ;
                 <div class="card-container" style="display: flex; justify-content: center; align-items: center; height: auto; border-radius: 5px;">
                     <div class="card profile-card" style="max-width: 500px; width: 100%; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); text-align: justify; padding: 10px 8% 10px 5%; display: flex; flex-direction: column; border-radius: 5px;">
                         <center><br />
-                            <h4 style="position: relative;">Are you sure you want to log out?</h4><br /><br /><br />
+                            <h2 style="position: relative;">Are you sure you want to log out?</h2><br /><br /><br />
                             <div class="button-container" style="display: flex; justify-content: flex-end;">
                                 <button id="logout-confirm-button" class="modal-button action-button" style="margin-right: 5px; padding: 10px 20px; border-radius: 15px; border: none; background-color: green; color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">Yes</button>
                                 <button id="logout-cancel-button" class="modal-button action-button" style="padding: 10px 20px; border-radius: 15px; border: none; background-color: green; color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">No</button>
@@ -592,7 +593,7 @@ $uname = $_SESSION['user_name'] ;
         </div>
     </main>
     <footer>
-        <p>&copy; 2023 SportStock</p>
+        <p>&copy; 2023 SportStock System: ADS | Made by: Group2 @ AY: 2023-2024</p>
     </footer>
     <script src="../scripts/user-scripts.js"></script>
     <script src="../scripts/user-sidebar-scripts.js"></script>
