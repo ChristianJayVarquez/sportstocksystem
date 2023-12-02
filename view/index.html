@@ -12,58 +12,108 @@
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
-        }
-
-        #toaster {
-            display: none;
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            padding: 16px;
-            max-width: 300px;
-            background: linear-gradient(to bottom, #F2F2F2, #D3D3D3);
-            color: black;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        #toaster p {
+            font-family: 'Times New Roman', sans-serif;
             margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        .form-group {
-            position: relative;
-            margin-bottom: 1rem;
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
         }
 
-        .form-group label {
-            position: absolute;
-            pointer-events: none;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: all 0.2s ease-out;
+        .card {
+            border: none;
+            border-radius: 10px;
+            background: rgba(88, 182, 88, 0.5); /* Glass color with 50% opacity */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            background-color: transparent; /* Transparent header background */
             color: #fff;
+            border-radius: 10px 10px 0 0;
+            padding: 10px;
         }
 
-        .form-group input:focus + label,
-        .form-group input:not(:placeholder-shown) + label {
-            top: 0;
-            font-size: 12px;
-            color: #aaa;
+        .card-header button {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
         }
 
-        .password-toggle {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
+        .card-header button.active {
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white active button background */
+            color: #1c5f309e;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #1c5f309e;
+        }
+
+        input,
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white input background */
+        }
+
+        button[type="submit"] {
+            background-color: #14662C; /* Green submit button background color */
+            color: #fff;
+            margin-top: 20px;
             cursor: pointer;
         }
 
-        .password-toggle i {
-            color: #fff;
-            cursor: pointer;
+        /* Media query for responsiveness */
+        @media screen and (max-width: 576px) {
+            body {
+                background-image: none;
+                background-color: #f0f4ff;
+            }
+            .container {
+                padding: 15px;
+            }
+            .card {
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .card-header {
+                border-radius: 5px 5px 0 0;
+                padding: 10px;
+            }
+            .card-body {
+                padding: 15px;
+            }
+            label {
+                font-size: 14px;
+                top: -10px;
+                color: #fff;
+            }
+            input,
+            button[type="submit"] {
+                font-size: 14px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
