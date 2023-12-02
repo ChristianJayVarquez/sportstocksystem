@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <title>Login & Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../styles/index-styles.css">
     <style>
         body {
             background-image: url('../pictures/Sport.jpg');
@@ -87,8 +87,11 @@
         /* Media query for responsiveness */
         @media screen and (max-width: 576px) {
             body {
-                background-image: none;
-                background-color: #f0f4ff;
+                background-image: url('../pictures/Sport.jpg');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-attachment: fixed;
             }
             .container {
                 padding: 15px;
@@ -114,6 +117,45 @@
                 font-size: 14px;
                 padding: 8px;
             }
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            position: absolute;
+            pointer-events: none;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.2s ease-out;
+            color: #fff;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: 0;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .password-toggle i {
+            color: #fff;
+            cursor: pointer;
+        }
+
+        p, h2 {
+            color: #fff;
         }
     </style>
 </head>
@@ -177,6 +219,176 @@
         <div id="toaster-message"></div>
     </div>
     <script src="../scripts/indexscript.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginButton = document.getElementById("loginButton");
+            const registerButton = document.getElementById("registerButton");
+            const loginModal = document.getElementById("loginModal");
+            const registerModal = document.getElementById("registerModal");
+            const loginForm = document.getElementById("loginForm");
+
+            const setActiveTab = (tabName, activeButton, inactiveButton) => {
+                activeButton.classList.add("active");
+                inactiveButton.classList.remove("active");
+
+                loginModal.style.display = tabName === "login" ? "block" : "none";
+                registerModal.style.display = tabName === "register" ? "block" : "none";
+            };
+
+            const setDefaultTab = () => {
+                const activeTab = localStorage.getItem("activeTab") || "login";
+                setActiveTab(activeTab, activeTab === "login" ? loginButton : registerButton, activeTab === "login" ? registerButton : loginButton);
+            };
+
+            setDefaultTab();
+
+            if (!localStorage.getItem("activeTab")) {
+                localStorage.setItem("activeTab", "login");
+                setActiveTab("login", loginButton, registerButton);
+            }
+
+            loginButton.addEventListener("click", function () {
+                localStorage.setItem("activeTab", "login");
+                setActiveTab("login", loginButton, registerButton);
+            });
+
+            registerButton.addEventListener("click", function () {
+                localStorage.setItem("activeTab", "register");
+                setActiveTab("register", registerButton, loginButton);
+            });
+
+            loginForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                const formData = new FormData();
+                formData.append("username", username);
+                formData.append("password", password);
+
+                fetch("../process/login.php", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            const dashboardURL = data.role === "admin" ? "../view/admin.php" : "../view/user.php";
+                            const message = `You have Logged in Successfully! Welcome to ${data.role} Dashboard!`;
+
+                            window.location.href = `${dashboardURL}?toasterMessage=${encodeURIComponent(message)}`;
+                        } else {
+                            showToast("Invalid username or password. Please try again.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Login error:", error);
+                        showToast("An error occurred. Please try again.");
+                    });
+            });
+
+            function showToast(message) {
+                const toaster = document.getElementById('toaster-message');
+                toaster.innerHTML = message;
+                toaster.parentElement.style.display = 'block';
+
+                setTimeout(function () {
+                    toaster.parentElement.style.display = 'none';
+                    toaster.innerHTML = '';
+                }, 5000);
+            }
+
+            function moveLabelToTop(input) {
+                const label = input.previousElementSibling;
+                label.style.top = 0;
+                label.style.fontSize = "12px";
+                label.style.color = "#aaa";
+            }
+
+            document.querySelectorAll('.form-group input').forEach((input) => {
+                input.addEventListener('focus', () => {
+                    moveLabelToTop(input);
+                });
+
+                input.addEventListener('blur', () => {
+                    if (!input.value) {
+                        const label = input.previousElementSibling;
+                        label.style.top = '50%';
+                        label.style.fontSize = '';
+                        label.style.color = '';
+                    }
+                });
+
+                if (input.value) {
+                    moveLabelToTop(input);
+                }
+            });
+
+            // Password toggle functionality
+            const passwordInput = document.getElementById("password");
+            const passwordToggle = document.getElementById("passwordToggle");
+
+            passwordToggle.addEventListener("click", function () {
+                togglePasswordVisibility(passwordInput, "passwordToggle");
+            });
+
+            const newPasswordInput = document.getElementById("newPassword");
+            const newPasswordToggle = document.getElementById("newPasswordToggle");
+
+            newPasswordToggle.addEventListener("click", function () {
+                togglePasswordVisibility(newPasswordInput, "newPasswordToggle");
+            });
+
+            function togglePasswordVisibility(input, toggleId) {
+                const type = input.getAttribute("type") === "password" ? "text" : "password";
+                input.setAttribute("type", type);
+
+                // Change eye icon based on password visibility
+                const toggleIcon = document.getElementById(toggleId);
+                if (type === "password") {
+                    toggleIcon.innerHTML = '<i class="far fa-eye"></i>';
+                } else {
+                    toggleIcon.innerHTML = '<i class="far fa-eye-slash"></i>';
+                }
+            }
+        });
+    </script>
+    <script>
+        function switchToMobileStyles() {
+            const styleSwitch = document.getElementById('styleSwitch');
+            const newStyle = `
+                /* Media query styles for mobile */
+                @media screen and (max-width: 576px) {
+                    body {
+                        /* Apply mobile-specific styles */
+                        background-image: none;
+                        background-color: #f0f4ff;
+                        background-image: url('../pictures/Sport.jpg');
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-attachment: fixed;
+                        /* Adjust other styles as needed */
+                    }
+                }
+            `;
+            styleSwitch.innerHTML = newStyle;
+        }
+
+        function checkDeviceWidth() {
+            const isMobile = window.matchMedia("only screen and (max-width: 576px)").matches;
+            if (isMobile) {
+                switchToMobileStyles();
+            }
+        }
+
+        // Check device width on page load
+        window.onload = checkDeviceWidth;
+
+        // Check device width when the window is resized
+        window.onresize = checkDeviceWidth;
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const loginButton = document.getElementById("loginButton");
