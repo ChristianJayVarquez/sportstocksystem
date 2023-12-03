@@ -13,7 +13,7 @@ $uname = $_SESSION['user_name'];
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SportStock Admin Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -62,10 +62,12 @@ $uname = $_SESSION['user_name'];
 
         .pagination li {
             margin: 0 5px;
+            padding: 5px 10px; /* Adjust padding to control the spacing around the number */
             background-color: #22B14C;
             color: lime;
             cursor: pointer;
             transition: background-color 0.3s;
+            border-radius: 5px; /* Adding border-radius for a rounded look */
         }
 
         .pagination li:hover {
@@ -78,7 +80,9 @@ $uname = $_SESSION['user_name'];
 
         /* Styles for specific modals */
         .modal-containers {
-            background: rgba(255, 255, 255, 0.5); /* Glass color with 50% opacity */
+            border: none;
+            border-radius: 10px;
+            background: rgba(88, 182, 88, 0.5); /* Glass color with 50% opacity */
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -100,10 +104,10 @@ $uname = $_SESSION['user_name'];
         #editInfoModal,
         #DeleteUserModal,
         #BorrowingModal {
-            background-color: transparent;
+            background-color: none;
             border-radius: 10px;
             max-width: 400px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 10px rgba(88, 182, 88, 0.5); 
             position: fixed;
             top: 50%;
             left: 50%;
@@ -128,9 +132,7 @@ $uname = $_SESSION['user_name'];
             margin: 0;
         }
 
-        #EditEForm label,
         #RequestForm label,
-        #editInfoForm label,
         #DeleteUserForm label,
         #BorrowingForm label {
             margin-top: 10px;
@@ -140,29 +142,24 @@ $uname = $_SESSION['user_name'];
 
         .form-group {
             position: relative;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 12px;
+            top: 5px;
+            left: 5px;
+            font-size: 10px;
             color: black;
-            pointer-events: none; /* Ensure the label doesn't interfere with input events */
-            transition: top 0.3s, left 0.3s, font-size 0.3s, color 0.3s;
+            pointer-events: none;
+            transition: color 0.3s;
         }
 
         .form-group input,
         .form-group select {
-            padding: 15px; /* Add padding to the input to make space for the label */
-            border: 1px solid #d2d2d2; /* Adjust border properties */
-        }
-
-        .form-group label.active {
-            top: 5px; /* Adjusted top position when active */
-            left: 5px; /* Adjusted left position when active */
-            font-size: 10px; /* Adjusted font size when active */
-            color: black; /* Adjusted label color when active */
+            padding-top: 20px;
+            padding-left: 15px;
+            border: 1px solid #d2d2d2;
         }
 
         .form-group input,
@@ -221,6 +218,102 @@ $uname = $_SESSION['user_name'];
             background: linear-gradient(to bottom, #F2F2F2, #D3D3D3);
             color: black;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Media query for mobile responsiveness */
+        @media screen and (max-width: 768px) {
+            
+            /* Sidebar Styles */
+            .sidebar {
+            border: 4px solid #80522F; /* Add a border */
+            height: auto;
+            min-height: 100vh;
+            width: 225px;
+            position: fixed;
+            top: 0;
+            left: -250px; /* Start with sidebar hidden */
+            background: #f2f2f2;
+            color: #795548; /* Brown */
+            padding-top: 50px;
+            }
+
+            .sidebar a {
+            border-bottom: 4px solid #80522F; /* Add a border */
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            color: #795548; /* Brown */
+            display: block;
+            }
+
+            .sidebar a:hover {
+            background: linear-gradient(135deg, #8b4513, #f5d0a9); /* Change the gradient from brown to light brown */
+            color: #fff; /* Text color on hover */
+            }
+
+            .sidebar a.active {
+            background: linear-gradient(135deg, #8b4513, #f5d0a9); 
+            color: #fff; /* Text color on hover */
+            }
+            /* Add this CSS to make the main content and modals move responsively */
+
+
+            /* Button Styles */
+            .toggle-button {
+            background: #14662C;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            }
+
+            .toggle-button:hover {
+            background: #795548; /* Brown */
+            }
+
+            .close-button {
+            background: #f2f2f2; /* Biege */
+            color: #000;
+            border: none;
+            padding: 10px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            display: none;
+            }
+
+            .close-button:hover {
+            background: #795548; /* Brown */
+            }
+            /* Main content styles */
+            .main-content {
+                margin-left: 0;
+                transition: none !important;
+            }
+
+            /* Modal container styles */
+            .modal-container {
+                width: 100%;
+                left: 0;
+                top: auto;
+                transform: none;
+                position: relative;
+                height: auto;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 10px;
+            }
+
+            .modal-content {
+                max-width: 100%;
+                padding: 10px;
+                margin: 0;
+            }
         }
     </style>
 <body>
@@ -351,7 +444,7 @@ $uname = $_SESSION['user_name'];
                 <?php
                     }
                 ?>
-                </div><br/>
+                </div><br/><br/>
                 <div class="pagination">
                     <?php
                     // Display previous button
@@ -428,21 +521,26 @@ $uname = $_SESSION['user_name'];
             <!-- Form for editing equipment -->
             <form id="EditEForm" method="post" action="../process/edit-equipment.php">
                 <input type="hidden" id="editEid" name="editEid">
-
-                <label for="editEName">Equipment Name:</label>
-                <input type="text" id="editEName" name="editEName" required>
-
-                <label for="editCategory">Sports Category:</label>
-                <input type="text" id="editCategory" name="editCategory" required>
-
-                <label for="editQuantity">Quantity:</label>
-                <input type="number" id="editQuantity" name="editQuantity" min="1" required>
-
-                <label for="editCondition">Condition:</label>
-                <input type="text" id="editCondition" name="editCondition">
-
-                <label for="editMaintenance">Last Maintenance:</label>
-                <input type="date" id="editMaintenance" name="editMaintenance">
+                <div class="form-group">
+                    <label for="editEName">Equipment Name:</label>
+                    <input type="text" id="editEName" name="editEName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCategory">Sports Category:</label>
+                    <input type="text" id="editCategory" name="editCategory" required>
+                </div>
+                <div class="form-group">
+                    <label for="editQuantity">Quantity:</label>
+                    <input type="number" id="editQuantity" name="editQuantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCondition">Condition:</label>
+                    <input type="text" id="editCondition" name="editCondition">
+                </div>
+                <div class="form-group">
+                    <label for="editMaintenance">Last Maintenance:</label>
+                    <input type="date" id="editMaintenance" name="editMaintenance">
+                </div>
                 <br />
                 <button type="button" class="btn btn-success update-yes" onclick="updateEquipment()" style="position: absolute; bottom: 10px; right: 10px;">Update</button>
             </form>
@@ -535,7 +633,7 @@ $uname = $_SESSION['user_name'];
                     <?php
                         }
                     ?>
-                </div><br/>
+                </div><br/><br/>
                 <div class="pagination">
                     <?php
                         // Display three buttons at a time
@@ -582,13 +680,18 @@ $uname = $_SESSION['user_name'];
             <form id="editInfoForm" method="post">
                 <!-- Add a hidden input field for user ID -->
                 <input type="hidden" id="editUserId" name="userId" value="">
-                
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" value="">
-                <label for="course">Course & Year Level:</label>
-                <input type="text" id="course" name="course" value="">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="">
+                </div>
+                <div class="form-group">
+                    <label for="course">Course & Year Level:</label>
+                    <input type="text" id="course" name="course" value="">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="">
+                </div><br/>
                 <button type="button" id="updateButton" class="updateButton" style="position: absolute; bottom: 10px; right: 10px;">Update</button>
             </form>
         </div>
@@ -756,7 +859,7 @@ $uname = $_SESSION['user_name'];
                         </div>
                     </div>
                     <?php endwhile; ?>
-                </div><br />
+                </div><br /><br />
                 <div class="pagination" id="borrowing-pagination">
                     <?php
                     // Display previous button
@@ -820,7 +923,7 @@ $uname = $_SESSION['user_name'];
         <div class="modal-container" id="settings-modal">
             <div class="modal-content">
                 <!-- Log content goes here -->
-                <div class="card-container" style="display: flex; justify-content: space-between;">
+                <div class="card-container" style="display: flex; justify-content: space-around; gap: 10px;">
                     <!-- First Card - Administrator Log -->
                     <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box;">
                         <h2>Administrator Log</h2>
@@ -841,14 +944,14 @@ $uname = $_SESSION['user_name'];
 
                             for ($i = $startIndex; $i < $endIndex; $i++) {
                                 $row = $data[$i];
-                                echo '<div style="display: flex; justify-content: space-between;"><p>Administrator</p><center>';
+                                echo '<div style="display: flex; align-items: center; justify-content: space-between;"><img class="img-circle" src="../pictures/profile' . $uid. '.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"><p>Administrator</p><center>';
                                 echo $row['activity'];
                                 echo '<br />';
                                 echo $row['timestamp'];
                                 echo '</center></div><hr />';
                             }
                         }
-                        ?>
+                        ?><br />
                         <!-- Pagination for the first card -->
                         <div class="pagination" style="text-align: right; margin-top: 10px;">
                             <?php
@@ -880,7 +983,7 @@ $uname = $_SESSION['user_name'];
                     <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box;">
                         <h2>All Activity Log Data</h2>
                         <?php
-                        $sqls = "SELECT log.*, users.name AS user_name FROM log LEFT JOIN users ON log.user_id = users.id ORDER BY log.timestamp DESC";
+                        $sqls = "SELECT log.*, users.username AS user_name FROM log LEFT JOIN users ON log.user_id = users.id ORDER BY log.timestamp DESC";
                         $results = mysqli_query($conn, $sqls);
 
                         if (mysqli_num_rows($results) > 0) {
@@ -895,14 +998,14 @@ $uname = $_SESSION['user_name'];
 
                             for ($i = $startIndexAll; $i < $endIndexAll; $i++) {
                                 $rowAll = $dataAll[$i];
-                                echo '<div style="display: flex; justify-content: space-between;"><p>' . $rowAll['user_name'] . '</p><center>';
+                                echo '<div style="display: flex; align-items: center; justify-content: space-between;"><img class="img-circle" src="../pictures/profile' . $rowAll['user_id'] . '.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"><p>' . $rowAll['user_name'] . '</p>';
                                 echo $rowAll['activity'];
                                 echo '<br />';
                                 echo $rowAll['timestamp'];
                                 echo '</center></div><hr />';
                             }
                         }
-                        ?>
+                        ?><br />
                         <!-- Pagination for the second card -->
                         <div class="pagination" style="text-align: right; margin-top: 10px;">
                             <?php
@@ -1545,52 +1648,88 @@ $uname = $_SESSION['user_name'];
         });
     </script>
     <script>
-        // Calculate and set the minimum height of the sidebar
-        function setSidebarMinHeight() {
-        const headerHeight = document.querySelector('header').offsetHeight;
-        const footerHeight = document.querySelector('footer').offsetHeight;
-        const minHeight = headerHeight + footerHeight;
-        document.getElementById('sidebar').style.minHeight = `${minHeight}px`;
-        }
-
-        // Call the function on page load and resize
-        window.addEventListener('load', setSidebarMinHeight);
-        window.addEventListener('resize', setSidebarMinHeight);
-    </script>
-    <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.form-group input, .form-group select').forEach((input) => {
                 const label = input.previousElementSibling;
 
                 input.addEventListener('input', () => {
-                    handleLabelPosition(input, label);
-                });
-
-                handleLabelPosition(input, label); // Initial check
-
-                input.addEventListener('focus', () => {
-                    label.style.color = '#555'; // Adjusted color when focused
-                });
-
-                input.addEventListener('blur', () => {
-                    if (!input.value) {
-                        label.style.color = '#aaa'; // Adjusted color when blurred and no input value
+                    if (input.value.trim() !== '') {
+                        label.style.color = 'black'; // Ensure label color is set when input has value
+                    } else {
+                        label.style.color = 'black'; // Keep label color black when input is empty
                     }
                 });
             });
         });
+    </script>
+    <script>
+        function switchToMobileStyles() {
+            const styleSwitch = document.getElementById('styleSwitch');
+            const newStyle = `
+                /* Media query for mobile responsiveness */
+                @media screen and (max-width: 768px) {
+                    /* Sidebar styles */
+                    .sidebar {
+                        /* Existing styles for closed sidebar */
+                        border: 4px solid #80522F;
+                        height: auto;
+                        min-height: 100vh;
+                        width: 225px;
+                        position: fixed;
+                        top: 0;
+                        left: -250px;
+                        background: #f2f2f2;
+                        color: #795548;
+                        padding-top: 50px;
+                        transition: padding 0.3s ease; /* Transition for padding */
 
-        function handleLabelPosition(input, label) {
-            if (input.value.trim() !== '') {
-                label.style.top = '5px'; // Adjusted top position when input has value
-                label.style.left = '5px'; // Adjusted left position when input has value
-                label.style.fontSize = '10px'; // Adjusted font size when input has value
-            } else {
-                label.style.top = '10px'; // Adjusted top position when input is empty
-                label.style.left = '10px'; // Adjusted left position when input is empty
-                label.style.fontSize = '12px'; // Adjusted font size when input is empty
+                        /* New styles for open sidebar */
+                    }
+
+                    /* Add styles for open sidebar */
+                    .sidebar.opened {
+                        padding-top: 100px; /* Example: Increased padding when sidebar is open */
+                        transition: none; /* Remove transition when sidebar is open */
+                    }
+
+                    /* Other styles remain unchanged */
+                    .sidebar a {
+                        /* ... */
+                    }
+
+                    /* Button Styles */
+                    /* ... */
+
+                    /* Main content styles */
+                    .main-content {
+                        margin-left: 0;
+                        transition: none !important; 
+                    }
+
+                    /* Modal container styles */
+                    /* ... */
+                }
+            `;
+            styleSwitch.innerHTML = newStyle;
+        }
+
+        function adjustLayoutForMobile() {
+            // Function to handle the opening/closing of the sidebar and adding/removing the 'opened' class
+        }
+
+        function checkDeviceWidth() {
+            const isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
+            if (isMobile) {
+                switchToMobileStyles();
+                adjustLayoutForMobile();
             }
         }
+
+        // Check device width on page load
+        window.onload = checkDeviceWidth;
+
+        // Check device width when the window is resized
+        window.onresize = checkDeviceWidth;
     </script>
 </body>
 </html>
