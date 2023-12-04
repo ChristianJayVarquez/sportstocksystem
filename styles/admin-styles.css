@@ -172,7 +172,7 @@ hr {
   margin: 10px;
   text-decoration: none;
   background-color: #22B14C; /* Green */
-  color: F2F2F2; /* Dirty White */
+  color: #F2F2F2; /* Dirty White */
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -243,7 +243,7 @@ hr {
   background-color: #006400;
 }
 
-.delete-button, .delete-user-button {
+.reset-user-button, .delete-button, .delete-user-button {
   background-color: #e74c3c;
   color: #fff;
   border: none;
@@ -253,7 +253,7 @@ hr {
   transition: background-color 0.2s;
 }
 
-.delete-button:hover, .delete-user-button {
+.reset-user-button, .delete-button:hover, .delete-user-button {
   background-color: #c0392b;
 }
 
@@ -362,22 +362,27 @@ main {
   flex-grow: 1;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+}
+
 /* Footer styling to stay at the bottom */
 footer {
   background: linear-gradient(to right, #80522F, #59381e); /* Gradient footer background */
   text-align: center;
   padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Adjust the content of the footer as needed */
 footer p {
   margin: 0;
   color: #fff; /* Text color */
-}
-
-/* Center-align the text in the footer */
-footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

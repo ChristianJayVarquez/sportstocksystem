@@ -14,61 +14,57 @@ $uname = $_SESSION['user_name'];
 <head>
     <title>SportStock User Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../styles/user-styles.css">
     <style>
-        .container {
+        /* Common styles */
+        .card-container,
+        .card,
+        .pagination,
+        .form-group,
+        input,
+        select,
+        #toaster {
+            border-radius: 5px;
+        }
+
+        .card-container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
+            height: auto;
         }
 
         .card {
-            margin: 10px;
-            max-width: 300px;
+            max-width: 500px;
             width: 100%;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
             text-align: justify;
-            padding: 10px 5% 10px 8%;
+            padding: 10px 8% 10px 5%;
+            display: flex;
+            flex-direction: column;
         }
 
-        #toaster, #borrowModal, #returnModal, #editInfoModal {
-            background-color: #fff;
-            border-radius: 10px;
-            max-width: 400px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            padding: 20px;
-            z-index: 2;
+        .card button {
+            margin-top: 10px;
         }
 
-        #toaster {
-            top: 16px;
-            right: 16px;
-            padding: 16px;
-            background: linear-gradient(to bottom, #F2F2F2, #D3D3D3);
-            color: black;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .pagination-container {
+            position: relative;
         }
 
         .pagination {
-            display: flex;
-            justify-content: center;
             list-style: none;
-            padding: 0;
-            margin: 20px 0;
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            margin: 5px;
         }
 
         .pagination ul {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            list-style: none;
             padding: 0;
             margin: 0;
         }
@@ -77,10 +73,10 @@ $uname = $_SESSION['user_name'];
             margin: 0 5px;
             padding: 5px 10px;
             background-color: #22B14C;
-            color: #fff;
-            border-radius: 5px;
+            color: lime;
             cursor: pointer;
             transition: background-color 0.3s;
+            border-radius: 5px;
         }
 
         .pagination li:hover {
@@ -88,53 +84,106 @@ $uname = $_SESSION['user_name'];
         }
 
         .pagination a {
+            color: #fff;
             text-decoration: none;
-            color: #fff;
+            display: inline-block;
         }
 
-        .pagination span {
-            color: #fff;
-        }
-
-        .pagination .current-page {
-            background-color: #14662C;
-        }
-
-        #borrowForm, #returnForm, #editInfoForm {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #borrowForm label, #editInfoForm label {
-            margin-top: 10px;
-        }
-
-        #borrowForm input, #editInfoForm input {
-            padding: 5px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #borrowForm input[type="submit"], #editInfoForm input[type="submit"] {
-            background-color: #4CAF50; /* Green color */
-            color: #fff;
+        /* Styles for specific modals */
+        .modal-containers {
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
+            border-radius: 10px;
+            background: rgba(88, 182, 88, 0.5); /* Glass color with 50% opacity */
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 95%;
+            z-index: 2;
         }
 
-        #borrowForm input[type="submit"]:hover, #editInfoForm input[type="submit"]:hover {
-            background-color: #45a049; /* Slightly darker green */
+        #borrowModal, #returnModal, #editInfoModal {
+            background-color: none;
+            border-radius: 10px;
+            max-width: 400px;
+            box-shadow: 0px 0px 10px rgba(88, 182, 88, 0.5);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            z-index: 2;
+            height: auto; /* Updated to auto height */
+            flex-direction: column;
+            justify-content: space-between; /* Updated for justified content */
         }
 
-        #borrowModal h2, #returnModal h2, #editInfoModal h2 {
+        #borrowModal, #returnModal, #editInfoModal h2 {
             font-size: 20px;
             margin: 0;
         }
 
-        #borrowModal .close, #returnModal .close, #editInfoModal .close {
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 10px;
+            color: black;
+            pointer-events: none;
+            transition: color 0.3s;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding-top: 20px;
+            padding-left: 15px;
+            border: 1px solid #d2d2d2;
+        }
+
+        .form-group input,
+        .form-group select,
+        #toaster p {
+            width: calc(100% - 10px); /* Adjusted width to make room for labels */
+            padding: 10px;
+            margin: 5px 0;
+            border-color: #d2d2d2;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white input background */
+        }
+
+        /* Adjusted some styles for consistency */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Updated submit button styles */
+        input[type="submit"] {
+            width: 100%;
+            background-color: #14662C; /* Green submit button background color */
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .close {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -142,38 +191,69 @@ $uname = $_SESSION['user_name'];
             cursor: pointer;
         }
 
-        #borrowModal .close:hover, #returnModal .close:hover, #editInfoModal .close:hover {
+        .close:hover {
             color: #000;
         }
 
-        /* CSS styles for the search bar */
-        .search-container {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          margin-bottom: 20px;
+        /* Styles for the toaster notification here */
+        #toaster {
+            display: none;
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            padding: 16px;
+            max-width: 300px;
+            background: linear-gradient(to bottom, #F2F2F2, #D3D3D3);
+            color: black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        input[type="text"] {
-          padding: 8px;
-          width: 200px;
-          margin-right: 5px;
-        }
-        button {
-          padding: 8px 12px;
-          cursor: pointer;
+
+        /* Media query for mobile responsiveness */
+        @media screen and (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                transition: none !important;
+            }
+
+            /* Modal container styles */
+            .modal-container {
+                width: 100%;
+                left: 0;
+                top: auto;
+                transform: none;
+                position: relative;
+                height: auto;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 10px;
+            }
+
+            .modal-content {
+                max-width: 100%;
+                padding: 10px;
+                margin: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <nav>
+    <header>
         <!-- Button to toggle the sidebar -->
         <button id="toggleSidebarButton" class="toggle-button"><i class="fas fa-bars"></i></button>
-        <div class="nav-content">
-            <img src="../pictures/IT.png" class="logo" alt="Logo 1">
-            <h1>SportStock User Dashboard</h1>
-            <img src="../pictures/logos.png" class="logo" alt="Logo 2">
-        </div>
-    </nav>    
+        <center><table>
+            <tr>
+                <td>
+                    <img src="../pictures/IT.png" style="width: auto; height: auto; max-width: 95px; max-height: 95px;">
+                </td>
+                <td>
+                    <h1>SportStock User Dashboard</h1>
+                </td>
+                <td>
+                    <img src="../pictures/logos.png" style="width: auto; height: auto; max-width: 125px; max-height: 125px;">
+                </td>
+            </tr>
+        </table></center>
+    </header>    
     <!-- Sidebar -->
     <div class="sidebar">
         <div style="width: 125px; height: 125px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
@@ -201,25 +281,20 @@ $uname = $_SESSION['user_name'];
                 <hr>
                 <h3>Key Features</h3>
                 <ul>
-                    <li> Check-out Equipment: You can check all sports equipment here and even borrow them.</li>
-                    <li> Borrow Records: A Record of borrowed sports equipment that are due for return.</li>
-                    <li> Profile: Manage your profile and other personal information.</li>
-                    <li> Activity Log: Maintain comprehensive records of your activities.</li>
+                    <li> <strong>Check-out Equipment:</strong> You can check all sports equipment here and even borrow them.</li>
+                    <li> <strong>Borrow Records:</strong> A Record of borrowed sports equipment that are due for return.</li>
+                    <li> <strong>Profile:</strong> Manage your profile and other personal information.</li>
+                    <li> <strong>Activity Log:</strong> Maintain comprehensive records of your activities.</li>
                 </ul>
                 <p>
                     SportStock is designed to make your sports equipment management simpler and more organized. <br />Whether you are running a sports club, gym, or any other sports-related organization, SportStock is the right choice for you.
                 </p>
             </div>
             <!-- End of Home Content -->
-           <!-- Start of Equipment List -->
+            <!-- Start of Equipment List -->
             <div id="equipmentsModal" class="modal-container">
                 <h2>Check-out Equipment</h2>
-                <!-- Search bar and button -->
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search equipment...">
-                    <button onclick="searchEquipment()">Search</button>
-                </div>
-                <div class="equipment-list">
+                <div class="card-container">
                     <?php
                     // Check for the "equipment_page" parameter in the URL or set it to 1 by default
                     $currentPage = isset($_GET['equipment_page']) ? intval($_GET['equipment_page']) : 1;
@@ -239,15 +314,34 @@ $uname = $_SESSION['user_name'];
                         while ($row = mysqli_fetch_assoc($results)) {
                             $eid = $row['eid'];
                             $ename = $row['ename'];
-                            echo '<div class="equipment-item">';
-                            echo '<img src="../pictures/equipment' . $row['eid'] . '.jpg" style="max-height: 175px; max-width: 175px; width: 100%; height; 100%; object-fit: cover;">'; // Added a missing '/' in the image source
-                            echo '<h3>' . $row['ename'] . '</h3>';
-                            echo '<p>Stock Available: ' . $row['quantity'] . '</p>';
-                            echo '<p>Condition: ' . $row['quality'] . '</p>';
-                            echo '<button class="borrow-button" data-eid="' . $row['eid'] . '" data-ename="' . $row['ename'] . '" data-quantity="' . $row['quantity'] . '">Borrow</button>';
-                            echo '</div>';
+                    ?>
+                    <div class="card equipment-card">
+                        <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                            <img class="img-circle" src="../pictures/equipment<?php echo $row['eid'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div><br />
+                        <div class="card-content">
+                            <div class="label-data-pair">
+                                <label>Equipment Name:</label> <?php echo $ename; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>Sports Category:</label> <?php echo $row['category']; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>Quantity:</label> <?php echo $row['quantity']; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>Condition:</label> <?php echo $row['quality']; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>Last Maintenance:</label> <?php echo $row['last_maintenance_date']; ?>
+                            </div><br /><br />
+                            <div style="position: absolute; bottom: 0; right: 0; padding: 10px;">
+                                <button class="borrow-button btn-primary" data-eid="<?php echo $eid; ?>" data-ename="<?php echo $ename; ?>" data-quantity="<?php echo $row['quantity']; ?>">Borrow</button>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
                         }
-
                         // Free the result set
                         mysqli_free_result($results);
 
@@ -260,47 +354,35 @@ $uname = $_SESSION['user_name'];
                         echo "No equipment items found.";
                     }
                     ?>
-                </div>
-                <div class="pagination">
-                    <ul>
-                    <?php
-                    $startPage = max(1, $currentPage - 1);
-                    $endPage = min($totalPages, $currentPage + 1);
+                </div><br /><br />
+                <div class="pagination-container">
+                    <div class="pagination">
+                        <ul>
+                            <?php
+                            // Display previous button
+                            if ($currentPage > 1) {
+                                echo "<li><a href='?equipment_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                            }
 
-                    // Calculate the starting page for displaying
-                    $startDisplayPage = $currentPage - 1;
-                    if ($startDisplayPage < 1) {
-                        $startDisplayPage = 1;
-                    } else if ($endPage - $startPage < 2) {
-                        $startDisplayPage = max(1, $endPage - 2);
-                    }
+                            // Display pagination buttons
+                            $startPage = max(1, $currentPage - 1);
+                            $endPage = min($totalPages, $startPage + 2);
 
-                    // Calculate the ending page for displaying
-                    $endDisplayPage = $startDisplayPage + 2;
-                    if ($endDisplayPage > $totalPages) {
-                        $endDisplayPage = $totalPages;
-                    }
+                            for ($page = $startPage; $page <= $endPage; $page++) {
+                                if ($page == $currentPage) {
+                                    echo "<li class='active'><span>$page</span></li>";
+                                } else {
+                                    echo "<li><a href='?equipment_page=$page'>$page</a></li>";
+                                }
+                            }
 
-                    // Show the previous button if not on the first page
-                    if ($currentPage > 1) {
-                        echo '<li><a href="?equipment_page=' . ($currentPage - 1) . '">&laquo;</a></li>';
-                    }
-
-                    // Display the pages within the specified range
-                    for ($page = $startDisplayPage; $page <= $endDisplayPage; $page++) {
-                        echo '<li><a';
-                        if ($page == $currentPage) {
-                            echo ' class="active"';
-                        }
-                        echo ' href="?equipment_page=' . $page . '">' . $page . '</a></li>';
-                    }
-
-                    // Show the next button if not on the last page
-                    if ($currentPage < $totalPages) {
-                        echo '<li><a href="?equipment_page=' . ($currentPage + 1) . '">&raquo;</a></li>';
-                    }
-                    ?>
-                    </ul>
+                            // Display next button
+                            if ($currentPage < $totalPages) {
+                                echo "<li><a href='?equipment_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <!-- End of Equipment List -->
@@ -312,41 +394,41 @@ $uname = $_SESSION['user_name'];
                 <form id="borrowForm" method="post">
                     <!-- Hidden input field to store the Equipment ID (eid) -->
                     <input type="hidden" id="eid" name="eid" value="">
-                    
-                    <!-- Display Equipment Name -->
-                    <label for="ename">Equipment Name:</label>
-                    <input type="text" id="display-ename" name="display-ename" value="" disabled>
-
-                    <!-- Display Quantity -->
-                    <label for="quantity">Stock Available:</label>
-                    <input type="number" id="display-quantity" name="display-quantity" value="" disabled>
-
-                    <!-- Input field for specifying the quantity to borrow -->
-                    <label for="quantity-to-borrow">Quantity to Borrow:</label>
-                    <input type="number" min="1" id="quantity-to-borrow" name="quantity-to-borrow" value="1" required>
-                    
-                    <!-- Input field for specifying the return date -->
-                    <label for="date">Return Date:</label>
-                    <input type="date" id="date" name="date" value="" required>
-                    
-                    <input type="submit" value="Borrow">
+                    <div class="form-group">
+                        <!-- Display Equipment Name -->
+                        <label for="ename">Equipment Name:</label>
+                        <input type="text" id="display-ename" name="display-ename" value="" disabled>
+                    </div>
+                    <div class="form-group">
+                        <!-- Display Quantity -->
+                        <label for="quantity">Stock Available:</label>
+                        <input type="number" id="display-quantity" name="display-quantity" value="" disabled>
+                    </div>
+                    <div class="form-group">
+                        <!-- Input field for specifying the quantity to borrow -->
+                        <label for="quantity-to-borrow">Quantity to Borrow:</label>
+                        <input type="number" min="1" id="quantity-to-borrow" name="quantity-to-borrow" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <!-- Input field for specifying the return date -->
+                        <label for="date">Return Date:</label>
+                        <input type="date" id="date" name="date" value="" required>
+                    </div><br />
+                    <div style="position: absolute; bottom: 10px; right: 10px;">
+                        <input type="submit" value="Borrow">
+                    </div>
                 </form>
             </div>
             <!-- End of Borrow Modal -->
             <!-- Start of Borrow Records -->
             <div id="itemsModal" class="modal-container" style="margin-top: -17px;">
                 <h2>Record of Borrowed Equipment</h2>
-                <!-- Search bar and button -->
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search...">
-                    <button onclick="searchItems()">Search</button>
-                </div>
-                <div class="container">
+                <div class="card-container">
                     <?php
                     // Sanitize user input to prevent SQL injection
                     $uid = mysqli_real_escape_string($conn, $uid);
 
-                    $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id WHERE users.id='$uid'";
+                    $sql = "SELECT borrowing.*, equipment.eid AS equipment_id, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id WHERE users.id='$uid' ORDER BY borrowing.id DESC";
                     $result = mysqli_query($conn, $sql);
 
                     if (mysqli_num_rows($result) > 0) {
@@ -363,52 +445,74 @@ $uname = $_SESSION['user_name'];
                         for ($i = $startIndex; $i < $endIndex; $i++) {
                             $row = $data[$i];
                             ?>
-                            <div class="card profile-card">
-                                <label>Record ID:</label><?php echo $row['id']; ?><br />
-                                <label>Borrower's Name:</label><?php echo $row['user_name']; ?><br />
-                                <label>Equipment Borrowed:</label><?php echo $row['equipment_name']; ?><br />
-                                <label>Quantity:</label><?php echo $row['quantity']; ?><br />
-                                <label>Date Borrowed:</label><?php echo $row['borrow_date']; ?><br />
-                                <label>Return Date:</label><?php echo $row['return_date']; ?><br />
-                                <label>Status:</label><?php echo $row['status']; ?><br />
-                                <?php
-                                if ($row['date_returned'] == NULL) {
-                                    echo '<br />';
-                                    echo '<center>
-                                            <button class="return-button" style="background-color: green; color: #f2f2f2;" data-eid="' . $row['id'] . '">Return Item</button>
-                                        </center>';
-                                } else {
-                                    echo '<label>Date Returned:</label>' . $row['date_returned'] . '<br /><br />';
-                                }
-                                ?>
+                            <div class="card record-card">
+                                <div style="width: 125px; height: 125px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                                    <a href="#"><img class="img-circle" src="../pictures/equipment<?php echo $row['equipment_id'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;"></a>
+                                </div>
+                                <div class="card-content">
+                                    <div class="label-data-pair">
+                                        <label>Record ID:</label> <?php echo $row['id']; ?>
+                                    </div>
+                                    <div class="label-data-pair">
+                                        <label>Borrower's Name:</label> <?php echo $row['user_name']; ?>
+                                    </div>
+                                    <div class="label-data-pair">
+                                        <label>Equipment Borrowed:</label> <?php echo $row['equipment_name']; ?>
+                                    </div>
+                                    <div class="label-data-pair">
+                                        <label>Quantity:</label> <?php echo $row['quantity']; ?>
+                                    </div>
+                                    <div class="label-data-pair">
+                                        <label>Date Borrowed:</label> <?php echo $row['borrow_date']; ?>
+                                    </div>
+                                    <div class="label-data-pair">
+                                        <label>Return Date:</label> <?php echo $row['return_date']; ?>
+                                    </div>
+                                    <div class="label-data-pair">
+                                        <label>Status:</label> <?php echo $row['status']; ?>
+                                    </div>
+                                    <?php
+                                    if ($row['date_returned'] == NULL) {
+                                        echo '<br /><div class="label-data-pair" style="position: absolute; bottom: 10px; right: 10px;">
+                                                <button class="return-button" style="background-color: green; color: #f2f2f2;" data-eid="' . $row['id'] . '" data-equipment-name="' . $row['equipment_name'] . '">Return Item</button>
+                                            </div>';
+                                    } else {
+                                        echo '<div class="label-data-pair">
+                                                <label>Date Returned:</label>' . $row['date_returned'] . '
+                                            </div>';
+                                    }
+                                    ?>
+                                </div>
                             </div>
                             <?php
                             }
                             ?>
-                    </div>
-                    <div class="pagination">
-                        <ul>
-                            <?php
-                            $startPage = max(1, $currentPage - 1);
-                            $endPage = min($totalPages, $currentPage + 1);
+                    </div><br /><br />
+                    <div class="pagination-container">
+                        <div class="pagination">
+                            <ul>
+                                <?php
+                                $startPage = max(1, $currentPage - 1);
+                                $endPage = min($totalPages, $currentPage + 1);
 
-                            if ($currentPage > 1) {
-                                echo "<li><a href='?record_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
-                            }
-
-                            for ($page = $startPage; $page <= $endPage; $page++) {
-                                if ($page == $currentPage) {
-                                    echo "<li><span>$page</span></li>";
-                                } else {
-                                    echo "<li><a href='?record_page=$page'>$page</a></li>";
+                                if ($currentPage > 1) {
+                                    echo "<li><a href='?record_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
                                 }
-                            }
 
-                            if ($currentPage < $totalPages) {
-                                echo "<li><a href='?record_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
-                            }
-                            ?>
-                        </ul>
+                                for ($page = $startPage; $page <= $endPage; $page++) {
+                                    if ($page == $currentPage) {
+                                        echo "<li><span>$page</span></li>";
+                                    } else {
+                                        echo "<li><a href='?record_page=$page'>$page</a></li>";
+                                    }
+                                }
+
+                                if ($currentPage < $totalPages) {
+                                    echo "<li><a href='?record_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
+                                }
+                                ?>
+                            </ul>
+                        </div>
                     </div>
                     <?php
                     } else {
@@ -422,7 +526,6 @@ $uname = $_SESSION['user_name'];
             <div id="returnModal" class="modal-containers" style="display: none;">
                 <span class="close" id="closeReturnModal">&times;</span>
                 <h2>Return Equipment</h2>
-                <h2><?php echo $row['equipment_name']; ?> ?</h2>
                 <!-- Form for returning equipment -->
                 <form id="returnForm" method="post">
                     <!-- Hidden input field to store the Equipment ID (eid) -->
@@ -430,9 +533,9 @@ $uname = $_SESSION['user_name'];
                     <input type="hidden" id="action" name="action" value=""> <!-- Added an action field -->
 
                     <h2 id="equipmentName"></h2><br />
-                    <div style="display: flex; justify-content: space-between;">
-                        <button type="button" class="btn btn-success return-yes" style="margin-left: 30px; max-width: 100px; background-color: green; color: #f2f2f2;">Yes</button>
-                        <button type="button" class="btn btn-danger return-no" style="margin-right: 30px; max-width: 100px; background-color: green; color: #f2f2f2;">No</button>
+                    <div style="display: flex; justify-content: space-between; position: absolute; bottom: 10px; right: 10px;">
+                        <button type="button" class="btn btn-success return-yes" style="margin-right: 10px; max-width: 100px; background-color: green; color: #f2f2f2;">Yes</button>
+                        <button type="button" class="btn btn-success return-no" style="border: none; max-width: 100px; background-color: green; color: #f2f2f2;">No</button>
                     </div>
                 </form>
             </div>
@@ -440,7 +543,7 @@ $uname = $_SESSION['user_name'];
             <!-- Start of Profile Content -->
             <div id="profileModal" class="modal-container">
                 <!-- Profile content goes here -->
-                <div class="container">
+                <div class="card-container">
                     <?php
                     $sql = "SELECT * FROM users WHERE id='$uid'";
                     $result = mysqli_query($conn, $sql);
@@ -453,12 +556,23 @@ $uname = $_SESSION['user_name'];
                         <center><h2>Personal Data</h2></center>
                         <div style="width: 125px; height: 125px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                             <a href="#"><img class="img-circle" src="../pictures/profile<?php echo $uid;?>.jpg" style="width: 100%; height: 100%; object-fit: cover;"></a>
-                        </div><br />
-                        <center><button id="editInfoButton">Edit info <i class="fas fa-info-circle"></i></button></center><br />
-                        <label>Name: </label><?php echo $row['name']; ?><br />
-                        <label>Course & Year Level: </label><?php echo $row['course']; ?><br />
-                        <label>User ID: </label><?php echo $row['user_id']; ?><br />
-                        <label>Username: </label><?php echo $row['username']; ?><br />
+                        </div>
+                        <center><button id="editInfoButton">Edit info <i class="fas fa-pencil"></i></button></center><br />
+                        <div class="label-data-pair">
+                            <label>Name: </label><?php echo $row['name']; ?>
+                        </div>
+                        <div class="label-data-pair">
+                            <label>Course & Year Level:</label> <?php echo $row['course']; ?>
+                        </div>
+                        <div class="label-data-pair">
+                            <label>User ID:</label> <?php echo $row['user_id']; ?>
+                        </div>
+                        <div class="label-data-pair">
+                            <label>Username:</label> <?php echo $row['username']; ?>
+                        </div>
+                        <div class="label-data-pair">
+                            <label>Password:</label> ********
+                        </div>
                     </div>
                     <?php
                         }
@@ -473,34 +587,37 @@ $uname = $_SESSION['user_name'];
                 <!-- Form for editing user information -->
                 <form id="editInfoForm" method="post">
                     <!-- Input fields for editing user information -->
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="<?php echo $row['name']; ?>">
-                    <label for="course">Course & Year Level:</label>
-                    <input type="text" id="course" name="course" value="<?php echo $row['course']; ?>">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" value="<?php echo $row['name']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="course">Course & Year Level:</label>
+                        <input type="text" id="course" name="course" value="<?php echo $row['course']; ?>">
+                    </div>
+                    <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" value="<?php echo $row['username']; ?>">
-                    <input type="submit" value="Save">
+                    </div><br />
+                    <div style="position: absolute; bottom: 10px; right: 10px;">
+                        <input type="submit" value="Save">
+                    </div>
                 </form>
             </div>
             <!-- End of Edit Info Modal -->
-           <!-- Start of Activity Log Content -->
+            <!-- Start of Activity Log Content -->
             <div id="logModal" class="modal-container" style="margin-top: -17px; min-height: 73vh;">
-                <div class="container">
-                    <h2>Activity Log</h2>
-                    <!-- Search bar and button -->
-                    <div class="search-container">
-                        <input type="text" id="searchInput" placeholder="Search...">
-                        <button id="searchButton">Search</button>
-                    </div>
-                    <div class="card profile-card">
+                <div class="card-container">
+                    <div class="card log-card">
+                    <center><h2>Activity Log</h2></center>
                         <?php
                         $user_id = $row['user_id'];
-                        $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
+                        $sql = "SELECT log.*, users.username AS user_name FROM log LEFT JOIN users ON log.user_id = users.id WHERE log.user_id='$uid' ORDER BY log.timestamp DESC";
                         $result = mysqli_query($conn, $sql);
 
                         if (mysqli_num_rows($result) > 0) {
                             $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                            $itemsPerPage = 3; // Display 3 data items per page
+                            $itemsPerPage = 5; // Display 3 data items per page
                             $totalItems = count($data);
                             $totalPages = ceil($totalItems / $itemsPerPage);
                             $currentPage = isset($_GET['log_page']) ? $_GET['log_page'] : 1;
@@ -511,7 +628,7 @@ $uname = $_SESSION['user_name'];
 
                             for ($i = $startIndex; $i < $endIndex; $i++) {
                                 $row = $data[$i];
-                                echo '<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile'.$uid.'.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>';
+                                echo '<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile'.$uid.'.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><p>'.$row['user_name'].'</p><center>';
                                 echo $row['activity'];
                                 echo '<br />';
                                 echo $row['timestamp'];
@@ -519,47 +636,32 @@ $uname = $_SESSION['user_name'];
                             }
                             ?>
                     </div>
-                </div>
-                <div class="pagination">
-                    <ul>
-                    <?php
-                    $startPage = max(1, $currentPage - 1);
-                    $endPage = min($totalPages, $currentPage + 1);
+                </div><br /><br />
+                <div class="pagination-container">
+                    <div class="pagination">
+                        <ul>
+                            <?php
+                            $startPage = max(1, $currentPage - 1);
+                            $endPage = min($totalPages, $currentPage + 1);
 
-                    // Calculate the starting page for displaying
-                    $startDisplayPage = $currentPage - 1;
-                    if ($startDisplayPage < 1) {
-                        $startDisplayPage = 1;
-                    } else if ($endPage - $startPage < 2) {
-                        $startDisplayPage = max(1, $endPage - 2);
-                    }
+                            if ($currentPage > 1) {
+                                echo "<li><a href='?log_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
+                            }
 
-                    // Calculate the ending page for displaying
-                    $endDisplayPage = $startDisplayPage + 2;
-                    if ($endDisplayPage > $totalPages) {
-                        $endDisplayPage = $totalPages;
-                    }
+                            for ($page = $startPage; $page <= $endPage; $page++) {
+                                if ($page == $currentPage) {
+                                    echo "<li><span>$page</span></li>";
+                                } else {
+                                    echo "<li><a href='?log_page=$page'>$page</a></li>";
+                                }
+                            }
 
-                    // Show the previous button if not on the first page
-                    if ($currentPage > 1) {
-                        echo '<li><a href="?log_page=' . ($currentPage - 1) . '">&laquo;</a></li>';
-                    }
-
-                    // Display the pages within the specified range
-                    for ($page = $startDisplayPage; $page <= $endDisplayPage; $page++) {
-                        echo '<li><a';
-                        if ($page == $currentPage) {
-                            echo ' class="active"';
-                        }
-                        echo ' href="?log_page=' . $page . '">' . $page . '</a></li>';
-                    }
-
-                    // Show the next button if not on the last page
-                    if ($currentPage < $totalPages) {
-                        echo '<li><a href="?log_page=' . ($currentPage + 1) . '">&raquo;</a></li>';
-                    }
-                    ?>
-                    </ul>
+                            if ($currentPage < $totalPages) {
+                                echo "<li><a href='?log_page=" . ($currentPage + 1) . "'>&raquo;</a></li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
                 <?php
                 } else {
@@ -568,25 +670,25 @@ $uname = $_SESSION['user_name'];
                 ?>
             </div>
             <!-- End of Activity Log Content -->
-        </div>
-        <!-- Start of Logout Content -->
-        <div class="modal-container" id="logoutModal">
-            <div class="modal-content">
-                <!-- Logout Modal Content -->
-                <div class="card-container" style="display: flex; justify-content: center; align-items: center; height: auto; border-radius: 5px;">
-                    <div class="card profile-card" style="max-width: 500px; width: 100%; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); text-align: justify; padding: 10px 8% 10px 5%; display: flex; flex-direction: column; border-radius: 5px;">
-                        <center><br />
-                            <h2 style="position: relative;">Are you sure you want to log out?</h2><br /><br /><br />
-                            <div class="button-container" style="display: flex; justify-content: flex-end;">
-                                <button id="logout-confirm-button" class="modal-button action-button" style="margin-right: 5px; padding: 10px 20px; border-radius: 15px; border: none; background-color: green; color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">Yes</button>
-                                <button id="logout-cancel-button" class="modal-button action-button" style="padding: 10px 20px; border-radius: 15px; border: none; background-color: green; color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">No</button>
-                            </div>
-                        </center>
+            <!-- Start of Logout Content -->
+            <div class="modal-container" id="logoutModal">
+                <div class="modal-content">
+                    <!-- Logout Modal Content -->
+                    <div class="card-container">
+                        <div class="card profile-card">
+                            <center><br />
+                                <h4 style="position: relative;">Are you sure you want to log out?</h4><br /><br /><br />
+                                    <div class="button-container" style="position: absolute; bottom: 10px; right: 10px;">
+                                        <button style="background-color: #22B14C; color: #F2F2F2;" id="logout-confirm-button" class="modal-button action-button" onclick="confirmLogout()">Yes</button>
+                                        <button style="background-color: #22B14C; color: #F2F2F2;" id="logout-cancel-button" class="modal-button action-button" onclick="confirmLogout()">No</button>
+                                    </div>
+                            </center>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- End of Logout Content -->
         </div>
-        <!-- End of Logout Content -->
         <!-- Toaster Notification -->
         <div id="toaster">
             <div id="toaster-message"></div>
@@ -905,66 +1007,19 @@ $uname = $_SESSION['user_name'];
         });
     </script>
     <script>
-        // JavaScript for search functionality
-        function searchEquipment() {
-          let input, filter, ul, li, i, txtValue;
-          input = document.getElementById('searchInput');
-          filter = input.value.toUpperCase();
-          ul = document.getElementById('equipmentList');
-          li = ul.getElementsByTagName('li');
-    
-          for (i = 0; i < li.length; i++) {
-            txtValue = li[i].textContent || li[i].innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-              li[i].style.display = '';
-            } else {
-              li[i].style.display = 'none';
-            }
-          }
-        }
-  </script>
-  <script>
-      // JavaScript logic
-      function searchItems() {
-        var searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    
-        var items = document.querySelectorAll('.item'); // Assuming items have a class 'item'
-        items.forEach(function(item) {
-          var itemName = item.textContent.toLowerCase();
-          if (itemName.includes(searchTerm)) {
-            item.style.display = 'block'; // Show the item if it matches the search term
-          } else {
-            item.style.display = 'none'; // Hide the item if it doesn't match
-          }
-        });
-      }
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const searchResults = document.getElementById('searchResults');
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.form-group input, .form-group select').forEach((input) => {
+                const label = input.previousElementSibling;
 
-        // Function to perform search
-        function performSearch() {
-            const searchTerm = searchInput.value.toLowerCase();
-            // Logic for search (Replace this with your own search logic)
-            // For example, displaying the search term:
-            searchResults.textContent = You searched for: "${searchTerm}";
-        }
-
-        // Event listener for button click to trigger search
-        searchButton.addEventListener('click', function () {
-            performSearch();
+                input.addEventListener('input', () => {
+                    if (input.value.trim() !== '') {
+                        label.style.color = 'black'; // Ensure label color is set when input has value
+                    } else {
+                        label.style.color = 'black'; // Keep label color black when input is empty
+                    }
+                });
+            });
         });
-
-        // Event listener for 'Enter' key press to trigger search
-        searchInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-    });
-  </script>
+    </script>
 </body>
 </html>

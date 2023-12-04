@@ -406,7 +406,7 @@ $uname = $_SESSION['user_name'];
                     for ($i = $startIndex; $i < $endIndex; $i++) {
                         $equipment = $data[$i];
                 ?>
-                <div class="card equipment-card" style="padding-right: 1%; padding-left: 1%;">
+                <div class="card equipment-card"    >
                     <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                         <img class="img-circle" src="../pictures/equipment<?php echo $equipment['eid'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
                     </div><br />
@@ -430,7 +430,6 @@ $uname = $_SESSION['user_name'];
                             <label>Last Maintenance:</label> <?php echo $equipment['last_maintenance_date']; ?>
                         </div>
                     </div><br /><br />
-                    <center>
                     <div style="position: absolute; bottom: 0; right: 0; padding: 10px;">
                         <button type="button" class="edit-button btn-success" data-eid="<?php echo $equipment['eid']; ?>" data-ename="<?php echo $equipment['ename']; ?>" data-category="<?php echo $equipment['category']; ?>" data-quantity="<?php echo $equipment['quantity']; ?>" data-condition="<?php echo $equipment['quality']; ?>" data-maintenance="<?php echo $equipment['last_maintenance_date']; ?>" onclick="showEditModal(this)">
                             <i class="fas fa-edit"></i> Edit
@@ -439,7 +438,6 @@ $uname = $_SESSION['user_name'];
                             <i class="fas fa-trash-alt"></i> Delete
                         </button>
                     </div>
-                    </center>
                 </div>
                 <?php
                     }
@@ -508,7 +506,7 @@ $uname = $_SESSION['user_name'];
                     <label for='file'>Upload Photo:</label>
                     <input type="file" name="file">
                 </div><br/>
-                <button type="reset" class="reset-user-button btn-danger " style="position: absolute; bottom: 8px; padding: 5px; right: 70px;">
+                <button type="reset" class="reset-user-button btn-danger" style="position: absolute; bottom: 8px; padding: 5px; right: 70px;">
                     <i class="fas fa-undo"></i> Reset
                 <button class="btn btn-success" name="add" style="position: absolute; bottom: 10px; right: 10px;">Add</button>
             </form>
@@ -595,7 +593,7 @@ $uname = $_SESSION['user_name'];
                             for ($i = $startIndex; $i < $endIndex; $i++) {
                                 $user = $data[$i];
                     ?>
-                    <div class="card profile-card" style="padding-right: 1%; padding-left: 1%;">
+                    <div class="card profile-card">
                     <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                         <div style="position: relative; width: 100%; height: 100%;">
                             <img class="img-circle" src="../pictures/profile<?php echo $user['id'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
@@ -830,7 +828,7 @@ $uname = $_SESSION['user_name'];
 
                     while ($row = $result->fetch_assoc()): 
                     ?>
-                    <div class="card borrowing-card" style="padding-left: 1%; padding-right: 1%;">
+                    <div class="card borrowing-card">
                         <div class="card-content">
                             <div class="label-data-pair">
                                 <label>Record ID:</label> <?php echo $row['id']; ?>
