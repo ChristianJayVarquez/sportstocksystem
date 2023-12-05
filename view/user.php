@@ -596,7 +596,7 @@ $uname = $_SESSION['user_name'];
             <!-- Start of Edit Info Modal -->
             <div id="editInfoModal" class="modal-containers" style="display: none;">
                 <span class="close" id="closeEditInfoModal">&times;</span> <!-- Close button -->
-                <h2>Edit Your Information</h2>
+                <h2>Edit Personal Information</h2>
                 <!-- Form for editing user information -->
                 <form id="editInfoForm" method="post">
                     <!-- Input fields for editing user information -->
@@ -842,9 +842,27 @@ $uname = $_SESSION['user_name'];
             submitBorrowForm(); // Call the function to send data via AJAX
         });
 
-        // Close the "Borrow Equipment" modal when the user clicks outside or presses 'Esc'
-        window.addEventListener("click", (event) => {
-            if (event.target === borrowModal) {
+        // Close the "Borrow Equipment" modal when the close button is clicked
+        closeBorrowModal.addEventListener("click", () => {
+            borrowModal.style.display = "none";
+        });
+
+        // Add event listeners to "Borrow" buttons
+        borrowButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+                // Stop the click event from propagating to the document
+                event.stopPropagation();
+
+                const eid = button.getAttribute("data-eid");
+                const ename = button.getAttribute("data-ename");
+                const quantity = button.getAttribute("data-quantity");
+                showBorrowModal(eid, ename, quantity);
+            });
+        });
+
+        // Close the modal when clicking anywhere outside of it
+        document.addEventListener("click", (event) => {
+            if (!borrowModal.contains(event.target)) {
                 borrowModal.style.display = "none";
             }
         });
@@ -853,21 +871,6 @@ $uname = $_SESSION['user_name'];
             if (event.key === "Escape") {
                 borrowModal.style.display = "none";
             }
-        });
-
-        // Close the "Borrow Equipment" modal when the close button is clicked
-        closeBorrowModal.addEventListener("click", () => {
-            borrowModal.style.display = "none";
-        });
-
-        // Add event listeners to "Borrow" buttons
-        borrowButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                const eid = button.getAttribute("data-eid");
-                const ename = button.getAttribute("data-ename");
-                const quantity = button.getAttribute("data-quantity");
-                showBorrowModal(eid, ename, quantity);
-            });
         });
     </script>
     <script>
@@ -881,6 +884,9 @@ $uname = $_SESSION['user_name'];
         // Show the "Return" modal when a button is clicked
         returnButtons.forEach(button => {
             button.addEventListener("click", () => {
+                // Stop the click event from propagating to the document
+                event.stopPropagation();
+
                 returnModal.style.display = "block";
                 const eid = button.getAttribute("data-eid");
                 const equipmentName = button.getAttribute("data-equipment-name");
@@ -889,9 +895,9 @@ $uname = $_SESSION['user_name'];
             });
         });
 
-        // Close the "Return" modal when the user clicks outside of it or presses the 'Esc' key
-        window.addEventListener("click", (event) => {
-            if (event.target === returnModal) {
+        // Close the modal when clicking anywhere outside of it
+        document.addEventListener("click", (event) => {
+            if (!returnModal.contains(event.target)) {
                 returnModal.style.display = "none";
             }
         });
@@ -943,6 +949,7 @@ $uname = $_SESSION['user_name'];
             returnModal.style.display = "none"; // Close the modal
         });
     </script>
+    </script>
     <script>
         // Get the modal and button elements
         const editInfoModal = document.getElementById("editInfoModal");
@@ -950,12 +957,15 @@ $uname = $_SESSION['user_name'];
 
         // Show the "Edit Info" modal when the button is clicked
         editInfoButton.addEventListener("click", () => {
+            // Stop the click event from propagating to the document
+            event.stopPropagation();
+
             editInfoModal.style.display = "block";
         });
 
-        // Close the "Edit Info" modal when the user clicks outside of it or presses the 'Esc' key
-        window.addEventListener("click", (event) => {
-            if (event.target === editInfoModal) {
+       // Close the modal when clicking anywhere outside of it
+        document.addEventListener("click", (event) => {
+            if (!editInfoModal.contains(event.target)) {
                 editInfoModal.style.display = "none";
             }
         });
