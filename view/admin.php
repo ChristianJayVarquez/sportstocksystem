@@ -405,7 +405,7 @@ $uname = $_SESSION['user_name'];
                 </div>
                 <div class="card-container">
                     <div id="no-eresults-message" style="display: none;">
-                        <p>No Search results found</p>
+                        <p style="color: red;">No Search results found</p>
                     </div>
                 <!-- Equipment Table -->
                 <?php
@@ -596,7 +596,7 @@ $uname = $_SESSION['user_name'];
                     </div>
                 </div>
                 <div id="no-results-message" style="display: none; text-align: center; margin-top: 20px;">
-                    <p>No search results found</p>
+                    <p style="color: red;">No search results found</p>
                 </div>
                 <div class="card-container">
                     <?php
@@ -692,7 +692,7 @@ $uname = $_SESSION['user_name'];
         </div>
         <!-- End of User Content -->
         <!-- Start of View User Activity Modal -->
-        <div id="viewUAModal" class="modal-containers" style="display: none; max-width: 300px; height: 400px; overflow: auto;">
+        <div id="viewUAModal" class="modal-containers" style="display: none; max-width: 450px; height: 400px; overflow: auto;">
             <span class="close" id="closeViewUAModal">&times;</span>
             <h2>User Activity Log</h2>
             <!-- Log content goes here -->
@@ -717,7 +717,8 @@ $uname = $_SESSION['user_name'];
                 <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" value="">
-                </div><br/>
+                </div>
+                <br/>
                 <button type="button" id="updateButton" class="updateButton" style="position: absolute; bottom: 10px; right: 10px;">Update</button>
             </form>
         </div>
@@ -951,7 +952,7 @@ $uname = $_SESSION['user_name'];
                 <!-- Log content goes here -->
                 <div class="card-container" style="display: flex; justify-content: space-around; gap: 10px;">
                     <!-- First Card - Administrator Log -->
-                    <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box;">
+                    <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box; padding-right: 2%;">
                         <h2>Administrator Log</h2>
                         <?php
                         $sql = "SELECT * FROM log WHERE user_id='$uid' ORDER BY timestamp DESC";
@@ -972,7 +973,7 @@ $uname = $_SESSION['user_name'];
                                 $row = $data[$i];
                                 echo '<div style="display: flex; align-items: center; justify-content: space-between;"><img class="img-circle" src="../pictures/profile' . $uid. '.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"><p>Administrator</p><center>';
                                 echo $row['activity'];
-                                echo '<br />';
+                                echo '</center><center>';
                                 echo $row['timestamp'];
                                 echo '</center></div><hr />';
                             }
@@ -1006,7 +1007,7 @@ $uname = $_SESSION['user_name'];
                         </div>
                     </div>
                     <!-- Second Card - All Log Data -->
-                    <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box;">
+                    <div class="card log-card" style="flex-basis: 48%; box-sizing: border-box; padding-right: 2%;">
                         <h2>All Activity Log Data</h2>
                         <?php
                         $sqls = "SELECT log.*, users.username AS user_name FROM log LEFT JOIN users ON log.user_id = users.id ORDER BY log.timestamp DESC";
@@ -1026,7 +1027,7 @@ $uname = $_SESSION['user_name'];
                                 $rowAll = $dataAll[$i];
                                 echo '<div style="display: flex; align-items: center; justify-content: space-between;"><img class="img-circle" src="../pictures/profile' . $rowAll['user_id'] . '.jpg" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"><p>' . $rowAll['user_name'] . '</p>';
                                 echo $rowAll['activity'];
-                                echo '<br />';
+                                echo '</center><center>';
                                 echo $rowAll['timestamp'];
                                 echo '</center></div><hr />';
                             }
@@ -1474,7 +1475,7 @@ $uname = $_SESSION['user_name'];
                 if (logs.length > 0) {
                     logs.forEach(log => {
                         const logEntry = document.createElement("div");
-                        logEntry.innerHTML = `<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile${userId}.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>${log.activity}<br />${log.timestamp}</center></div><hr />`;
+                        logEntry.innerHTML = `<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile${userId}.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><center>${log.activity}</center><center><p style="margin-right: 10px;">${log.timestamp}</p></center></div><hr />`;
                         logContent.appendChild(logEntry);
                     });
                 } else {

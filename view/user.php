@@ -611,8 +611,8 @@ $uname = $_SESSION['user_name'];
             <!-- End of Edit Info Modal -->
             <!-- Start of Activity Log Content -->
             <div id="logModal" class="modal-container" style="margin-top: -17px; min-height: 73vh;">
-                <div class="card-container">
-                    <div class="card log-card">
+                <div class="card-container" style="padding-right: 2%;">
+                    <div class="card log-card" style="max-width: 625px;">
                     <center><h2>Activity Log</h2></center>
                         <?php
                         $user_id = $row['user_id'];
@@ -634,7 +634,7 @@ $uname = $_SESSION['user_name'];
                                 $row = $data[$i];
                                 echo '<div style="display: flex; justify-content: space-between;"><img class="img-circle" src="../pictures/profile'.$uid.'.jpg" style="max-width: 50px; max-height: 50px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"><p>'.$row['user_name'].'</p><center>';
                                 echo $row['activity'];
-                                echo '<br />';
+                                echo '</center><center>';
                                 echo $row['timestamp'];
                                 echo '</center></div><hr />';
                             }
@@ -1055,7 +1055,7 @@ $uname = $_SESSION['user_name'];
                         // Create and append a "No Search Results" message
                         const noResultsDiv = document.createElement("div");
                         noResultsDiv.id = "no-results-message";
-                        noResultsDiv.innerHTML = "<p>No Search results found</p>";
+                        noResultsDiv.innerHTML = "<p style='color: red;'>No Search results found</p>";
                         const cardContainer = document.querySelector(".card-container");
                         cardContainer.appendChild(noResultsDiv);
                     }
