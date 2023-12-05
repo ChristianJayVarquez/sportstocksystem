@@ -1184,15 +1184,16 @@ $uname = $_SESSION['user_name'];
                 AddEModal.style.display = "none";
             }
 
-            window.addEventListener("click", function (event) {
-                if (event.target === AddEModal) {
-                    hideAddEModal();
+            // Close the modal when clicking anywhere outside of it
+            document.addEventListener("click", (event) => {
+                if (!AddEModal.contains(event.target)) {
+                    AddEModal.style.display = "none";
                 }
             });
 
-            document.addEventListener("keyup", function (event) {
+            document.addEventListener("keyup", (event) => {
                 if (event.key === "Escape") {
-                    hideAddEModal();
+                    AddEModal.style.display = "none";
                 }
             });
 
@@ -1202,6 +1203,8 @@ $uname = $_SESSION['user_name'];
 
             AddEButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
+                    // Stop the click event from propagating to the document
+                    event.stopPropagation();
                     showAddEModal();
                 });
             });
@@ -1289,21 +1292,24 @@ $uname = $_SESSION['user_name'];
                 closeEditEModal();
             });
 
-            window.addEventListener("click", function (event) {
-                if (event.target === EditEModal) {
-                    closeEditEModal();
+            // Close the modal when clicking anywhere outside of it
+            document.addEventListener("click", (event) => {
+                if (!EditEModal.contains(event.target)) {
+                    EditEModal.style.display = "none";
                 }
             });
 
-            document.addEventListener("keyup", function (event) {
+            document.addEventListener("keyup", (event) => {
                 if (event.key === "Escape") {
-                    closeEditEModal();
+                    EditEModal.style.display = "none";
                 }
             });
 
             // Event listeners for Edit buttons
             editButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
+                    // Stop the click event from propagating to the document
+                    event.stopPropagation();
                     showEditModal(button);
                 });
             });
@@ -1365,15 +1371,16 @@ $uname = $_SESSION['user_name'];
                 AddNModal.style.display = "none";
             }
 
-            window.addEventListener("click", function (event) {
-                if (event.target === AddNModal) {
-                    hideAddNModal();
+            // Close the modal when clicking anywhere outside of it
+            document.addEventListener("click", (event) => {
+                if (!AddNModal.contains(event.target)) {
+                    AddNModal.style.display = "none";
                 }
             });
 
-            document.addEventListener("keyup", function (event) {
+            document.addEventListener("keyup", (event) => {
                 if (event.key === "Escape") {
-                    hideAddNModal();
+                    AddNModal.style.display = "none";
                 }
             });
 
@@ -1383,6 +1390,8 @@ $uname = $_SESSION['user_name'];
 
             AddNButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
+                    // Stop the click event from propagating to the document
+                    event.stopPropagation();
                     showAddNModal();
                 });
             });
@@ -1402,15 +1411,16 @@ $uname = $_SESSION['user_name'];
                 RequestModal.style.display = "none";
             }
 
-            window.addEventListener("click", function (event) {
-                if (event.target === RequestModal) {
-                    hideRequestModal();
+            // Close the modal when clicking anywhere outside of it
+            document.addEventListener("click", (event) => {
+                if (!RequestModal.contains(event.target)) {
+                    RequestModal.style.display = "none";
                 }
             });
 
-            document.addEventListener("keyup", function (event) {
+            document.addEventListener("keyup", (event) => {
                 if (event.key === "Escape") {
-                    hideRequestModal();
+                    RequestModal.style.display = "none";
                 }
             });
 
@@ -1420,6 +1430,8 @@ $uname = $_SESSION['user_name'];
 
             RequestsButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
+                    // Stop the click event from propagating to the document
+                    event.stopPropagation();
                     showRequestModal();
                 });
             });
@@ -1443,14 +1455,23 @@ $uname = $_SESSION['user_name'];
 
             closeViewUAModal.addEventListener("click", hideViewUAModal);
 
-            window.addEventListener("click", function (event) {
-                if (event.target === viewUAModal) {
-                    hideViewUAModal();
+           // Close the modal when clicking anywhere outside of it
+           document.addEventListener("click", (event) => {
+                if (!viewUAModal.contains(event.target)) {
+                    viewUAModal.style.display = "none";
+                }
+            });
+
+            document.addEventListener("keyup", (event) => {
+                if (event.key === "Escape") {
+                    viewUAModal.style.display = "none";
                 }
             });
 
             viewUAButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
+                    // Stop the click event from propagating to the document
+                    event.stopPropagation();
                     const userId = button.getAttribute("data-userid");
                     document.getElementById("viewUid").value = userId;
                     showViewUAModal(userId);
