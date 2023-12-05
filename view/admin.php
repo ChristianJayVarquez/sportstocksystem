@@ -335,6 +335,13 @@ $uname = $_SESSION['user_name'];
             }
         }
     </style>
+    <script src="../scripts/jquery.min.js"></script>
+    <script src="../scripts/popper.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/admin-modal-scripts.js"></script>
+    <script src="../scripts/admin-scripts.js"></script>
+    <script src="../scripts/admin-sidebar-scripts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <body>
     <header>
         <!-- Button to toggle the sidebar -->
@@ -704,8 +711,7 @@ $uname = $_SESSION['user_name'];
         <div id="editInfoModal" class="modal-containers" style="display: none;">
             <span class="close" id="closeEditInfoModal">&times;</span>
             <h2>Edit User Information</h2>
-            <form id="editInfoForm" method="post">
-                <!-- Add a hidden input field for user ID -->
+            <form id="editInfoForm" method="post" enctype="multipart/form-data">
                 <input type="hidden" id="editUserId" name="userId" value="">
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -718,6 +724,10 @@ $uname = $_SESSION['user_name'];
                 <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" value="">
+                </div>
+                <div class="form-group">
+                    <label for="profilePicture">Profile Picture:</label>
+                    <input type="file" id="profilePicture" name="profile_picture">
                 </div>
                 <br/>
                 <button type="button" id="updateButton" class="updateButton" style="position: absolute; bottom: 10px; right: 10px;">Update</button>
@@ -1091,13 +1101,6 @@ $uname = $_SESSION['user_name'];
     <footer>
         <p>&copy; 2023 SportStock System: ADS | Made by: Group2 @ AY: 2023-2024</p>
     </footer>
-    <script src="../scripts/jquery.min.js"></script>
-    <script src="../scripts/popper.min.js"></script>
-    <script src="../scripts/bootstrap.min.js"></script>
-    <script src="../scripts/admin-modal-scripts.js"></script>
-    <script src="../scripts/admin-scripts.js"></script>
-    <script src="../scripts/admin-sidebar-scripts.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         // Function to show toaster message
         function showToast(message) {
@@ -1484,32 +1487,26 @@ $uname = $_SESSION['user_name'];
                 }
             }
         });
-    </script>
+    </script>    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Get all editInfoButtons and editInfoModals
             const editInfoButtons = document.querySelectorAll(".editInfoButton");
             const editInfoModal = document.getElementById("editInfoModal");
             const editInfoForm = document.getElementById("editInfoForm");
             const updateButton = document.getElementById("updateButton");
+            const profilePictureInput = document.getElementById("profilePicture");
 
-            // Show the "Edit Info" modal when a button is clicked
             editInfoButtons.forEach(editInfoButton => {
                 editInfoButton.addEventListener("click", () => {
                     editInfoModal.style.display = "block";
                     const userData = JSON.parse(editInfoButton.getAttribute("data-user"));
-
-                    // Set the user ID in the hidden input field
                     editInfoModal.querySelector("#editUserId").value = userData.id;
-
-                    // Populate the modal fields with the user data
                     editInfoModal.querySelector("#name").value = userData.name;
                     editInfoModal.querySelector("#course").value = userData.course;
                     editInfoModal.querySelector("#username").value = userData.username;
                 });
             });
 
-            // Close the "Edit Info" modal when clicking outside or pressing 'Esc' key
             window.addEventListener("click", (event) => {
                 if (event.target === editInfoModal) {
                     editInfoModal.style.display = "none";
@@ -1524,30 +1521,16 @@ $uname = $_SESSION['user_name'];
 
             const closeEditInfoModal = document.getElementById("closeEditInfoModal");
 
-            // Close the "Edit Info" modal when the close button is clicked
             closeEditInfoModal.addEventListener("click", () => {
                 editInfoModal.style.display = "none";
             });
 
-            // AJAX function for form submission
             updateButton.addEventListener("click", () => {
-                // Manually trigger the form submission
-                editInfoForm.dispatchEvent(new Event("submit"));
-            });
+                const formData = new FormData(editInfoForm);
 
-            editInfoForm.addEventListener("submit", (event) => {
-                event.preventDefault();
-
-                // Serialize the form data into a URL-encoded string
-                const formData = new URLSearchParams(new FormData(editInfoForm));
-
-                // Send an AJAX request using the Fetch API
                 fetch("../process/edit-user-info.php", {
                     method: "POST",
                     body: formData,
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
                 })
                 .then(response => {
                     if (response.ok) {
@@ -1560,9 +1543,20 @@ $uname = $_SESSION['user_name'];
                     if (data.success) {
                         console.log("Update successful!");
                         editInfoModal.style.display = "none";
-                        setTimeout(function() {
-                            window.location.href = "admin.php?toasterMessage=User%20Information%20Updated%20Successfully!";
+
+                        // Generate a unique version parameter to force browser to fetch the updated image
+                        const version = new Date().getTime();
+                        const profilePicture = document.getElementById("profilePicture");
+                        profilePicture.src = `../pictures/profile.jpg?version=${version}`;
+
+                        setTimeout(function () {
+                            window.location.href = `admin.php?toasterMessage=User%20Information%20Updated%20Successfully!&version=${version}`;
                         }, 500);
+                        window.onload = function () {
+                            setTimeout(function () {
+                            window.location.href = `admin.php?toasterMessage=User%20Information%20Updated%20Successfully!&version=${version}`;
+                        }, 500);
+                        };
                     } else {
                         console.error("Update failed.");
                     }
@@ -1709,7 +1703,6 @@ $uname = $_SESSION['user_name'];
                 });
             });
         });
-    </script>
     </script>
 </body>
 </html>
