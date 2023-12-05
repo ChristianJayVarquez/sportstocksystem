@@ -3,6 +3,7 @@
 <head>
     <title>Login & Registration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="website icon" type="png" href="../pictures/logos.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -158,67 +159,141 @@
             color: #fff;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <button id="loginButton" class="active">Login</button>
-                <button id="registerButton">Register</button>
-            </div>
-            <div class="card-body" id="loginModal">
-                <h2>Login</h2>
-                <p>This is the Login Interface. To get started, please enter your username and password below:</p>
-                <form id="loginForm" action="../process/login.php">
-                    <div class="form-group">
-                        <input type="text" id="username" name="username" required>
-                        <label for="username" style="color: #fff;">Username:</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id="password" name="password" required>
-                        <label for="password" style="color: #fff;">Password:</label>
-                        <div class="password-toggle" id="passwordToggle">
-                            <i class="far fa-eye" style="color: #fff;"></i>
-                        </div>
-                    </div>
-                    <button type="submit" name="login">Login</button>
-                </form>
-            </div>
-            <div class="card-body" id="registerModal">
-                <p>Please enter the required information:</p>
-                <form id="registrationForm" method="POST" action="../process/pending_registrations.php">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" required>
-                        <label for="name" style="color: #fff;">Name:</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="course" name="course" required>
-                        <label for="course" style="color: #fff;">Course & Year Level:</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="id_number" name="id_number">
-                        <label for="id_number" style="color: #fff;">UserID:</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="newUsername" name="newUsername" required>
-                        <label for="newUsername" style="color: #fff;">Username:</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id="newPassword" name="newPassword" required>
-                        <label for="newPassword" style="color: #fff;">Password:</label>
-                        <div class="password-toggle" id="newPasswordToggle" style="color: #fff;">
-                            <i class="far fa-eye"></i>
-                        </div>
-                    </div>
-                    <button type="submit" name="register">Register</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div id="toaster">
-        <div id="toaster-message"></div>
-    </div>
-    <script src="../scripts/indexscript.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginButton = document.getElementById("loginButton");
+            const registerButton = document.getElementById("registerButton");
+            const loginModal = document.getElementById("loginModal");
+            const registerModal = document.getElementById("registerModal");
+            const loginForm = document.getElementById("loginForm");
+
+            const setActiveTab = (tabName, activeButton, inactiveButton) => {
+                activeButton.classList.add("active");
+                inactiveButton.classList.remove("active");
+
+                loginModal.style.display = tabName === "login" ? "block" : "none";
+                registerModal.style.display = tabName === "register" ? "block" : "none";
+            };
+
+            const setDefaultTab = () => {
+                const activeTab = localStorage.getItem("activeTab") || "login";
+                setActiveTab(activeTab, activeTab === "login" ? loginButton : registerButton, activeTab === "login" ? registerButton : loginButton);
+            };
+
+            setDefaultTab();
+
+            if (!localStorage.getItem("activeTab")) {
+                localStorage.setItem("activeTab", "login");
+                setActiveTab("login", loginButton, registerButton);
+            }
+
+            loginButton.addEventListener("click", function () {
+                localStorage.setItem("activeTab", "login");
+                setActiveTab("login", loginButton, registerButton);
+            });
+
+            registerButton.addEventListener("click", function () {
+                localStorage.setItem("activeTab", "register");
+                setActiveTab("register", registerButton, loginButton);
+            });
+
+            loginForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                const formData = new FormData();
+                formData.append("username", username);
+                formData.append("password", password);
+
+                fetch("../process/login.php", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            const dashboardURL = data.role === "admin" ? "../view/admin.php" : "../view/user.php";
+                            const message = `You have Logged in Successfully! Welcome to ${data.role} Dashboard!`;
+
+                            window.location.href = `${dashboardURL}?toasterMessage=${encodeURIComponent(message)}`;
+                        } else {
+                            showToast("Invalid username or password. Please try again.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Login error:", error);
+                        showToast("An error occurred. Please try again.");
+                    });
+            });
+
+            function showToast(message) {
+                const toaster = document.getElementById('toaster-message');
+                toaster.innerHTML = message;
+                toaster.parentElement.style.display = 'block';
+
+                setTimeout(function () {
+                    toaster.parentElement.style.display = 'none';
+                    toaster.innerHTML = '';
+                }, 5000);
+            }
+
+            function moveLabelToTop(input) {
+                const label = input.previousElementSibling;
+                label.style.top = 0;
+                label.style.fontSize = "12px";
+                label.style.color = "#aaa";
+            }
+
+            document.querySelectorAll('.form-group input').forEach((input) => {
+                input.addEventListener('focus', () => {
+                    moveLabelToTop(input);
+                });
+
+                input.addEventListener('blur', () => {
+                    if (!input.value) {
+                        const label = input.previousElementSibling;
+                        label.style.top = '50%';
+                        label.style.fontSize = '';
+                        label.style.color = '';
+                    }
+                });
+
+                if (input.value) {
+                    moveLabelToTop(input);
+                }
+            });
+
+            // Password toggle functionality
+            const passwordInput = document.getElementById("password");
+            const passwordToggle = document.getElementById("passwordToggle");
+
+            passwordToggle.addEventListener("click", function () {
+                togglePasswordVisibility(passwordInput, "passwordToggle");
+            });
+
+            const newPasswordInput = document.getElementById("newPassword");
+            const newPasswordToggle = document.getElementById("newPasswordToggle");
+
+            newPasswordToggle.addEventListener("click", function () {
+                togglePasswordVisibility(newPasswordInput, "newPasswordToggle");
+            });
+
+            function togglePasswordVisibility(input, toggleId) {
+                const type = input.getAttribute("type") === "password" ? "text" : "password";
+                input.setAttribute("type", type);
+
+                // Change eye icon based on password visibility
+                const toggleIcon = document.getElementById(toggleId);
+                if (type === "password") {
+                    toggleIcon.innerHTML = '<i class="far fa-eye"></i>';
+                } else {
+                    toggleIcon.innerHTML = '<i class="far fa-eye-slash"></i>';
+                }
+            }
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const loginButton = document.getElementById("loginButton");
@@ -389,140 +464,65 @@
         // Check device width when the window is resized
         window.onresize = checkDeviceWidth;
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const loginButton = document.getElementById("loginButton");
-            const registerButton = document.getElementById("registerButton");
-            const loginModal = document.getElementById("loginModal");
-            const registerModal = document.getElementById("registerModal");
-            const loginForm = document.getElementById("loginForm");
-
-            const setActiveTab = (tabName, activeButton, inactiveButton) => {
-                activeButton.classList.add("active");
-                inactiveButton.classList.remove("active");
-
-                loginModal.style.display = tabName === "login" ? "block" : "none";
-                registerModal.style.display = tabName === "register" ? "block" : "none";
-            };
-
-            const setDefaultTab = () => {
-                const activeTab = localStorage.getItem("activeTab") || "login";
-                setActiveTab(activeTab, activeTab === "login" ? loginButton : registerButton, activeTab === "login" ? registerButton : loginButton);
-            };
-
-            setDefaultTab();
-
-            if (!localStorage.getItem("activeTab")) {
-                localStorage.setItem("activeTab", "login");
-                setActiveTab("login", loginButton, registerButton);
-            }
-
-            loginButton.addEventListener("click", function () {
-                localStorage.setItem("activeTab", "login");
-                setActiveTab("login", loginButton, registerButton);
-            });
-
-            registerButton.addEventListener("click", function () {
-                localStorage.setItem("activeTab", "register");
-                setActiveTab("register", registerButton, loginButton);
-            });
-
-            loginForm.addEventListener("submit", function (e) {
-                e.preventDefault();
-
-                const username = document.getElementById("username").value;
-                const password = document.getElementById("password").value;
-
-                const formData = new FormData();
-                formData.append("username", username);
-                formData.append("password", password);
-
-                fetch("../process/login.php", {
-                    method: "POST",
-                    body: formData,
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            const dashboardURL = data.role === "admin" ? "../view/admin.php" : "../view/user.php";
-                            const message = `You have Logged in Successfully! Welcome to ${data.role} Dashboard!`;
-
-                            window.location.href = `${dashboardURL}?toasterMessage=${encodeURIComponent(message)}`;
-                        } else {
-                            showToast("Invalid username or password. Please try again.");
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Login error:", error);
-                        showToast("An error occurred. Please try again.");
-                    });
-            });
-
-            function showToast(message) {
-                const toaster = document.getElementById('toaster-message');
-                toaster.innerHTML = message;
-                toaster.parentElement.style.display = 'block';
-
-                setTimeout(function () {
-                    toaster.parentElement.style.display = 'none';
-                    toaster.innerHTML = '';
-                }, 5000);
-            }
-
-            function moveLabelToTop(input) {
-                const label = input.previousElementSibling;
-                label.style.top = 0;
-                label.style.fontSize = "12px";
-                label.style.color = "#aaa";
-            }
-
-            document.querySelectorAll('.form-group input').forEach((input) => {
-                input.addEventListener('focus', () => {
-                    moveLabelToTop(input);
-                });
-
-                input.addEventListener('blur', () => {
-                    if (!input.value) {
-                        const label = input.previousElementSibling;
-                        label.style.top = '50%';
-                        label.style.fontSize = '';
-                        label.style.color = '';
-                    }
-                });
-
-                if (input.value) {
-                    moveLabelToTop(input);
-                }
-            });
-
-            // Password toggle functionality
-            const passwordInput = document.getElementById("password");
-            const passwordToggle = document.getElementById("passwordToggle");
-
-            passwordToggle.addEventListener("click", function () {
-                togglePasswordVisibility(passwordInput, "passwordToggle");
-            });
-
-            const newPasswordInput = document.getElementById("newPassword");
-            const newPasswordToggle = document.getElementById("newPasswordToggle");
-
-            newPasswordToggle.addEventListener("click", function () {
-                togglePasswordVisibility(newPasswordInput, "newPasswordToggle");
-            });
-
-            function togglePasswordVisibility(input, toggleId) {
-                const type = input.getAttribute("type") === "password" ? "text" : "password";
-                input.setAttribute("type", type);
-
-                // Change eye icon based on password visibility
-                const toggleIcon = document.getElementById(toggleId);
-                if (type === "password") {
-                    toggleIcon.innerHTML = '<i class="far fa-eye"></i>';
-                } else {
-                    toggleIcon.innerHTML = '<i class="far fa-eye-slash"></i>';
-                }
-            }
-        });
-    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <button id="loginButton" class="active">Login</button>
+                <button id="registerButton">Register</button>
+            </div>
+            <div class="card-body" id="loginModal">
+                <h2>Login</h2>
+                <p>This is the Login Interface. To get started, please enter your username and password below:</p>
+                <form id="loginForm" action="../process/login.php">
+                    <div class="form-group">
+                        <input type="text" id="username" name="username" required>
+                        <label for="username" style="color: #fff;">Username:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" required>
+                        <label for="password" style="color: #fff;">Password:</label>
+                        <div class="password-toggle" id="passwordToggle">
+                            <i class="far fa-eye" style="color: #fff;"></i>
+                        </div>
+                    </div>
+                    <button type="submit" name="login">Login</button>
+                </form>
+            </div>
+            <div class="card-body" id="registerModal">
+                <p>Please enter the required information:</p>
+                <form id="registrationForm" method="POST" action="../process/pending_registrations.php">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" required>
+                        <label for="name" style="color: #fff;">Name:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="course" name="course" required>
+                        <label for="course" style="color: #fff;">Course & Year Level:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="id_number" name="id_number">
+                        <label for="id_number" style="color: #fff;">UserID:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="newUsername" name="newUsername" required>
+                        <label for="newUsername" style="color: #fff;">Username:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="newPassword" name="newPassword" required>
+                        <label for="newPassword" style="color: #fff;">Password:</label>
+                        <div class="password-toggle" id="newPasswordToggle" style="color: #fff;">
+                            <i class="far fa-eye"></i>
+                        </div>
+                    </div>
+                    <button type="submit" name="register">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="toaster">
+        <div id="toaster-message"></div>
+    </div>
 </body>
 </html>

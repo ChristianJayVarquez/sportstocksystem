@@ -14,6 +14,7 @@ $uname = $_SESSION['user_name'];
 <head>
     <title>SportStock User Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="website icon" type="png" href="../pictures/logos.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -555,31 +556,39 @@ $uname = $_SESSION['user_name'];
                     if ($result->num_rows > 0) {
                         // Fetch user data
                         $row = $result->fetch_assoc();
+                        $image_version = time(); // Get a unique version identifier
                     ?>
-                    <div class="card profile-card">
-                        <center><h2>Personal Data</h2></center>
-                        <div style="width: 125px; height: 125px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                            <a href="#"><img class="img-circle" src="../pictures/profile<?php echo $uid;?>.jpg" style="width: 100%; height: 100%; object-fit: cover;"></a>
+                        <div class="card profile-card">
+                            <center><h2>Personal Data</h2></center>
+                            <div style="width: 125px; height: 125px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                                <!-- Display current profile picture with version parameter -->
+                                <a href="#"><img class="img-circle" src="../pictures/profile<?php echo $uid;?>.jpg?<?php echo $image_version; ?>" style="width: 100%; height: 100%; object-fit: cover;"></a>
+
+                                <!-- Add form for updating profile picture -->
+                                <form action="../process/update_profile_picture.php" method="post" enctype="multipart/form-data">
+                                    <input type="file" name="profile_picture" accept="image/*" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                                    <button type="submit" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: transparent; border: none; color: green;"><i class="fas fa-upload" style="color: green;"></i></button>
+                                </form>
+                            </div>
+                            <center><button id="editInfoButton">Edit info <i class="fas fa-pencil"></i></button></center><br />
+                            <div class="label-data-pair">
+                                <label>Name: </label><?php echo $row['name']; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>Course & Year Level:</label> <?php echo $row['course']; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>User ID:</label> <?php echo $row['user_id']; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>Username:</label> <?php echo $row['username']; ?>
+                            </div>
+                            <div class="label-data-pair">
+                                <label>Password:</label> ********
+                            </div>
                         </div>
-                        <center><button id="editInfoButton">Edit info <i class="fas fa-pencil"></i></button></center><br />
-                        <div class="label-data-pair">
-                            <label>Name: </label><?php echo $row['name']; ?>
-                        </div>
-                        <div class="label-data-pair">
-                            <label>Course & Year Level:</label> <?php echo $row['course']; ?>
-                        </div>
-                        <div class="label-data-pair">
-                            <label>User ID:</label> <?php echo $row['user_id']; ?>
-                        </div>
-                        <div class="label-data-pair">
-                            <label>Username:</label> <?php echo $row['username']; ?>
-                        </div>
-                        <div class="label-data-pair">
-                            <label>Password:</label> ********
-                        </div>
-                    </div>
                     <?php
-                        }
+                    }
                     ?>
                 </div>
             </div>

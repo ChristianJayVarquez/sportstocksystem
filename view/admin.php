@@ -15,6 +15,7 @@ $uname = $_SESSION['user_name'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SportStock Admin Dashboard</title>
+    <link rel="website icon" type="png" href="../pictures/logos.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../styles/admin-styles.css">
