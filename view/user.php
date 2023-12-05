@@ -293,7 +293,13 @@ $uname = $_SESSION['user_name'];
             <!-- End of Home Content -->
             <!-- Start of Equipment List -->
             <div id="equipmentsModal" class="modal-container">
-                <h2>Check-out Equipment</h2>
+                <h2 style="position: relative;">Check-out Equipment</h2>
+                <div style="position: absolute; top: 150px; right: 10px;">
+                    <div class="search-container">
+                        <input type="text" id="equipment-search" style="max-width: 300px;" placeholder="Search for equipment...">
+                        <button id="search-button" style="background-color: green; color: white;"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
                 <div class="card-container">
                     <?php
                     // Check for the "equipment_page" parameter in the URL or set it to 1 by default
@@ -315,7 +321,7 @@ $uname = $_SESSION['user_name'];
                             $eid = $row['eid'];
                             $ename = $row['ename'];
                     ?>
-                    <div class="card equipment-card">
+                    <div class="card equipment-card" data-ename="<?php echo strtolower($ename); ?>">
                         <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                             <img class="img-circle" src="../pictures/equipment<?php echo $row['eid'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
                         </div><br />
@@ -1018,6 +1024,49 @@ $uname = $_SESSION['user_name'];
                         label.style.color = 'black'; // Keep label color black when input is empty
                     }
                 });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("equipment-search");
+
+            searchInput.addEventListener("input", function () {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                // Show all equipment cards
+                const allCards = document.querySelectorAll('.equipment-card');
+                allCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+
+                // Show only the cards that match the search term
+                if (searchTerm) {
+                    const nonMatchingCards = document.querySelectorAll(`.equipment-card:not([data-ename*="${searchTerm}"])`);
+                    nonMatchingCards.forEach(card => {
+                        card.style.display = 'none';
+                    });
+                }
+
+                // Check if no results are found
+                const noResultsMessage = document.getElementById("no-results-message");
+                if (document.querySelectorAll('.equipment-card:not([style="display: none;"])').length === 0) {
+                    if (noResultsMessage) {
+                        noResultsMessage.style.display = 'block';
+                    } else {
+                        // Create and append a "No Search Results" message
+                        const noResultsDiv = document.createElement("div");
+                        noResultsDiv.id = "no-results-message";
+                        noResultsDiv.innerHTML = "<p>No Search results found</p>";
+                        const cardContainer = document.querySelector(".card-container");
+                        cardContainer.appendChild(noResultsDiv);
+                    }
+                } else {
+                    // Hide the "No Search Results" message if it exists
+                    if (noResultsMessage) {
+                        noResultsMessage.style.display = 'none';
+                    }
+                }
             });
         });
     </script>

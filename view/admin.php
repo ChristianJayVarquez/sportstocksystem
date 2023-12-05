@@ -406,7 +406,7 @@ $uname = $_SESSION['user_name'];
                     for ($i = $startIndex; $i < $endIndex; $i++) {
                         $equipment = $data[$i];
                 ?>
-                <div class="card equipment-card"    >
+                <div class="card equipment-card" data-ename="<?php echo strtolower($equipment['ename']); ?>">
                     <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                         <img class="img-circle" src="../pictures/equipment<?php echo $equipment['eid'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
                     </div><br />
@@ -562,16 +562,19 @@ $uname = $_SESSION['user_name'];
         <!-- Start of User Content -->
         <div class="modal-container" id="user-modal">
             <div class="modal-content">
-                <h2>User Accounts</h2>
-
+                <h2 style="position: relative;">User Accounts</h2>
                 <div class="float-right" style="position: absolute; top: 10px; right: 10px;">
                     <button id="addN-button" class="addN-button btn-success" style="padding: 5px;">Add New User</button>
                     <button id="request-button" class="request-button btn-success" style="padding: 5px;">Registration Requests</button>
                 </div>
-
-                <div class="search-container" style="position: absolute; top: 10px; left: 10px;">
-                    <input type="text" id="user-search" style="max-width: 300px;" placeholder="Search for users...">
-                    <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                <div style="position: absolute; top: 0; left: 0; padding: 10px;">
+                    <div class="search-container">
+                        <input type="text" id="user-search" style="max-width: 300px;" placeholder="Search for users...">
+                        <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div id="no-results-message" style="display: none; text-align: center; margin-top: 20px;">
+                    <p>No search results found</p>
                 </div>
                 <div class="card-container">
                     <?php
@@ -592,8 +595,9 @@ $uname = $_SESSION['user_name'];
 
                             for ($i = $startIndex; $i < $endIndex; $i++) {
                                 $user = $data[$i];
+                                $usersDisplayed = true;
                     ?>
-                    <div class="card profile-card">
+                    <div class="card profile-card" data-uname="<?php echo strtolower($user['name']); ?>">
                     <div style="width: 115px; height: 115px; overflow: hidden; border-radius: 50%; position: relative; margin: 0 auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                         <div style="position: relative; width: 100%; height: 100%;">
                             <img class="img-circle" src="../pictures/profile<?php echo $user['id'];?>.jpg" style="width: 100%; height: 100%; object-fit: cover;">
@@ -654,8 +658,10 @@ $uname = $_SESSION['user_name'];
                         }
                     ?>
                 </div>
-
                 <?php
+                        if (!$usersDisplayed) {
+                            echo '<script>document.getElementById("no-results-message").style.display = "block";</script>';
+                        }
                     } else {
                         echo "No users found";
                     }
@@ -794,18 +800,17 @@ $uname = $_SESSION['user_name'];
         <div class="modal-container" id="borrowing-modal">
             <div class="modal-content">
                 <h2 style="position: relative;">Borrowing History</h2>
-                <div style="position: absolute; top: 0; left: 0; padding: 10px;">
-                    <div class="search-container">
-                        <input type="text" id="borrowing-search" style="max-width: 300px;" placeholder="Search for borrowing...">
-                        <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
                 <div class="float-right" style="position: absolute; top: 0; right: 0; padding: 10px;">
                     <button id="borrowing-button" class="borrowing-button btn-success" style="padding: 5px;">Borrow Equipment</button>
                 </div><br />
                 <div class="card-container" id="borrowing-card-container">
                     <!-- Borrowing Cards -->
                     <?php
+                    // Query to retrieve all records
+                    $allRecordsQuery = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id ORDER BY borrowing.date_returned DESC";
+                    $allRecordsResult = mysqli_query($conn, $allRecordsQuery);
+                    $allRecords = mysqli_fetch_all($allRecordsResult, MYSQLI_ASSOC);
+
                     // Determine the current page
                     $currentPage = isset($_GET['borrowing_page']) ? $_GET['borrowing_page'] : 1;
 
@@ -815,21 +820,12 @@ $uname = $_SESSION['user_name'];
                     // Calculate the starting point for the results
                     $startIndex = ($currentPage - 1) * $recordsPerPage;
 
-                    // Query to retrieve a limited set of records
-                    $sql = "SELECT borrowing.*, equipment.ename AS equipment_name, users.name AS user_name FROM borrowing LEFT JOIN equipment ON borrowing.equipment_id = equipment.eid LEFT JOIN users ON borrowing.user_id = users.user_id ORDER BY borrowing.user_id DESC LIMIT $startIndex, $recordsPerPage";
-
-                    $result = mysqli_query($conn, $sql);
-
-                    // Query to get the total number of records
-                    $totalRecordsQuery = "SELECT COUNT(*) as total FROM borrowing";
-                    $totalRecordsResult = mysqli_query($conn, $totalRecordsQuery);
-                    $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
-                    $totalRecords = $totalRecordsRow['total'];
-
-                    while ($row = $result->fetch_assoc()): 
+                    // Display data for the current page
+                    for ($i = $startIndex; $i < min($startIndex + $recordsPerPage, count($allRecords)); $i++) {
+                        $row = $allRecords[$i];
                     ?>
-                    <div class="card borrowing-card">
-                        <div class="card-content">
+                        <div class="card borrowing-card" style="padding-right: 2%;">
+                            <div class="card-content">
                             <div class="label-data-pair">
                                 <label>Record ID:</label> <?php echo $row['id']; ?>
                             </div>
@@ -854,12 +850,22 @@ $uname = $_SESSION['user_name'];
                             <div class="label-data-pair">
                                 <label>Return Date:</label> <?php echo $row['return_date']; ?>
                             </div>
+                            <?php
+                            $rdate = $row['date_returned'];
+                            if($rdate !== NULL){
+                            echo'<div class="label-data-pair">
+                                    <label>Date Returned:</label>'.$rdate.'
+                                </div>';
+                            }?>
                         </div>
                     </div>
-                    <?php endwhile; ?>
+                    <?php } ?>
                 </div><br /><br />
                 <div class="pagination" id="borrowing-pagination">
                     <?php
+                    // Calculate total pages
+                    $totalPages = ceil(count($allRecords) / $recordsPerPage);
+
                     // Display previous button
                     if ($currentPage > 1) {
                         echo "<li><a href='?borrowing_page=" . ($currentPage - 1) . "'>&laquo;</a></li>";
@@ -1095,39 +1101,47 @@ $uname = $_SESSION['user_name'];
         }
     </script>
     <script>
-        // Function to perform search across all equipment cards
-        function searchEquipment() {
-            // Get the trimmed lowercase user input
-            var searchTerm = equipmentInput.value.trim().toLowerCase();
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("equipment-search");
 
-            // Get all equipment cards
-            var equipmentCards = document.getElementsByClassName('card equipment-card');
+            searchInput.addEventListener("input", function () {
+                const searchTerm = searchInput.value.toLowerCase();
 
-            // Loop through each card and hide/show based on the search input
-            for (var i = 0; i < equipmentCards.length; i++) {
-                var equipmentName = equipmentCards[i].querySelector('.label-data-pair:nth-child(2)').innerText.toLowerCase(); // Equipment Name
-                var sportsCategory = equipmentCards[i].querySelector('.label-data-pair:nth-child(4)').innerText.toLowerCase(); // Sports Category
-                var equipmentId = equipmentCards[i].querySelector('.label-data-pair:nth-child(6)').innerText.toLowerCase(); // Equipment ID
+                // Show all equipment cards
+                const allCards = document.querySelectorAll('.equipment-card');
+                allCards.forEach(card => {
+                    card.style.display = 'block';
+                });
 
-                // Check if the search term matches the equipment name or sports category
-                if (equipmentName.includes(searchTerm) || sportsCategory.includes(searchTerm) || equipmentId.includes(searchTerm)) {
-                    equipmentCards[i].style.display = '';
-                } else {
-                    equipmentCards[i].style.display = 'none';
+                // Show only the cards that match the search term
+                if (searchTerm) {
+                    const nonMatchingCards = document.querySelectorAll(`.equipment-card:not([data-ename*="${searchTerm}"])`);
+                    nonMatchingCards.forEach(card => {
+                        card.style.display = 'none';
+                    });
                 }
-            }
-        }
 
-        // Get the user input element
-        var equipmentInput = document.getElementById('equipment-search');
-
-        // Add event listener to detect changes in the input field
-        equipmentInput.addEventListener('input', function () {
-            searchEquipment();
+                // Check if no results are found
+                const noResultsMessage = document.getElementById("no-results-message");
+                if (document.querySelectorAll('.equipment-card:not([style="display: none;"])').length === 0) {
+                    if (noResultsMessage) {
+                        noResultsMessage.style.display = 'block';
+                    } else {
+                        // Create and append a "No Search Results" message
+                        const noResultsDiv = document.createElement("div");
+                        noResultsDiv.id = "no-results-message";
+                        noResultsDiv.innerHTML = "<p>No Search results found</p>";
+                        const cardContainer = document.querySelector(".card-container");
+                        cardContainer.appendChild(noResultsDiv);
+                    }
+                } else {
+                    // Hide the "No Search Results" message if it exists
+                    if (noResultsMessage) {
+                        noResultsMessage.style.display = 'none';
+                    }
+                }
+            });
         });
-
-        // Call the search function on initial load
-        searchEquipment();
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -1578,34 +1592,46 @@ $uname = $_SESSION['user_name'];
         }
     </script>
     <script>
-        // Get the user input element
-        var userInput = document.getElementById('user-search');
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("user-search");
 
-        // Add event listener to detect changes in the input field
-        userInput.addEventListener('input', function () {
-            // Get the trimmed lowercase user input
-            var searchTerm = userInput.value.trim().toLowerCase();
+            searchInput.addEventListener("input", function () {
+                const searchTerm = searchInput.value.toLowerCase();
 
-            // Get all user cards
-            var userCards = document.getElementsByClassName('card profile-card');
+                // Show all profile cards
+                const allCards = document.querySelectorAll('.profile-card');
+                allCards.forEach(card => {
+                    card.style.display = 'block';
+                });
 
-            // Check if the input is blank or contains only spaces
-            if (searchTerm === "") {
-                // If input is blank, show all cards
-                for (var i = 0; i < userCards.length; i++) {
-                    userCards[i].style.display = '';
+                // Show only the cards that match the search term
+                if (searchTerm) {
+                    const nonMatchingCards = document.querySelectorAll(`.profile-card:not([data-uname*="${searchTerm}"])`);
+                    nonMatchingCards.forEach(card => {
+                        card.style.display = 'none';
+                    });
                 }
-            } else {
-                // Loop through each card and hide/show based on the search input
-                for (var i = 0; i < userCards.length; i++) {
-                    var userName = userCards[i].querySelector('.label-data-pair:nth-child(2)').innerText.toLowerCase(); // Change selector based on your label order
-                    if (userName.includes(searchTerm)) {
-                        userCards[i].style.display = '';
+
+                // Check if no results are found
+                const noResultsMessage = document.getElementById("no-results-message");
+                if (document.querySelectorAll('.profile-card:not([style="display: none;"])').length === 0) {
+                    if (noResultsMessage) {
+                        noResultsMessage.style.display = 'block';
                     } else {
-                        userCards[i].style.display = 'none';
+                        // Create and append a "No Search Results" message
+                        const noResultsDiv = document.createElement("div");
+                        noResultsDiv.id = "no-results-message";
+                        noResultsDiv.innerHTML = "<p>No Search results found</p>";
+                        const cardContainer = document.querySelector(".card-container");
+                        cardContainer.appendChild(noResultsDiv);
+                    }
+                } else {
+                    // Hide the "No Search Results" message if it exists
+                    if (noResultsMessage) {
+                        noResultsMessage.style.display = 'none';
                     }
                 }
-            }
+            });
         });
     </script>
     <script>
@@ -1659,6 +1685,7 @@ $uname = $_SESSION['user_name'];
                 });
             });
         });
+    </script>
     </script>
     <script>
         function switchToMobileStyles() {

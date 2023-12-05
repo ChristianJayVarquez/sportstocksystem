@@ -261,16 +261,8 @@ hr {
   margin: 10px 0;
 }
 
-#user-search {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 60%;
-  margin-right: 5px;
-}
-
 #search-button {
-  background-color: #3498db;
+  background-color: #008000;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -280,7 +272,7 @@ hr {
 }
 
 #search-button:hover {
-  background-color: #2980b9;
+  background-color: #008000;
 }
 
 .paging-container {
@@ -288,7 +280,7 @@ hr {
 }
 
 .paging-container button {
-  background-color: #3498db;
+  background-color: #008000;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -299,7 +291,7 @@ hr {
 }
 
 .paging-container button:hover {
-  background-color: #2980b9;
+  background-color: #008000;
 }
 
 #page-info {
