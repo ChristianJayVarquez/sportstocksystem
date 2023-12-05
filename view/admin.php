@@ -314,6 +314,24 @@ $uname = $_SESSION['user_name'];
                 padding: 10px;
                 margin: 0;
             }
+
+            /* Updated styles for card container on mobile */
+            .card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                max-width: 100%; /* Adjusted to full width on mobile */
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                text-align: justify;
+                padding: 10px;
+                margin-bottom: 10px; /* Added margin between cards */
+            }
+
+            .card button {
+                margin-top: 10px;
+            }
         }
     </style>
 <body>
@@ -376,14 +394,16 @@ $uname = $_SESSION['user_name'];
         <!-- Start of Equipment Content -->
         <div class="modal-container" id="equipment-modal">
             <div class="modal-content">
-                <h2 style="position: relative;">Equipment</h2>
-                <div style="position: absolute; top: 0; right: 0; padding: 10px;">
-                    <button id="addE-button" class="addE-button btn-success" style="padding: 5px;">Add Equipment</button>
-                </div>
-                <div style="position: absolute; top: 0; left: 0; padding: 10px;">
-                    <div class="search-container">
-                        <input type="text" id="equipment-search" style="max-width: 300px;" placeholder="Search for equipment...">
-                        <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                <div class="header-container"><br />
+                    <h2 style="position: relative;">Equipment</h2>
+                    <div class="buttons" style="position: absolute; top: 0; right: 0; padding: 10px;">
+                        <button id="addE-button" class="addE-button btn-success" style="padding: 5px;">Add Equipment</button>
+                    </div>
+                    <div style="position: absolute; top: 0; left: 0; padding: 10px;">
+                        <div class="search-container">
+                            <input type="text" id="equipment-search" style="max-width: 125px;" placeholder="Search for equipment...">
+                            <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-container">
@@ -562,15 +582,17 @@ $uname = $_SESSION['user_name'];
         <!-- Start of User Content -->
         <div class="modal-container" id="user-modal">
             <div class="modal-content">
-                <h2 style="position: relative;">User Accounts</h2>
-                <div class="float-right" style="position: absolute; top: 10px; right: 10px;">
-                    <button id="addN-button" class="addN-button btn-success" style="padding: 5px;">Add New User</button>
-                    <button id="request-button" class="request-button btn-success" style="padding: 5px;">Registration Requests</button>
-                </div>
-                <div style="position: absolute; top: 0; left: 0; padding: 10px;">
-                    <div class="search-container">
-                        <input type="text" id="user-search" style="max-width: 300px;" placeholder="Search for users...">
-                        <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                <div class="header-container"><br />
+                    <h2 style="position: relative;">User Accounts</h2>
+                    <div class="buttons" style="position: absolute; top: 10px; right: 10px;">
+                        <button id="addN-button" class="addN-button btn-success" style="padding: 5px;">Add New User</button>
+                        <button id="request-button" class="request-button btn-success" style="padding: 5px;">Registration Requests</button>
+                    </div>
+                    <div class="search" style="position: absolute; top: 0; left: 0; padding: 10px;">
+                        <div class="search-container">
+                            <input type="text" id="user-search" style="max-width: 125px;" placeholder="Search for users...">
+                            <button id="search-button" style="background-color: green;"><i class="fas fa-search"></i></button>
+                        </div>
                     </div>
                 </div>
                 <div id="no-results-message" style="display: none; text-align: center; margin-top: 20px;">
@@ -894,7 +916,7 @@ $uname = $_SESSION['user_name'];
         <!-- End of Borrowing Content -->
         <!-- Start of Borrowing Modal -->
         <div id="BorrowingModal" class="modal-containers">
-            <span class="close" id="closeBorrowingModal">&times;</span>
+            <span class="close" id="closeBorrowingModal">&times;</span><br />
             <h2>Borrow Equipment</h2>
             <br />
             <!-- Form for Borrowing Equipment -->
@@ -1717,22 +1739,61 @@ $uname = $_SESSION['user_name'];
                         transition: none; /* Remove transition when sidebar is open */
                     }
 
-                    /* Other styles remain unchanged */
-                    .sidebar a {
-                        /* ... */
-                    }
-
-                    /* Button Styles */
-                    /* ... */
-
                     /* Main content styles */
                     .main-content {
                         margin-left: 0;
-                        transition: none !important; 
+                        transition: none !important;
                     }
 
                     /* Modal container styles */
-                    /* ... */
+                    .modal-container {
+                        width: 100%;
+                        left: 0;
+                        top: auto;
+                        transform: none;
+                        position: relative;
+                        height: auto;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        padding: 10px;
+                    }
+
+                    .modal-content {
+                        max-width: 100%;
+                        padding: 10px;
+                        margin: 0;
+                    }
+
+                    /* Updated styles for card container on mobile */
+                    .card-container {
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    .card {
+                        max-width: 100%; /* Adjusted to full width on mobile */
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                        text-align: justify;
+                        padding: 10px;
+                        margin-bottom: 10px; /* Added margin between cards */
+                    }
+
+                    .card button {
+                        margin-top: 10px;
+                    }
+
+                    .header-container {
+                        display: block;
+                        text-align: center;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .buttons,
+                    .search {
+                        position: static;
+                        margin-top: 10px;
+                    }
                 }
             `;
             styleSwitch.innerHTML = newStyle;
