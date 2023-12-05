@@ -13,6 +13,7 @@ $uname = $_SESSION['user_name'];
 <html lang="en">
 <head>
     <title>SportStock User Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -243,13 +244,10 @@ $uname = $_SESSION['user_name'];
         <center><table>
             <tr>
                 <td>
-                    <img src="../pictures/IT.png" style="width: auto; height: auto; max-width: 95px; max-height: 95px;">
+                <img src="../pictures/logos.png" style="width: auto; height: auto; max-width: 125px; max-height: 125px;">
                 </td>
                 <td>
                     <h1>SportStock User Dashboard</h1>
-                </td>
-                <td>
-                    <img src="../pictures/logos.png" style="width: auto; height: auto; max-width: 125px; max-height: 125px;">
                 </td>
             </tr>
         </table></center>
@@ -299,7 +297,7 @@ $uname = $_SESSION['user_name'];
                         <input type="text" id="equipment-search" style="max-width: 300px;" placeholder="Search for equipment...">
                         <button id="search-button" style="background-color: green; color: white;"><i class="fas fa-search"></i></button>
                     </div>
-                </div>
+                </div><br /><br />
                 <div class="card-container">
                     <?php
                     // Check for the "equipment_page" parameter in the URL or set it to 1 by default
@@ -476,7 +474,7 @@ $uname = $_SESSION['user_name'];
                                     </div>
                                     <div class="label-data-pair">
                                         <label>Status:</label> <?php echo $row['status']; ?>
-                                    </div>
+                                    </div><br />
                                     <?php
                                     if ($row['date_returned'] == NULL) {
                                         echo '<br /><div class="label-data-pair" style="position: absolute; bottom: 10px; right: 10px;">
@@ -678,7 +676,7 @@ $uname = $_SESSION['user_name'];
             <!-- End of Activity Log Content -->
             <!-- Start of Logout Content -->
             <div class="modal-container" id="logoutModal">
-                <div class="modal-content">
+                <div class="modal-content" style="min-height: 73vh;">
                     <!-- Logout Modal Content -->
                     <div class="card-container">
                         <div class="card profile-card">

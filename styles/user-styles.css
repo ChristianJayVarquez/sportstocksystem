@@ -52,6 +52,7 @@ hr {
   color: #795548; /* Brown */
   padding-top: 50px;
   transition: left 0.3s; /* Smooth slide-in/out animation */
+  z-index: 1000; /* Ensure the sidebar is on top */
 }
 
 .sidebar a {
@@ -232,7 +233,7 @@ li {
   margin-bottom: 5px;
   text-align: center;
   display: none;
-}
+} 
 
 /* Style for the equipment list */
 .equipment-list {

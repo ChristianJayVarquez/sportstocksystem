@@ -341,13 +341,10 @@ $uname = $_SESSION['user_name'];
         <center><table>
             <tr>
                 <td>
-                    <img src="../pictures/IT.png" style="width: auto; height: auto; max-width: 95px; max-height: 95px;">
+                <img src="../pictures/logos.png" style="width: auto; height: auto; max-width: 125px; max-height: 125px;">
                 </td>
                 <td>
                     <h1>SportStock Admin Dashboard</h1>
-                </td>
-                <td>
-                    <img src="../pictures/logos.png" style="width: auto; height: auto; max-width: 125px; max-height: 125px;">
                 </td>
             </tr>
         </table></center>
@@ -369,7 +366,7 @@ $uname = $_SESSION['user_name'];
     <main class="main-content">
         <!-- Start of Home Content -->
         <div class="modal-container" id="home-modal">
-            <div class="modal-content">
+            <div class="modal-content" style="min-height: 70vh;">
                 <h2>Welcome to SportStock Admin Dashboard</h2>
                 <p>
                     SportStock is your ultimate solution for managing sports equipment borrowing and return. <br />This user-friendly system allows you to efficiently track, organize, and manage all sports equipment, users, and borrowing records.
@@ -407,6 +404,9 @@ $uname = $_SESSION['user_name'];
                     </div>
                 </div>
                 <div class="card-container">
+                    <div id="no-eresults-message" style="display: none;">
+                        <p>No Search results found</p>
+                    </div>
                 <!-- Equipment Table -->
                 <?php
                 $sqls = "SELECT * FROM Equipment";
@@ -820,7 +820,7 @@ $uname = $_SESSION['user_name'];
         <!-- End of User Request Modal -->
         <!-- Start of Borrowing Content -->
         <div class="modal-container" id="borrowing-modal">
-            <div class="modal-content">
+            <div class="modal-content"><br />
                 <h2 style="position: relative;">Borrowing History</h2>
                 <div class="float-right" style="position: absolute; top: 0; right: 0; padding: 10px;">
                     <button id="borrowing-button" class="borrowing-button btn-success" style="padding: 5px;">Borrow Equipment</button>
@@ -916,7 +916,7 @@ $uname = $_SESSION['user_name'];
         <!-- End of Borrowing Content -->
         <!-- Start of Borrowing Modal -->
         <div id="BorrowingModal" class="modal-containers">
-            <span class="close" id="closeBorrowingModal">&times;</span><br />
+            <span class="close" id="closeBorrowingModal">&times;</span>
             <h2>Borrow Equipment</h2>
             <br />
             <!-- Form for Borrowing Equipment -->
@@ -1144,14 +1144,14 @@ $uname = $_SESSION['user_name'];
                 }
 
                 // Check if no results are found
-                const noResultsMessage = document.getElementById("no-results-message");
+                const noResultsMessage = document.getElementById("no-eresults-message");
                 if (document.querySelectorAll('.equipment-card:not([style="display: none;"])').length === 0) {
                     if (noResultsMessage) {
                         noResultsMessage.style.display = 'block';
                     } else {
                         // Create and append a "No Search Results" message
                         const noResultsDiv = document.createElement("div");
-                        noResultsDiv.id = "no-results-message";
+                        noResultsDiv.id = "no-eresults-message";
                         noResultsDiv.innerHTML = "<p>No Search results found</p>";
                         const cardContainer = document.querySelector(".card-container");
                         cardContainer.appendChild(noResultsDiv);
@@ -1708,114 +1708,6 @@ $uname = $_SESSION['user_name'];
             });
         });
     </script>
-    </script>
-    <script>
-        function switchToMobileStyles() {
-            const styleSwitch = document.getElementById('styleSwitch');
-            const newStyle = `
-                /* Media query for mobile responsiveness */
-                @media screen and (max-width: 768px) {
-                    /* Sidebar styles */
-                    .sidebar {
-                        /* Existing styles for closed sidebar */
-                        border: 4px solid #80522F;
-                        height: auto;
-                        min-height: 100vh;
-                        width: 225px;
-                        position: fixed;
-                        top: 0;
-                        left: -250px;
-                        background: #f2f2f2;
-                        color: #795548;
-                        padding-top: 50px;
-                        transition: padding 0.3s ease; /* Transition for padding */
-
-                        /* New styles for open sidebar */
-                    }
-
-                    /* Add styles for open sidebar */
-                    .sidebar.opened {
-                        padding-top: 100px; /* Example: Increased padding when sidebar is open */
-                        transition: none; /* Remove transition when sidebar is open */
-                    }
-
-                    /* Main content styles */
-                    .main-content {
-                        margin-left: 0;
-                        transition: none !important;
-                    }
-
-                    /* Modal container styles */
-                    .modal-container {
-                        width: 100%;
-                        left: 0;
-                        top: auto;
-                        transform: none;
-                        position: relative;
-                        height: auto;
-                        flex-direction: column;
-                        justify-content: flex-start;
-                        padding: 10px;
-                    }
-
-                    .modal-content {
-                        max-width: 100%;
-                        padding: 10px;
-                        margin: 0;
-                    }
-
-                    /* Updated styles for card container on mobile */
-                    .card-container {
-                        flex-direction: column;
-                        align-items: center;
-                    }
-
-                    .card {
-                        max-width: 100%; /* Adjusted to full width on mobile */
-                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-                        text-align: justify;
-                        padding: 10px;
-                        margin-bottom: 10px; /* Added margin between cards */
-                    }
-
-                    .card button {
-                        margin-top: 10px;
-                    }
-
-                    .header-container {
-                        display: block;
-                        text-align: center;
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .buttons,
-                    .search {
-                        position: static;
-                        margin-top: 10px;
-                    }
-                }
-            `;
-            styleSwitch.innerHTML = newStyle;
-        }
-
-        function adjustLayoutForMobile() {
-            // Function to handle the opening/closing of the sidebar and adding/removing the 'opened' class
-        }
-
-        function checkDeviceWidth() {
-            const isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
-            if (isMobile) {
-                switchToMobileStyles();
-                adjustLayoutForMobile();
-            }
-        }
-
-        // Check device width on page load
-        window.onload = checkDeviceWidth;
-
-        // Check device width when the window is resized
-        window.onresize = checkDeviceWidth;
     </script>
 </body>
 </html>
