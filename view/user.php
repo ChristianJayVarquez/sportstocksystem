@@ -237,6 +237,8 @@ $uname = $_SESSION['user_name'];
             }
         }
     </style>
+    <script src="../scripts/user-scripts.js"></script>
+    <script src="../scripts/user-sidebar-scripts.js"></script>
 </head>
 <body>
     <header>
@@ -710,8 +712,6 @@ $uname = $_SESSION['user_name'];
     <footer>
         <p>&copy; 2023 SportStock System: ADS | Made by: Group2 @ AY: 2023-2024</p>
     </footer>
-    <script src="../scripts/user-scripts.js"></script>
-    <script src="../scripts/user-sidebar-scripts.js"></script>
     <script>
         // Function to show toaster message
         function showToast(message) {
@@ -948,7 +948,6 @@ $uname = $_SESSION['user_name'];
         returnNoButton.addEventListener("click", () => {
             returnModal.style.display = "none"; // Close the modal
         });
-    </script>
     </script>
     <script>
         // Get the modal and button elements

@@ -524,7 +524,11 @@ $uname = $_SESSION['user_name'];
                 </div>
                 <div class="form-group">
                     <label for='condition'>Condition:</label>
-                    <input type='text' id='condition' name='condition'>
+                    <select id='condition' name='condition'>
+                        <option value=''>--</option>
+                        <option value='Good'>Good</option>
+                        <option value='Bad'>Bad</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for='maintenance'>Last Maintenance:</label>
@@ -561,7 +565,7 @@ $uname = $_SESSION['user_name'];
                 </div>
                 <div class="form-group">
                     <label for="editCondition">Condition:</label>
-                    <input type="text" id="editCondition" name="editCondition">
+                    <input type="text" id="editCondition" name="editCondition" disabled>
                 </div>
                 <div class="form-group">
                     <label for="editMaintenance">Last Maintenance:</label>
@@ -715,15 +719,15 @@ $uname = $_SESSION['user_name'];
                 <input type="hidden" id="editUserId" name="userId" value="">
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="">
+                    <input type="text" id="name" name="name" value="" required>
                 </div>
                 <div class="form-group">
                     <label for="course">Course & Year Level:</label>
-                    <input type="text" id="course" name="course" value="">
+                    <input type="text" id="course" name="course" value="" required>
                 </div>
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="">
+                    <input type="text" id="username" name="username" value="" required>
                 </div>
                 <div class="form-group">
                     <label for="profilePicture">Profile Picture:</label>
