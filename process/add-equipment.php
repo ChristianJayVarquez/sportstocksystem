@@ -14,9 +14,6 @@ if (isset($_POST['add'])) {
     
     // Execute the SQL query
     if (mysqli_query($conn, $insertSql)) {
-        // Code for Inserting data to Activity Log
-        $sqla = "INSERT INTO log (user_id, activity, timestamp) VALUES ('$user_id', 'Added Equipment', NOW())";
-        mysqli_query($conn, $sqla);
         // Get the ID of the inserted equipment
         $equipmentId = mysqli_insert_id($conn);
 
@@ -37,6 +34,10 @@ if (isset($_POST['add'])) {
                 imagejpeg($image, $targetFile, 85);
                 imagedestroy($image);
             }
+
+             // Code for Inserting data to Activity Log
+            $sqla = "INSERT INTO log (user_id, activity, timestamp) VALUES ('$user_id', 'Added Equipment', NOW())";
+            mysqli_query($conn, $sqla);
             // Show toaster notification after successful insert
             $toasterMessage = "Equipment added successfully!";
             header("Location: ../view/admin.php?toasterMessage=$toasterMessage");
