@@ -228,17 +228,6 @@
                     });
             });
 
-            function showToast(message) {
-                const toaster = document.getElementById('toaster-message');
-                toaster.innerHTML = message;
-                toaster.parentElement.style.display = 'block';
-
-                setTimeout(function () {
-                    toaster.parentElement.style.display = 'none';
-                    toaster.innerHTML = '';
-                }, 5000);
-            }
-
             function moveLabelToTop(input) {
                 const label = input.previousElementSibling;
                 label.style.top = 0;
@@ -267,10 +256,10 @@
 
             // Password toggle functionality
             const passwordInput = document.getElementById("password");
-            const passwordToggle = document.getElementById("passwordToggle");
+            const passwordToggle = document.getElementById(".password-toggle");
 
             passwordToggle.addEventListener("click", function () {
-                togglePasswordVisibility(passwordInput, "passwordToggle");
+                togglePasswordVisibility(passwordInput, ".password-toggle");
             });
 
             const newPasswordInput = document.getElementById("newPassword");
@@ -464,6 +453,32 @@
         // Check device width when the window is resized
         window.onresize = checkDeviceWidth;
     </script>
+    <script>
+        // Function to show toaster message
+        function showToast(message) {
+            var toaster = document.getElementById('toaster-message');
+            toaster.innerHTML = message;
+            toaster.parentElement.style.display = 'block';
+
+            // Hide the toaster after 5 seconds
+            setTimeout(function() {
+                toaster.parentElement.style.display = 'none';
+                toaster.innerHTML = '';
+            }, 5000);
+        }
+
+        // Check if there is a toaster message in the URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var toasterMessage = urlParams.get('toasterMessage');
+
+        if (toasterMessage) {
+            // Display the toaster message
+            showToast(toasterMessage);
+
+            // Update the URL without the toaster message
+            history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -522,7 +537,7 @@
         </div>
     </div>
     <div id="toaster">
-        <div id="toaster-message"></div>
+        <div id="toaster-message" class="toaster-message"></div>
     </div>
 </body>
 </html>
